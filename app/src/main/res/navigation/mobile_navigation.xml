@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_video">
+
+    <fragment
+        android:id="@+id/navigation_video"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.video_section.VideoFragment"
+        android:label="@string/videos"
+        tools:layout="@layout/fragment_video" />
+
+    <fragment
+        android:id="@+id/navigation_files"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.files_section.FilesFragment"
+        android:label="@string/files"
+        tools:layout="@layout/fragment_files" />
+
+    <fragment
+        android:id="@+id/navigation_images"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.ImagesFragment"
+        android:label="@string/images"
+        tools:layout="@layout/fragment_images" />
+    <fragment
+        android:id="@+id/navigation_music"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.MusicFragment"
+        android:label="@string/music"
+        tools:layout="@layout/music_fragment" />
+</navigation>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/navigation_video"
+        android:icon="@drawable/vid_selector"
+        android:title="@string/videos"
+
+
+        />
+
+    <item
+        android:id="@+id/navigation_images"
+        android:icon="@drawable/photo_selector"
+        android:title="@string/images"
+        />
+
+    <item
+        android:id="@+id/navigation_files"
+        android:icon="@drawable/folder_selector"
+        android:title="@string/files" />
+    <item
+        android:id="@+id/navigation_music"
+        android:icon="@drawable/music_selector"
+        android:title="@string/music" />
+
+
+</menu>

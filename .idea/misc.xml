@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable-v24/photo_selectot.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selector.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selectot.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_folder_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_photo_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_library_music_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_outline_folder_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_outline_library_music_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_outline_photo_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_play_circle.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_play_circle_filled_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/music_selector.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/music_selectot.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/vid_selector.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dash_bord.xml" value="0.1" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/base_rv_item.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_dash_bod.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_dash_bord.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_dashboard.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_video.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/music_fragment.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/recent_video_item.xml" value="0.67" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/video_item.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1188118811881188" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
