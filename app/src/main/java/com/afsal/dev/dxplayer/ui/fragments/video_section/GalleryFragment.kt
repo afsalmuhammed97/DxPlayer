@@ -1,4 +1,4 @@
-package com.afsal.dev.dxplayer.ui.fragments
+package com.afsal.dev.dxplayer.ui.fragments.video_section
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.afsal.dev.dxplayer.R
 
 
-class VidDetaislFragment : Fragment() {
+class GalleryFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -16,7 +16,7 @@ class VidDetaislFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vid_detaisl, container, false)
+        return inflater.inflate(R.layout.fragment_video_gallery, container, false)
     }
 
 

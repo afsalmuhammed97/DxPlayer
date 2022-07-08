@@ -1,0 +1,1 @@
+package com.afsal.dev.dxplayer.interfacessinterface OnItemClickListner {    fun onItemClick(Position:Int)}

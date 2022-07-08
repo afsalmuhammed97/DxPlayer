@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.BaseCategoryAdapter
 import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
 import com.afsal.dev.dxplayer.adapters.VideosAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
+import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 
-class VideoFragment : Fragment() {
+class VideoFragment : Fragment(),OnItemClickListner {
 
     private lateinit var dataList:List<List<String>>
 
@@ -68,12 +71,16 @@ class VideoFragment : Fragment() {
         val vodList6= listOf("43","33","24","65","37","76","90","45","57","65")
 
         dataList = listOf(vodList1,vodList2,vodList3,vodList4,vodList6,vodList5)
-        categoryAdapter=BaseCategoryAdapter(dataList)
+        categoryAdapter=BaseCategoryAdapter(dataList,this)
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemClick(Position: Int) {
+       findNavController().navigate(R.id.action_navigation_video_to_galleryFragment)
     }
 }

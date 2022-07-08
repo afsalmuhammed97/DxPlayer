@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:paddingBottom="@dimen/_60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:id="@+id/category"
             android:background="@android:color/transparent"
             android:paddingVertical="@dimen/_10dp"
             android:text="@string/recent_videos"
@@ -44,7 +45,13 @@
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="1dp" />
 
-
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginHorizontal="@dimen/_5dp"
+            android:background="@color/bg_color2"
+            android:layout_marginBottom="@dimen/_4dp" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/base_rv"
             android:layout_width="match_parent"
