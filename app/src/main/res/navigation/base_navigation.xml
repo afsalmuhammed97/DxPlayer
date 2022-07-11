@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_navigation"
+    app:startDestination="@id/dashBordFragment">
+
+    <fragment
+        android:id="@+id/dashBordFragment"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.DashBordFragment"
+        android:label="fragment_dash_bord"
+        tools:layout="@layout/fragment_dash_bord" />
+    <fragment
+        android:id="@+id/galleryFragment2"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.video_section.GalleryFragment"
+        android:label="fragment_video_gallery"
+        tools:layout="@layout/fragment_video_gallery" />
+</navigation>
