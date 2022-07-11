@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_82.5dp"
+    android:layout_height="@dimen/_82.5dp"
+    android:background="@android:color/transparent"
+     >
+
+    <ImageView
+        android:layout_margin="@dimen/_2dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image"
+        android:src="@drawable/fish"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/images" />
+
+</com.google.android.material.card.MaterialCardView>

@@ -35,7 +35,10 @@
         <entry key="..\:/DxPlayer/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1188118811881188" />
         <entry key="app/src/main/res/layout/activity_dash_bord.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/base_rv_item.xml" value="0.19375" />
+<<<<<<< HEAD
         <entry key="app/src/main/res/layout/fragment_dash_bord.xml" value="0.19375" />
+=======
+>>>>>>> ImageUiIntegration
         <entry key="app/src/main/res/layout/fragment_image_list.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_image_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_images.xml" value="0.19375" />

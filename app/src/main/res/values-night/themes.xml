@@ -17,6 +17,14 @@ a
         <!-- Customize your theme here. -->
         <item name="actionBarItemBackground"  >?attr/colorPrimaryVariant</item>
 
+
+
+        <!--Full screen-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+<!--        <item name="android:windowLightStatusBar">true</item>-->
+
     </style>
 
 
