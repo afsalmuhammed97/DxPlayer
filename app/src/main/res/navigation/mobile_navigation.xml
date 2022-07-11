@@ -38,7 +38,11 @@
         android:id="@+id/navigation_images"
         android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.ImagesFragment"
         android:label="@string/images"
-        tools:layout="@layout/fragment_images" />
+        tools:layout="@layout/fragment_images" >
+        <action
+            android:id="@+id/action_navigation_images_to_imageViewFragment"
+            app:destination="@id/imageViewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_music"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.MusicFragment"
@@ -53,5 +57,14 @@
         <action
             android:id="@+id/action_galleryFragment_to_navigation_video"
             app:destination="@id/navigation_video" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageViewFragment"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragment"
+        android:label="fragment_image_view"
+        tools:layout="@layout/fragment_image_view" >
+        <action
+            android:id="@+id/action_imageViewFragment_to_navigation_images"
+            app:destination="@id/navigation_images" />
     </fragment>
 </navigation>
