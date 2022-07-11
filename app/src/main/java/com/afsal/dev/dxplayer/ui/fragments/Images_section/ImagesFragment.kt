@@ -41,10 +41,12 @@ class ImagesFragment : Fragment(),OnItemClickListner {
         return root
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
     private fun setBaseRv(){
         val imagesBaseAdapter=ImagesBaseAdapter(requireContext(),this)
