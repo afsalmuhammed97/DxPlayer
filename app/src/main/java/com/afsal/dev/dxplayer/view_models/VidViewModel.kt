@@ -1,13 +1,13 @@
-package com.afsal.dev.dxplayer.ui.fragments.Images_section
+package com.afsal.dev.dxplayer.view_models
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class PhotosViewModel : ViewModel() {
+class VidViewModel : BaseViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 }

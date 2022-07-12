@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,6 +12,7 @@ import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.ImagesBaseAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentImagesBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
+import com.afsal.dev.dxplayer.view_models.PhotosViewModel
 
 class ImagesFragment : Fragment(),OnItemClickListner {
 

@@ -1,11 +1,21 @@
 package com.afsal.dev.dxplayer.ui
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavAction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -15,14 +25,25 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDashBordBinding
+import com.afsal.dev.dxplayer.models.ImageModel
+import com.afsal.dev.dxplayer.utills.CorUttiles
+import com.afsal.dev.dxplayer.view_models.BaseViewModel
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
+import java.util.jar.Manifest
 
 class DashBordActivity : AppCompatActivity() {
 
+    private var readPermissionGrated=false
+    private var writePermissionGranted=false
+    private lateinit var permissionLauncher:ActivityResultLauncher<Array<String>>
     private lateinit var navController: NavController
     private lateinit var binding: ActivityDashBordBinding
     private val TAG="DashBordActivity"
+
+   private val baseViewModel: BaseViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,9 +52,18 @@ class DashBordActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
       //  binding.navView.setItemIconTintList(null);
 
+
+        permissionLauncher=registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ permission ->
+
+            readPermissionGrated=permission[android.Manifest.permission.READ_EXTERNAL_STORAGE]?:readPermissionGrated
+            writePermissionGranted=permission[android.Manifest.permission.WRITE_EXTERNAL_STORAGE]?:writePermissionGranted }
+
+
+
+        updateOrRequestPermission()
+
+
       navController = findNavController(R.id.nav_host_fragment_activity_dash_bord)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(R.id.navigation_video,
@@ -42,21 +72,58 @@ class DashBordActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+
+            loadImages()
+
+
+
+    }
+
+    fun loadImages(){
+
+        baseViewModel.loadSystemImages(this)
+//        baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
+//                     Log.d(TAG,"data ${it.toString()}")
+//        })
     }
 
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle presses on the action bar menu items
-//
-//        when (item.itemId) {
-//            android.R.id.home -> {
-//                navController.getBackStackEntry(R.id.action_imageViewFragment_to_navigation_images)
-//                return true
-//            }
-//        }
-        return super.onOptionsItemSelected(item)
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_dash_bord)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
+    private fun updateOrRequestPermission(){
+        val hasReadPermission=ContextCompat.checkSelfPermission(this,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE) ==PackageManager.PERMISSION_GRANTED
+
+        val hasWritePermission=ContextCompat.checkSelfPermission(this,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==PackageManager.PERMISSION_GRANTED
+
+        val minSdk=Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+        readPermissionGrated=hasReadPermission
+        writePermissionGranted=hasWritePermission ||minSdk
+
+        val permissionRequest=  mutableListOf<String>()
+
+        if (!writePermissionGranted){
+
+            permissionRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if (!readPermissionGrated){
+            permissionRequest.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (permissionRequest.isNotEmpty()){
+
+            permissionLauncher.launch(permissionRequest.toTypedArray())
+        }
+
+    }
+
+     private fun loadMediaData(){
+
+
+     }
 
 }

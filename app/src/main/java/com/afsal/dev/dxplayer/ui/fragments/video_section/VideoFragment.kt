@@ -1,11 +1,13 @@
 package com.afsal.dev.dxplayer.ui.fragments.video_section
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +17,7 @@ import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
 import com.afsal.dev.dxplayer.adapters.VideosAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
+import com.afsal.dev.dxplayer.view_models.VidViewModel
 
 class VideoFragment : Fragment(),OnItemClickListner {
 
@@ -25,23 +28,41 @@ class VideoFragment : Fragment(),OnItemClickListner {
     private var _binding:FragmentVideoBinding? = null
 
     private val binding get() = _binding!!
-
+private lateinit var homeViewModel:VidViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-     //   val homeViewModel = ViewModelProvider(this).get(VidViewModel::class.java)
+         homeViewModel = ViewModelProvider(this).get(VidViewModel::class.java)
 
         _binding = FragmentVideoBinding.inflate(inflater, container, false)
         val root: View = binding.root
           createDataList()
         val vodList= listOf("43","33","24","65","37","76")
 
-        recentVideoAdapter=RecentVideoAdapter(vodList)
+
+
            setRecyclerView()
 
         return root
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recentVideoAdapter=RecentVideoAdapter()
+         homeViewModel.photoList.observe(viewLifecycleOwner, Observer {
+
+             recentVideoAdapter.differ.submitList(it)
+             recentVideoAdapter.notifyDataSetChanged()
+
+         })
+
+        binding.recentItemRv.apply {
+            layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter=recentVideoAdapter
+        }
     }
 
 
@@ -51,10 +72,7 @@ class VideoFragment : Fragment(),OnItemClickListner {
             layoutManager= LinearLayoutManager(context)
             adapter=categoryAdapter
         }
-        binding.recentItemRv.apply {
-            layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter=recentVideoAdapter
-        }
+
 
     }
 
