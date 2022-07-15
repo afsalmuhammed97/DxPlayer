@@ -1,6 +1,8 @@
 package com.afsal.dev.dxplayer.view_models
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +19,7 @@ open class BaseViewModel :ViewModel() {
      val photoList:LiveData<List<ImageModel>>
                     get() = _photosList
 
+    @RequiresApi(Build.VERSION_CODES.R)
     fun loadSystemImages(context: Context){
         viewModelScope.launch {
           _photosList.value =  CorUttiles.loadPhotos(context)

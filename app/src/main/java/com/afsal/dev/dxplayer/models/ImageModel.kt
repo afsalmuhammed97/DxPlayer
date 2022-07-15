@@ -9,5 +9,7 @@ data class ImageModel(
     val width:Int,
     val height:Int,
     val contentUri:Uri,
-    val addedDate:String
+    val addedDate:String,
+    val folderName:String,
+    val title: String?
 )

@@ -1,11 +1,14 @@
 package com.afsal.dev.dxplayer.ui.fragments.video_section
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +43,7 @@ private lateinit var homeViewModel:VidViewModel
         val root: View = binding.root
           createDataList()
         val vodList= listOf("43","33","24","65","37","76")
+        recentVideoAdapter=RecentVideoAdapter()
 
 
 
@@ -48,21 +52,21 @@ private lateinit var homeViewModel:VidViewModel
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recentVideoAdapter=RecentVideoAdapter()
-         homeViewModel.photoList.observe(viewLifecycleOwner, Observer {
+        homeViewModel.loadSystemImages(requireContext())
+         homeViewModel.photoList.observe(requireActivity(), Observer {
 
+             Log.d("Vid","video data ${it}")
+             Log.d("Vid","list size ${it.size }")
              recentVideoAdapter.differ.submitList(it)
              recentVideoAdapter.notifyDataSetChanged()
 
          })
 
-        binding.recentItemRv.apply {
-            layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter=recentVideoAdapter
-        }
+
     }
 
 
@@ -70,7 +74,12 @@ private lateinit var homeViewModel:VidViewModel
 
         binding.baseRv.apply {
             layoutManager= LinearLayoutManager(context)
-            adapter=categoryAdapter
+            adapter= categoryAdapter
+
+            binding.recentItemRv.apply {
+                layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter=recentVideoAdapter
+            }
         }
 
 

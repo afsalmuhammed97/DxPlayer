@@ -73,7 +73,7 @@ class DashBordActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
-            loadImages()
+          //  loadImages()
 
 
 
@@ -82,9 +82,9 @@ class DashBordActivity : AppCompatActivity() {
     fun loadImages(){
 
         baseViewModel.loadSystemImages(this)
-//        baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
-//                     Log.d(TAG,"data ${it.toString()}")
-//        })
+        baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
+                     Log.d(TAG,"data ${it.toString()}")
+        })
     }
 
 
