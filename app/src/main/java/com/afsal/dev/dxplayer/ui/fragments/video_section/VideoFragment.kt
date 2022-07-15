@@ -20,6 +20,7 @@ import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
 import com.afsal.dev.dxplayer.adapters.VideosAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
+import com.afsal.dev.dxplayer.models.ImageModel
 import com.afsal.dev.dxplayer.view_models.VidViewModel
 
 class VideoFragment : Fragment(),OnItemClickListner {
@@ -55,9 +56,16 @@ private lateinit var homeViewModel:VidViewModel
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
         super.onViewCreated(view, savedInstanceState)
         homeViewModel.loadSystemImages(requireContext())
          homeViewModel.photoList.observe(requireActivity(), Observer {
+
+
+             for (photo:ImageModel in it){
+                 photo.addedDate?.let { it1 -> homeViewModel.dateList.add(it1) }
+             }
 
              Log.d("Vid","video data ${it}")
              Log.d("Vid","list size ${it.size }")

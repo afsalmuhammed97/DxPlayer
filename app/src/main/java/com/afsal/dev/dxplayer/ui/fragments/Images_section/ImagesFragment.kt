@@ -16,10 +16,9 @@ import com.afsal.dev.dxplayer.view_models.PhotosViewModel
 
 class ImagesFragment : Fragment(),OnItemClickListner {
 
-    private var _binding:FragmentImagesBinding ? = null
+    private lateinit var photosViewModel: PhotosViewModel
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding:FragmentImagesBinding ? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -27,8 +26,7 @@ class ImagesFragment : Fragment(),OnItemClickListner {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(PhotosViewModel::class.java)
+       photosViewModel = ViewModelProvider(this).get(PhotosViewModel::class.java)
 
         _binding = FragmentImagesBinding.inflate(inflater, container, false)
         val root: View = binding.root

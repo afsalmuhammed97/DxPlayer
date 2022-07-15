@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel :ViewModel() {
 
-
+    private var images= listOf<ImageModel>()
+    var dateList= mutableSetOf<String>()
 
     private val _photosList:MutableLiveData<List<ImageModel>> = MutableLiveData()
      val photoList:LiveData<List<ImageModel>>
@@ -26,5 +27,7 @@ open class BaseViewModel :ViewModel() {
 
         }
     }
+
+
 
 }

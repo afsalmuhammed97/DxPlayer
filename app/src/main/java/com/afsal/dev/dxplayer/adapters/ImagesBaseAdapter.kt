@@ -3,12 +3,15 @@ package com.afsal.dev.dxplayer.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afsal.dev.dxplayer.databinding.ImageCardBaseItemBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 
 class ImagesBaseAdapter(context: Context,private  val listener: OnItemClickListner):RecyclerView.Adapter<ImagesBaseAdapter.BaseItemHolder>() {
+
+  //  private val diffCallbacks2= object :DiffUtil.ItemCallback<>
 
     val timeList= listOf("6 Jan","4 Mar" ,"23 May","17 Jul" )
     class BaseItemHolder(val binding: ImageCardBaseItemBinding):RecyclerView.ViewHolder(binding.root) {

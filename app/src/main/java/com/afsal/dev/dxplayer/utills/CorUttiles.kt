@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 object CorUttiles {
 
@@ -84,25 +83,29 @@ object CorUttiles {
       val projection= arrayOf(
           MediaStore.Images.Media._ID,
           MediaStore.Images.Media.DISPLAY_NAME,
+          MediaStore.Images.Media.SIZE,
           MediaStore.Images.Media.WIDTH,
           MediaStore.Images.Media.HEIGHT,
-          MediaStore.Images.Media.DATE_ADDED,
+          MediaStore.Images.Media.DATE_TAKEN,
           MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
           MediaStore.Images.Media.ORIENTATION,
           MediaStore.Images.Media.TITLE,
       )
            val photos= mutableListOf<ImageModel>()
+
+           val imageSortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
+
            context.contentResolver.query(
-               collection,
+               MediaStore.Images.Media.EXTERNAL_CONTENT_URI,    //  collection,
                projection,
                null,null,
-               "${MediaStore.Images.Media.BUCKET_DISPLAY_NAME} ASC"   // DESC
+                    imageSortOrder   //"${MediaStore.Images.Media.BUCKET_DISPLAY_NAME} ASC"   // DESC
            )?.use { cursor ->
                val idColumn=cursor.getColumnIndex(MediaStore.Images.Media._ID)
                val displayNameColumn=cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)
                val widthColumn=cursor.getColumnIndex(MediaStore.Images.Media.WIDTH)
                val heightColumn=cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT)
-               val addedDateColumn=cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)
+               val addedDateColumn=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN) //getColumnIndex(MediaStore.Images.Media.DATE_ADDED)
                val folderNameColumn=cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
                val titleColumn=cursor.getColumnIndex(MediaStore.Images.Media.TITLE)
               // val titleColumn=cursor.getColumnIndex(MediaStore.Images.Media.OWNER_PACKAGE_NAME)
@@ -112,7 +115,7 @@ object CorUttiles {
                    val displayName=cursor.getString(displayNameColumn)
                    val width=cursor.getInt(widthColumn)
                    val height=cursor.getInt(heightColumn)
-                   val addedDate=cursor.getString(addedDateColumn).toLong()
+                   val addedDate=cursor.getLong(addedDateColumn)
                    val folderName=cursor.getString(folderNameColumn)
                    val tittle=cursor.getString(titleColumn)
                    val contentUri=ContentUris.withAppendedId(
@@ -122,7 +125,7 @@ object CorUttiles {
 
                    photos.add(ImageModel(
                        id =id, name = displayName, width = width, height = height,
-                                       contentUri = contentUri, addedDate =getDateFromUri(contentUri),
+                                       contentUri = contentUri, addedDate = dateFormat(addedDate),          // dateFormater(addedDate) ,
                                        folderName =folderName, title = tittle ))
                }
                photos.toList()
@@ -142,7 +145,27 @@ object CorUttiles {
     }
 
 
-    fun loadImage(){
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun dateFormater(date:String):String{
+        val format = "MM-dd-yyyy HH:mm:ss"
+        val formatter = SimpleDateFormat(format, Locale.ENGLISH)
+
+        return formatter.format(Date(date.toLong()))
         
+    }
+
+    fun dateFormat(date: Long):String{
+        var myCal: Calendar = Calendar.getInstance()
+        myCal.timeInMillis = date
+        val dateText = Date(
+            myCal[Calendar.YEAR] - 1900,
+            myCal[Calendar.MONTH],
+            myCal[Calendar.DAY_OF_MONTH],
+            myCal[Calendar.HOUR_OF_DAY],
+            myCal[Calendar.MINUTE]
+        )
+        val date=  android.text.format.DateFormat.format("MM/dd/yyyy", dateText).toString() //hh:mm
+        return date
     }
 }

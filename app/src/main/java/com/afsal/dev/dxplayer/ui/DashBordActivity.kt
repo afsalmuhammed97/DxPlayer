@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -79,12 +80,15 @@ class DashBordActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     fun loadImages(){
 
         baseViewModel.loadSystemImages(this)
         baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
                      Log.d(TAG,"data ${it.toString()}")
         })
+
+
     }
 
 
