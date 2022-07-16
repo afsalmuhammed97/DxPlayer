@@ -12,4 +12,6 @@
     <string name="music">Music</string>
     <string name="recent_videos">Recent Videos</string>
     <string name="show_more">see more</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

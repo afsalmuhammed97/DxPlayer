@@ -3,13 +3,20 @@ package com.afsal.dev.dxplayer.utills
 import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.view.View
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
-import com.afsal.dev.dxplayer.models.ImageModel
+import com.afsal.dev.dxplayer.R
+import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.models.VideoItemModel
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -96,7 +103,7 @@ object CorUttiles {
            val imageSortOrder = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
 
            context.contentResolver.query(
-               MediaStore.Images.Media.EXTERNAL_CONTENT_URI,    //  collection,
+                 collection,
                projection,
                null,null,
                     imageSortOrder   //"${MediaStore.Images.Media.BUCKET_DISPLAY_NAME} ASC"   // DESC
@@ -123,10 +130,12 @@ object CorUttiles {
                    )
 
 
-                   photos.add(ImageModel(
+                   photos.add(
+                       ImageModel(
                        id =id, name = displayName, width = width, height = height,
                                        contentUri = contentUri, addedDate = dateFormat(addedDate),          // dateFormater(addedDate) ,
-                                       folderName =folderName, title = tittle ))
+                                       folderName =folderName, title = tittle )
+                   )
                }
                photos.toList()
 
@@ -134,26 +143,26 @@ object CorUttiles {
        }
 
     }
-    @SuppressLint("SimpleDateFormat")
-    @RequiresApi(Build.VERSION_CODES.N)
-     fun getDateFromUri(uri: Uri):String {
-        val split = uri.path!!.split("/").toTypedArray()
-        val fileName = split[split.size - 1]
-        val fileNameNoExt = fileName.split("\\.").toTypedArray()[0]
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        return format.format(Date(fileNameNoExt.toLong()))
-    }
+//    @SuppressLint("SimpleDateFormat")
+//    @RequiresApi(Build.VERSION_CODES.N)
+//     fun getDateFromUri(uri: Uri):String {
+//        val split = uri.path!!.split("/").toTypedArray()
+//        val fileName = split[split.size - 1]
+//        val fileNameNoExt = fileName.split("\\.").toTypedArray()[0]
+//        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//        return format.format(Date(fileNameNoExt.toLong()))
+//    }
+//
 
 
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun dateFormater(date:String):String{
-        val format = "MM-dd-yyyy HH:mm:ss"
-        val formatter = SimpleDateFormat(format, Locale.ENGLISH)
-
-        return formatter.format(Date(date.toLong()))
-        
-    }
+//    @RequiresApi(Build.VERSION_CODES.N)
+//    fun dateFormater(date:String):String{
+//        val format = "MM-dd-yyyy HH:mm:ss"
+//        val formatter = SimpleDateFormat(format, Locale.ENGLISH)
+//
+//        return formatter.format(Date(date.toLong()))
+//
+//    }
 
     fun dateFormat(date: Long):String{
         var myCal: Calendar = Calendar.getInstance()
@@ -167,5 +176,14 @@ object CorUttiles {
         )
         val date=  android.text.format.DateFormat.format("MM/dd/yyyy", dateText).toString() //hh:mm
         return date
+    }
+
+    fun loadImageIntoView(imageUri:Uri,view:ImageView){
+
+        Glide.with(view.context).load(imageUri)
+            .apply(RequestOptions.placeholderOf(R.drawable.fish).centerCrop())
+            .into(view)
+
+
     }
 }

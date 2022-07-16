@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,10 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.BaseCategoryAdapter
 import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
-import com.afsal.dev.dxplayer.adapters.VideosAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
-import com.afsal.dev.dxplayer.models.ImageModel
+import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.view_models.VidViewModel
 
 class VideoFragment : Fragment(),OnItemClickListner {
@@ -59,20 +57,24 @@ private lateinit var homeViewModel:VidViewModel
 
 
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.loadSystemImages(requireContext())
-         homeViewModel.photoList.observe(requireActivity(), Observer {
-
-
-             for (photo:ImageModel in it){
-                 photo.addedDate?.let { it1 -> homeViewModel.dateList.add(it1) }
-             }
-
-             Log.d("Vid","video data ${it}")
-             Log.d("Vid","list size ${it.size }")
-             recentVideoAdapter.differ.submitList(it)
-             recentVideoAdapter.notifyDataSetChanged()
-
-         })
+       // homeViewModel.loadSystemImages(requireContext())
+//         homeViewModel.photoList.observe(requireActivity(), Observer {
+//
+//
+//             for (photo: ImageModel in it){
+//                 photo.addedDate?.let { it1 -> homeViewModel.dateList.add(it1) }
+//             }
+//
+//
+//
+//             Log.d("Vid","video data ${it}")
+//             Log.d("Vid","list size ${it.size }")
+//
+//             Log.d("Vid", "date list ${homeViewModel.dateList.toString()}")
+//             recentVideoAdapter.differ.submitList(it)
+//             recentVideoAdapter.notifyDataSetChanged()
+//
+//         })
 
 
     }

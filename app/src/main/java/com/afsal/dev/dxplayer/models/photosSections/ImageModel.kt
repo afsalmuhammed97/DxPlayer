@@ -1,4 +1,4 @@
-package com.afsal.dev.dxplayer.models
+package com.afsal.dev.dxplayer.models.photosSections
 
 import android.net.Uri
 import android.util.Log

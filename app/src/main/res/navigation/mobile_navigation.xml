@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_navigation_images_to_imageViewFragment"
             app:destination="@id/imageViewFragment" />
+        <action
+            android:id="@+id/action_navigation_images_to_galleryViewFragment"
+            app:destination="@id/galleryViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_music"
@@ -67,4 +70,9 @@
             android:id="@+id/action_imageViewFragment_to_navigation_images"
             app:destination="@id/navigation_images" />
     </fragment>
+    <fragment
+        android:id="@+id/galleryViewFragment"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.GalleryViewFragment"
+        android:label="fragment_gallery_view"
+        tools:layout="@layout/fragment_gallery_view" />
 </navigation>

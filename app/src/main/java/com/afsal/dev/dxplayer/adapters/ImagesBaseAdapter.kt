@@ -28,11 +28,11 @@ class ImagesBaseAdapter(context: Context,private  val listener: OnItemClickListn
 
     override fun onBindViewHolder(holder: ImagesBaseAdapter.BaseItemHolder, position: Int) {
           holder.binding.categoryDateTx.text=timeList[position]
-         val imagesAdapter =ImagesAdapter(listener)
+       //  val imagesAdapter =ImagesAdapter(listener)
 
          holder.binding.imageItemRv.apply {
              layoutManager=GridLayoutManager(context,4)
-                adapter=imagesAdapter
+            //    adapter=imagesAdapter
          }
 
 
