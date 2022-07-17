@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.Images_section.ImageViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="image view frag" />
+        android:id="@+id/image_pager"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_55dp"
+      />
 
 </FrameLayout>

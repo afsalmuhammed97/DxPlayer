@@ -2,6 +2,7 @@ package com.afsal.dev.dxplayer.models.photosSections
 
 import android.net.Uri
 import android.util.Log
+import java.io.Serializable
 
 data class ImageModel(
     val id:Long,
@@ -12,4 +13,4 @@ data class ImageModel(
     val addedDate:String?,
     val folderName:String,
     val title: String?
-)
+):Serializable

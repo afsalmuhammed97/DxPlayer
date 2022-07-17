@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.afsal.dev.dxplayer.adapters.ImagesAdapter
 import com.afsal.dev.dxplayer.adapters.ImagesBaseAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentImagesBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
+import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.view_models.PhotosViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -26,7 +28,7 @@ import com.bumptech.glide.request.target.Target
 
 
 class ImagesFragment : Fragment(),OnItemClickListner {
-
+     private val TAG="ImagesFragment"
     private lateinit var photosViewModel: PhotosViewModel
    private lateinit var imagesAdapter: ImagesAdapter
     private var _binding:FragmentImagesBinding ? = null
@@ -37,7 +39,7 @@ class ImagesFragment : Fragment(),OnItemClickListner {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       photosViewModel = ViewModelProvider(this).get(PhotosViewModel::class.java)
+       photosViewModel = ViewModelProvider(requireActivity()).get(PhotosViewModel::class.java)
 
         _binding = FragmentImagesBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -66,6 +68,7 @@ class ImagesFragment : Fragment(),OnItemClickListner {
         photosViewModel.photoList.observe(requireActivity(), Observer {
                imagesAdapter.differList.submitList(it)
                imagesAdapter.notifyDataSetChanged()
+
         })
     }
 
@@ -87,8 +90,10 @@ class ImagesFragment : Fragment(),OnItemClickListner {
         }
     }
 // callback from imageList
-    override fun onItemClick(Position: Int) {
-      findNavController().navigate(R.id.action_navigation_images_to_imageViewFragment)
+    override fun onItemClick(Position: Int, photo: ImageModel) {
+              Log.d(TAG,"Selected ${photo}      $Position")
+    val action= ImagesFragmentDirections.actionNavigationImagesToImageViewFragment(Position,photo)
+      findNavController().navigate(action)
        // findNavController().navigate(R.id.action_navigation_images_to_galleryViewFragment)
     }
 }

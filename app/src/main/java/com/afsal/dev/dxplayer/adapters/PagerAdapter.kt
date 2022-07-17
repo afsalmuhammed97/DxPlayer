@@ -1,0 +1,1 @@
+package com.afsal.dev.dxplayer.adaptersclass PagerAdapter() {}

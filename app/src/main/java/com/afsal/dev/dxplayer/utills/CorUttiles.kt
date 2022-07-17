@@ -24,6 +24,9 @@ import java.util.*
 
 object CorUttiles {
 
+    val  IMAGE_FRAGMENT ="ImageFragment"
+    val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
+
     @SuppressLint("Range")
     fun loadVideos(context: Context):ArrayList<VideoItemModel>{
 
@@ -165,6 +168,8 @@ object CorUttiles {
 //    }
 
     fun dateFormat(date: Long):String{
+
+
         var myCal: Calendar = Calendar.getInstance()
         myCal.timeInMillis = date
         val dateText = Date(
@@ -175,15 +180,31 @@ object CorUttiles {
             myCal[Calendar.MINUTE]
         )
         val date=  android.text.format.DateFormat.format("MM/dd/yyyy", dateText).toString() //hh:mm
+
         return date
     }
 
-    fun loadImageIntoView(imageUri:Uri,view:ImageView){
 
-        Glide.with(view.context).load(imageUri)
-            .apply(RequestOptions.placeholderOf(R.drawable.fish).centerCrop())
+
+    fun loadImageIntoView(imageUri:Uri,view:ImageView ,screenName:String){
+
+        val requestOptions=RequestOptions()
+               when(screenName){
+                   IMAGE_FRAGMENT-> requestOptions.centerCrop()
+
+                   IMAGE_VIEW_FRAGMENT-> requestOptions.centerInside()
+
+               }
+
+
+
+        Glide.with(view.context)
+            .load(imageUri)
+            .apply(requestOptions)
+            .placeholder(R.drawable.fish)
             .into(view)
 
-
     }
+
+
 }

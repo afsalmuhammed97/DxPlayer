@@ -33,7 +33,7 @@ class ImagesAdapter(val context: Context, private  val listener: OnItemClickList
         override fun onClick(p0: View?) {
             val position = absoluteAdapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position)
+                listener.onItemClick(position,differList.currentList[position])
 
             }
         }
@@ -48,7 +48,7 @@ class ImagesAdapter(val context: Context, private  val listener: OnItemClickList
             val photo=differList.currentList[position]
        // holder.binding.image.setImageURI(photo.contentUri)
 
-            CorUttiles.loadImageIntoView(photo.contentUri,holder.binding.image)
+            CorUttiles.loadImageIntoView(photo.contentUri,holder.binding.image,CorUttiles.IMAGE_FRAGMENT)
 
  /// need to implement more like glide ...
     }

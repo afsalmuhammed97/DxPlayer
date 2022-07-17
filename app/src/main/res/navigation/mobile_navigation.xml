@@ -69,6 +69,12 @@
         <action
             android:id="@+id/action_imageViewFragment_to_navigation_images"
             app:destination="@id/navigation_images" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+        <argument
+            android:name="photo_data"
+            app:argType="com.afsal.dev.dxplayer.models.photosSections.ImageModel" />
     </fragment>
     <fragment
         android:id="@+id/galleryViewFragment"

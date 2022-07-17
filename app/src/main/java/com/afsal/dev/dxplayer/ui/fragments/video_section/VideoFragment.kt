@@ -117,7 +117,7 @@ private lateinit var homeViewModel:VidViewModel
         _binding = null
     }
 
-    override fun onItemClick(Position: Int) {
+    override fun onItemClick(Position: Int, photo: ImageModel) {
        findNavController().navigate(R.id.action_navigation_video_to_galleryFragment)
     }
 }
