@@ -3,20 +3,17 @@ package com.afsal.dev.dxplayer.utills
 import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.view.View
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import com.afsal.dev.dxplayer.R
-import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.models.VideoItemModel
+import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -100,6 +97,8 @@ object CorUttiles {
           MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
           MediaStore.Images.Media.ORIENTATION,
           MediaStore.Images.Media.TITLE,
+          MediaStore.Images.Media.IS_FAVORITE,
+
       )
            val photos= mutableListOf<ImageModel>()
 
@@ -118,7 +117,7 @@ object CorUttiles {
                val addedDateColumn=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN) //getColumnIndex(MediaStore.Images.Media.DATE_ADDED)
                val folderNameColumn=cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
                val titleColumn=cursor.getColumnIndex(MediaStore.Images.Media.TITLE)
-              // val titleColumn=cursor.getColumnIndex(MediaStore.Images.Media.OWNER_PACKAGE_NAME)
+               val favoriteColumn=cursor.getColumnIndex(MediaStore.Images.Media.IS_FAVORITE)
 
                while (cursor.moveToNext()){
                    val id= cursor.getLong(idColumn)
@@ -128,6 +127,7 @@ object CorUttiles {
                    val addedDate=cursor.getLong(addedDateColumn)
                    val folderName=cursor.getString(folderNameColumn)
                    val tittle=cursor.getString(titleColumn)
+                   val isFavorite=cursor.getString(favoriteColumn)
                    val contentUri=ContentUris.withAppendedId(
                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
                    )
@@ -137,7 +137,7 @@ object CorUttiles {
                        ImageModel(
                        id =id, name = displayName, width = width, height = height,
                                        contentUri = contentUri, addedDate = dateFormat(addedDate),          // dateFormater(addedDate) ,
-                                       folderName =folderName, title = tittle )
+                                       folderName =folderName, title = tittle , isFavorite = isFavorite)
                    )
                }
                photos.toList()
@@ -146,28 +146,10 @@ object CorUttiles {
        }
 
     }
-//    @SuppressLint("SimpleDateFormat")
-//    @RequiresApi(Build.VERSION_CODES.N)
-//     fun getDateFromUri(uri: Uri):String {
-//        val split = uri.path!!.split("/").toTypedArray()
-//        val fileName = split[split.size - 1]
-//        val fileNameNoExt = fileName.split("\\.").toTypedArray()[0]
-//        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-//        return format.format(Date(fileNameNoExt.toLong()))
-//    }
-//
 
 
-//    @RequiresApi(Build.VERSION_CODES.N)
-//    fun dateFormater(date:String):String{
-//        val format = "MM-dd-yyyy HH:mm:ss"
-//        val formatter = SimpleDateFormat(format, Locale.ENGLISH)
-//
-//        return formatter.format(Date(date.toLong()))
-//
-//    }
 
-    fun dateFormat(date: Long):String{
+    private fun dateFormat(date: Long): String {
 
 
         var myCal: Calendar = Calendar.getInstance()
@@ -177,32 +159,52 @@ object CorUttiles {
             myCal[Calendar.MONTH],
             myCal[Calendar.DAY_OF_MONTH],
             myCal[Calendar.HOUR_OF_DAY],
-            myCal[Calendar.MINUTE]
+            myCal[Calendar.MINUTE],
+            myCal[Calendar.AM_PM]
+
         )
-        val date=  android.text.format.DateFormat.format("MM/dd/yyyy", dateText).toString() //hh:mm
+        val date =
+            android.text.format.DateFormat.format("dd/MM/yyyy hh:mm  a", dateText).toString() //hh:mm
+
+
 
         return date
     }
 
 
 
-    fun loadImageIntoView(imageUri:Uri,view:ImageView ,screenName:String){
+    fun loadImageIntoView(imageUri:Uri,view:ImageView?,customView: CustomZoomImageView? ,screenName:String){
 
         val requestOptions=RequestOptions()
                when(screenName){
-                   IMAGE_FRAGMENT-> requestOptions.centerCrop()
+                   IMAGE_FRAGMENT-> {
+                       requestOptions.centerCrop()
 
-                   IMAGE_VIEW_FRAGMENT-> requestOptions.centerInside()
+                       if (view != null) {
+                           Glide.with(view.context)
+                               .load(imageUri)
+                               .apply(requestOptions)
+                               .placeholder(R.drawable.fish)
+                               .into(view)
+                       }
 
+                   }
+
+                   IMAGE_VIEW_FRAGMENT->{ requestOptions.centerInside()
+                       if (customView != null) {
+                           Glide.with(customView.context)
+                               .load(imageUri)
+                               .apply(requestOptions)
+//                               .placeholder(R.drawable.fish)
+                               .into(customView)
+                       }
+
+               }
                }
 
 
 
-        Glide.with(view.context)
-            .load(imageUri)
-            .apply(requestOptions)
-            .placeholder(R.drawable.fish)
-            .into(view)
+
 
     }
 

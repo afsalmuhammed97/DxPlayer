@@ -13,10 +13,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.afsal.dev.dxplayer.adapters.ImagePagerAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentImageViewBinding
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
+import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.view_models.PhotosViewModel
 
 
 class ImageViewFragment : Fragment() {
+
+
 private val TAG="ImageViewFragment"
 private lateinit var photoPager: ViewPager2
 private lateinit var imagePagerAdapter: ImagePagerAdapter
@@ -24,9 +27,11 @@ private lateinit var  photosViewModel:PhotosViewModel
 private  var _imageViewBinding: FragmentImageViewBinding? =null
     private val imageViewBinding get() = _imageViewBinding!!
 
+
     private var position:Int=0
     private lateinit var currentImage:ImageModel
     val args:ImageViewFragmentArgs by navArgs()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -51,20 +56,24 @@ private  var _imageViewBinding: FragmentImageViewBinding? =null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        imageViewBinding.backBt.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
-
-//        photosViewModel.photoList.observe(requireActivity(), Observer {
-//                 imagePagerAdapter.differ.submitList(it)
-//                 imagePagerAdapter.notifyDataSetChanged()
-//            Log.d(TAG,"imageList ${it}")
-//
-//        })
+        imageViewBinding.shareBt.setOnClickListener {
+//            imageViewBinding.apply {
+//                bottomLayout.visibility=View.GONE
+//                toolbarLayout.visibility=View.GONE
+//            }
+        }
 
     }
     private fun initViewPager(position:Int) {
 
         photoPager=imageViewBinding.imagePager
-        imagePagerAdapter= ImagePagerAdapter()
+        imagePagerAdapter= ImagePagerAdapter(){it ->
+            imageViewBinding.dateText.text=it.addedDate
+        }
         imagePagerAdapter.differ.submitList(photosViewModel.photoList.value)
 
          Log.d(TAG,"photos  ${photosViewModel.photoList.value.toString()}")
@@ -74,7 +83,6 @@ private  var _imageViewBinding: FragmentImageViewBinding? =null
 
 
     }
-
 
 
 
