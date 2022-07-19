@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
-import com.afsal.dev.dxplayer.utills.CorUttiles
+import com.afsal.dev.dxplayer.utills.CoreUttiles
 import kotlinx.coroutines.launch
 
 open class BaseViewModel :ViewModel() {
@@ -23,7 +23,7 @@ open class BaseViewModel :ViewModel() {
     @RequiresApi(Build.VERSION_CODES.R)
     fun loadSystemImages(context: Context){
         viewModelScope.launch {
-          _photosList.value =  CorUttiles.loadPhotos(context)
+          _photosList.value =  CoreUttiles.loadPhotos(context)
 
 
         }

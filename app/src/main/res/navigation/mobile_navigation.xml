@@ -41,7 +41,11 @@
         tools:layout="@layout/fragment_images" >
         <action
             android:id="@+id/action_navigation_images_to_imageViewFragment"
-            app:destination="@id/imageViewFragment" />
+            app:destination="@id/imageViewFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
         <action
             android:id="@+id/action_navigation_images_to_galleryViewFragment"
             app:destination="@id/galleryViewFragment" />
@@ -72,9 +76,7 @@
         <argument
             android:name="position"
             app:argType="integer" />
-        <argument
-            android:name="photo_data"
-            app:argType="com.afsal.dev.dxplayer.models.photosSections.ImageModel" />
+
     </fragment>
     <fragment
         android:id="@+id/galleryViewFragment"

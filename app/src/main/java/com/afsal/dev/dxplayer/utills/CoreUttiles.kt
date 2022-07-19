@@ -1,25 +1,33 @@
 package com.afsal.dev.dxplayer.utills
 
 import android.annotation.SuppressLint
+import android.app.RecoverableSecurityException
 import android.content.ContentUris
 import android.content.Context
-import android.icu.text.SimpleDateFormat
+import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.view.View
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.annotation.RequiresApi
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.models.VideoItemModel
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 
-object CorUttiles {
+
+object CoreUttiles {
 
     val  IMAGE_FRAGMENT ="ImageFragment"
     val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
@@ -195,18 +203,61 @@ object CorUttiles {
                            Glide.with(customView.context)
                                .load(imageUri)
                                .apply(requestOptions)
-//                               .placeholder(R.drawable.fish)
                                .into(customView)
                        }
 
                }
                }
 
-
-
-
-
     }
 
+    fun shareImage(image:Uri,context: Context){
+
+
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "image/jpg"
+        shareIntent.putExtra(Intent.EXTRA_STREAM, image)
+       context.startActivity(Intent.createChooser(shareIntent, "image"))
+    }
+
+    fun showSnackBar(text:String, layout: View){
+
+              Snackbar.make(layout,text,Snackbar.LENGTH_SHORT)
+                  .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                  .setBackgroundTint(Color.BLACK)
+                  .setTextColor(Color.WHITE)
+                 // .setAction("confirm.",){}
+                  .show()
+
+    }
+//private lateinit var intentSenderLauncher:ActivityResultLauncher<IntentSenderRequest>
+    suspend fun deletePhoto(photoUri:Uri,context: Context,intentSenderLauncher:ActivityResultLauncher<IntentSenderRequest>){
+        withContext(Dispatchers.IO){
+
+            try {
+                context.contentResolver.delete(photoUri,null,null)
+            }catch (e:SecurityException){
+                 val intentSender= when{
+                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ->{
+                         MediaStore.createDeleteRequest(context.contentResolver, listOf(photoUri)).intentSender
+
+                     }
+                     Build.VERSION.SDK_INT >=Build.VERSION_CODES.Q ->{
+                         val recoverableSecurityException= e as? RecoverableSecurityException
+                         recoverableSecurityException?.userAction?.actionIntent?.intentSender
+                     }
+                     else -> null
+                 }
+
+                intentSender?.let { sender->
+                    intentSenderLauncher.launch(
+                        IntentSenderRequest.Builder(sender).build()
+                    )
+                }
+
+
+            }
+        }
+    }
 
 }

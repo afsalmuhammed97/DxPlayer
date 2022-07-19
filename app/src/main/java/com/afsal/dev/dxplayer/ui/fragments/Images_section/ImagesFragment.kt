@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.ImagesAdapter
 import com.afsal.dev.dxplayer.adapters.ImagesBaseAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentImagesBinding
+import com.afsal.dev.dxplayer.databinding.ImageItemBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.view_models.PhotosViewModel
@@ -92,8 +94,13 @@ class ImagesFragment : Fragment(),OnItemClickListner {
 // callback from imageList
     override fun onItemClick(Position: Int, photo: ImageModel) {
               Log.d(TAG,"Selected ${photo}      $Position")
-    val action= ImagesFragmentDirections.actionNavigationImagesToImageViewFragment(Position,photo)
+
+
+    val action= ImagesFragmentDirections.actionNavigationImagesToImageViewFragment(Position)
       findNavController().navigate(action)
-       // findNavController().navigate(R.id.action_navigation_images_to_galleryViewFragment)
+
+    //    val extras= FragmentNavigatorExtras(binding.image to "image_big")
+    //  findNavController().navigate(ImagesFragmentDirections.actionNavigationImagesToImageViewFragment(Position,photo),extras)
+    // findNavController().navigate(R.id.action_navigation_images_to_galleryViewFragment)
     }
 }

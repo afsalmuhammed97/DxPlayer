@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afsal.dev.dxplayer.databinding.ImageItemBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
-import com.afsal.dev.dxplayer.utills.CorUttiles
+import com.afsal.dev.dxplayer.utills.CoreUttiles
 
 class ImagesAdapter(val context: Context, private  val listener: OnItemClickListner): RecyclerView.Adapter<ImagesAdapter.ImagesHolder>() {
 
@@ -48,7 +48,7 @@ class ImagesAdapter(val context: Context, private  val listener: OnItemClickList
             val photo=differList.currentList[position]
        // holder.binding.image.setImageURI(photo.contentUri)
 
-            CorUttiles.loadImageIntoView(photo.contentUri,holder.binding.image,null,CorUttiles.IMAGE_FRAGMENT)
+            CoreUttiles.loadImageIntoView(photo.contentUri,holder.binding.image,null,CoreUttiles.IMAGE_FRAGMENT)
 
  /// need to implement more like glide ...
     }

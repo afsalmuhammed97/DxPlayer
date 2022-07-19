@@ -17,6 +17,7 @@ import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.BaseCategoryAdapter
 import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
+import com.afsal.dev.dxplayer.databinding.ImageItemBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.view_models.VidViewModel
