@@ -31,9 +31,10 @@ object CoreUttiles {
 
     val  IMAGE_FRAGMENT ="ImageFragment"
     val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
+    val VIDEO_FRAGMENT="VideoFragment"
 
     @SuppressLint("Range")
-    fun loadVideos(context: Context):ArrayList<VideoItemModel>{
+    fun loadVideosList(context: Context):ArrayList<VideoItemModel>{
 
         val tempList=ArrayList<VideoItemModel>()
         val projection= arrayOf(
@@ -53,7 +54,7 @@ object CoreUttiles {
             if (cursor.moveToNext()){
                 do {
 
-                    val idC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID))
+                    val idC=cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media._ID))
                     val tittleC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE))
                     val albumC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.ALBUM))
                     val folderC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME))
@@ -67,7 +68,7 @@ object CoreUttiles {
                         val artUriC= Uri.fromFile(file)
                         val videoData=VideoItemModel(id = idC, tittle = tittleC, size = sizeC,
                                                      duration = durationC, folderName = folderC,
-                                                     dateAdded=dateAddedC, path = pathC, artUri = artUriC)
+                                                     dateAdded=dateAddedC, artUri = artUriC)// path = pathC
 
                          if (file.exists()){
                              tempList.add(videoData)
@@ -87,6 +88,73 @@ object CoreUttiles {
      return  tempList
     }
 
+    suspend fun loadVideos(context:Context):List<VideoItemModel>{
+
+       return    withContext(Dispatchers.IO){
+            val collection= sdk29AndUp {
+                MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+            }?:MediaStore.Video.Media.INTERNAL_CONTENT_URI    //EXTERNAL_CONTENT_URI
+
+               val projection= arrayOf(
+                   MediaStore.Video.Media._ID,
+                   MediaStore.Video.Media.TITLE,
+                   MediaStore.Video.Media.ALBUM,
+                   MediaStore.Video.Media.DISPLAY_NAME,
+                   MediaStore.Video.Media.DATE_ADDED,
+                   MediaStore.Video.Media.DURATION,
+                   MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+                   MediaStore.Video.Media.BUCKET_ID,
+                   MediaStore.Video.Media.SIZE,
+                   MediaStore.Video.Media.DATA,
+               )
+               val videos = mutableListOf<VideoItemModel>()
+               val sortOrder=MediaStore.Video.Media.DATE_TAKEN+" DESC"
+               val   selection=MediaStore.Video.Media.DATA +" like?"
+               val selectionArgs = arrayOf("%FolderName%")
+               context.contentResolver.query(collection,projection,null,null,sortOrder)?.use { cursor->
+
+                   val idColumn=cursor.getColumnIndex(MediaStore.Video.Media._ID)
+                   val tittleColumn=cursor.getColumnIndex(MediaStore.Video.Media.TITLE)
+                   val albumNameColumn=cursor.getColumnIndex(MediaStore.Video.Media.ALBUM)
+                   val displayNameColumn=cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME)
+                   val durationColumn=cursor.getColumnIndex(MediaStore.Video.Media.DURATION)
+                   val folderColumn=cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME)
+                   val sizeColumn=cursor.getColumnIndex(MediaStore.Video.Media.SIZE)
+                   val dateAddedColumn=cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED)
+                   val pathColumn=cursor.getColumnIndex(MediaStore.Video.Media.DATA)
+
+                   while (cursor.moveToNext()){
+                       val id=cursor.getLong(idColumn)
+                       val tittle=cursor.getString(tittleColumn)
+                       val albumName=cursor.getString(albumNameColumn)
+                       val displayName=cursor.getString(displayNameColumn)
+                       val size=cursor.getString(sizeColumn)
+                       val duration=cursor.getLong(durationColumn)
+                       val folderName=cursor.getString(folderColumn)
+                       val dateAdded=cursor.getLong(dateAddedColumn)
+                       val path=cursor.getString(pathColumn)
+                     //  val dataUri=ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,id)
+
+                            try {
+                                val file=File(path)
+                                val artUri=Uri.fromFile(file)
+
+                                videos.add(VideoItemModel(id =id, tittle =  displayName, size =size , duration = duration,
+                                    dateAdded = dateFormat(dateAdded), folderName = folderName,  artUri = artUri ))
+
+                            }catch (e:Exception){}
+
+
+                   }
+                   videos.toList()
+
+
+
+               }?: emptyList()
+        }
+
+    }
+
     //to load images from storage
   @RequiresApi(Build.VERSION_CODES.R)
   suspend     fun loadPhotos(context: Context):List<ImageModel>{
@@ -95,7 +163,7 @@ object CoreUttiles {
           MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
       }?:MediaStore.Images.Media.EXTERNAL_CONTENT_URI                        //EXTERNAL_CONTENT_URI
 
-      val projection= arrayOf(
+           val projection= arrayOf(
           MediaStore.Images.Media._ID,
           MediaStore.Images.Media.DISPLAY_NAME,
           MediaStore.Images.Media.SIZE,
@@ -150,8 +218,12 @@ object CoreUttiles {
                }
                photos.toList()
 
+
+
            }?: emptyList()
+
        }
+
 
     }
 
@@ -185,7 +257,8 @@ object CoreUttiles {
 
         val requestOptions=RequestOptions()
                when(screenName){
-                   IMAGE_FRAGMENT-> {
+
+                 IMAGE_FRAGMENT -> {
                        requestOptions.centerCrop()
 
                        if (view != null) {
@@ -259,5 +332,7 @@ object CoreUttiles {
             }
         }
     }
+
+
 
 }

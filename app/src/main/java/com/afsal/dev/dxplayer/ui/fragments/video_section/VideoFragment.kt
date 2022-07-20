@@ -31,23 +31,22 @@ class VideoFragment : Fragment(),OnItemClickListner {
     private var _binding:FragmentVideoBinding? = null
 
     private val binding get() = _binding!!
-private lateinit var homeViewModel:VidViewModel
+private lateinit var videoViewModel:VidViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-         homeViewModel = ViewModelProvider(this).get(VidViewModel::class.java)
+         videoViewModel = ViewModelProvider(this).get(VidViewModel::class.java)
 
         _binding = FragmentVideoBinding.inflate(inflater, container, false)
+
         val root: View = binding.root
           createDataList()
+
         val vodList= listOf("43","33","24","65","37","76")
         recentVideoAdapter=RecentVideoAdapter()
-
-
-
-           setRecyclerView()
+        setRecyclerView()
 
         return root
     }
@@ -58,24 +57,15 @@ private lateinit var homeViewModel:VidViewModel
 
 
         super.onViewCreated(view, savedInstanceState)
-       // homeViewModel.loadSystemImages(requireContext())
-//         homeViewModel.photoList.observe(requireActivity(), Observer {
-//
-//
-//             for (photo: ImageModel in it){
-//                 photo.addedDate?.let { it1 -> homeViewModel.dateList.add(it1) }
-//             }
-//
-//
-//
-//             Log.d("Vid","video data ${it}")
-//             Log.d("Vid","list size ${it.size }")
-//
-//             Log.d("Vid", "date list ${homeViewModel.dateList.toString()}")
-//             recentVideoAdapter.differ.submitList(it)
-//             recentVideoAdapter.notifyDataSetChanged()
-//
-//         })
+        videoViewModel.loadVideosFromStorage(requireContext())
+
+                   videoViewModel.videoList.observe(requireActivity(), Observer {
+                       Log.d("Videos", it.toString())
+                       Log.d("Videos", it.size.toString())
+
+                       recentVideoAdapter.differ.submitList(it)
+                       recentVideoAdapter.notifyDataSetChanged()
+                   })
 
 
     }
