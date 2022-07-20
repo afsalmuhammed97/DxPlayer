@@ -1,5 +1,6 @@
 package com.afsal.dev.dxplayer.view_models
 
+import android.app.Application
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
@@ -8,7 +9,7 @@ import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import kotlinx.coroutines.launch
 
-class PhotosViewModel : BaseViewModel(){
+class PhotosViewModel(application: Application) : BaseViewModel(application){
 
        private var photosList= MutableLiveData<ImageModel>()
 

@@ -66,7 +66,7 @@ class ImagesFragment : Fragment(),OnItemClickListner {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        photosViewModel.loadSystemImages(requireContext())
+        photosViewModel.loadSystemImages()
         photosViewModel.photoList.observe(requireActivity(), Observer {
                imagesAdapter.differList.submitList(it)
                imagesAdapter.notifyDataSetChanged()

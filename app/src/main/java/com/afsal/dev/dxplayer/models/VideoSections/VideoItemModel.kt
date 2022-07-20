@@ -1,4 +1,4 @@
-package com.afsal.dev.dxplayer.models
+package com.afsal.dev.dxplayer.models.VideoSections
 
 import android.net.Uri
 

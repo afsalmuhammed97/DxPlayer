@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_navigation_video_to_galleryFragment2"
             app:destination="@id/galleryFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"
             app:popUpTo="@id/galleryFragment"
             app:popUpToInclusive="true" />
         <action

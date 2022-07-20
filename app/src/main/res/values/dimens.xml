@@ -5,6 +5,8 @@
     <dimen name="item_head_text">16sp</dimen>
     <dimen name="item_title">16sp</dimen>
     <dimen name="text_12sp">12sp</dimen>
+    <dimen name="text_13sp">13sp</dimen>
+    <dimen name="text_14sp">14sp</dimen>
     <dimen name="text_18sp">18sp</dimen>
 
     <dimen name="_2.5dp">2.5dp</dimen>
@@ -25,6 +27,8 @@
     <dimen name="_20dp">20dp</dimen>
     <dimen name="_25dp">25dp</dimen>
     <dimen name="_30dp">30dp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+    <dimen name="_45dp">45dp</dimen>
     <dimen name="_50dp">50dp</dimen>
     <dimen name="_55dp">55dp</dimen>
     <dimen name="_60dp">60dp</dimen>

@@ -45,33 +45,51 @@ private lateinit var videoViewModel:VidViewModel
           createDataList()
 
         val vodList= listOf("43","33","24","65","37","76")
-        recentVideoAdapter=RecentVideoAdapter()
+
         setRecyclerView()
 
         return root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
         super.onViewCreated(view, savedInstanceState)
-        videoViewModel.loadVideosFromStorage(requireContext())
+        videoViewModel.loadVideosFromStorage()
 
                    videoViewModel.videoList.observe(requireActivity(), Observer {
                        Log.d("Videos", it.toString())
                        Log.d("Videos", it.size.toString())
 
+
+
+
                        recentVideoAdapter.differ.submitList(it)
                        recentVideoAdapter.notifyDataSetChanged()
+
                    })
+        //   Log.d("Videos", videoViewModel.foldersNameSet.toString())
+        //  Log.d("Videos", videoViewModel.categoryVideoList.toString())
+
+        categoryAdapter.differ.submitList(videoViewModel.categoryVideoList)
+        categoryAdapter.notifyDataSetChanged()
+
 
 
     }
 
 
     private fun setRecyclerView(){
+        recentVideoAdapter=RecentVideoAdapter()
+        categoryAdapter=BaseCategoryAdapter(){
+            findNavController().navigate(R.id.action_navigation_video_to_galleryFragment)
+        }
 
         binding.baseRv.apply {
             layoutManager= LinearLayoutManager(context)
@@ -99,7 +117,7 @@ private lateinit var videoViewModel:VidViewModel
         val vodList6= listOf("43","33","24","65","37","76","90","45","57","65")
 
         dataList = listOf(vodList1,vodList2,vodList3,vodList4,vodList6,vodList5)
-        categoryAdapter=BaseCategoryAdapter(dataList,this)
+
     }
 
 

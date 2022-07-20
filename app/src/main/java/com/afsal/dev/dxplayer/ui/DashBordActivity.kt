@@ -137,7 +137,7 @@ class DashBordActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     fun loadImages(){
 
-        baseViewModel.loadSystemImages(this)
+        baseViewModel.loadSystemImages()
         baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
             Log.d(TAG,"data ${it.toString()}")
         })
