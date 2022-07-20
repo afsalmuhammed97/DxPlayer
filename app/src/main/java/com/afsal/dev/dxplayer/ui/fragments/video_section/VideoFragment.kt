@@ -42,19 +42,13 @@ private lateinit var videoViewModel:VidViewModel
         _binding = FragmentVideoBinding.inflate(inflater, container, false)
 
         val root: View = binding.root
-          createDataList()
-
-        val vodList= listOf("43","33","24","65","37","76")
 
         setRecyclerView()
 
         return root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,20 +59,18 @@ private lateinit var videoViewModel:VidViewModel
 
                    videoViewModel.videoList.observe(requireActivity(), Observer {
                        Log.d("Videos", it.toString())
-                       Log.d("Videos", it.size.toString())
-
-
-
 
                        recentVideoAdapter.differ.submitList(it)
                        recentVideoAdapter.notifyDataSetChanged()
 
                    })
-        //   Log.d("Videos", videoViewModel.foldersNameSet.toString())
-        //  Log.d("Videos", videoViewModel.categoryVideoList.toString())
 
-        categoryAdapter.differ.submitList(videoViewModel.categoryVideoList)
-        categoryAdapter.notifyDataSetChanged()
+
+        videoViewModel.categoryVideoList.observe(requireActivity(), Observer {
+            Log.d("Videos","Live data ${it.toString()}")
+            categoryAdapter.differ.submitList(it)
+            categoryAdapter.notifyDataSetChanged()
+        })
 
 
 
@@ -107,18 +99,6 @@ private lateinit var videoViewModel:VidViewModel
 
 
 
-    fun createDataList(){
-
-        val vodList1= listOf("43","33","24","65","37","76","90","45","57","65")
-        val vodList2= listOf("43","33","24","65","37","76","90","45","57","65")
-        val vodList3= listOf("43","33","24","65","37","76","90","45","57","65")
-        val vodList4= listOf("43","33","24","65","37","76","90","45","57","65")
-        val vodList5= listOf("43","33","24","65","37","76","90","45","57","65")
-        val vodList6= listOf("43","33","24","65","37","76","90","45","57","65")
-
-        dataList = listOf(vodList1,vodList2,vodList3,vodList4,vodList6,vodList5)
-
-    }
 
 
     override fun onDestroyView() {

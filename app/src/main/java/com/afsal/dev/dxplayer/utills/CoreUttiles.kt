@@ -36,7 +36,7 @@ object CoreUttiles {
 
 
 
-    suspend fun loadVideos(context:Context, getFolderList:((List<Folders>)->Unit) ):List<VideoItemModel>{
+    suspend fun loadVideos(context:Context, getFolderSet:((MutableSet<String>)->Unit) ):List<VideoItemModel>{
         val foldersNameSet= mutableSetOf<String>()
 
        return    withContext(Dispatchers.IO){
@@ -100,8 +100,8 @@ object CoreUttiles {
 
                    }
 
-                   getFolderList(creatingCustomList(videos.toList(),foldersNameSet))
-
+                  // getFolderList(creatingCustomList(videos.toList(),foldersNameSet))
+                    getFolderSet(foldersNameSet)
                    videos.toList()
 
 
@@ -112,7 +112,7 @@ object CoreUttiles {
     }
 
 
-    private fun creatingCustomList(videoList:List<VideoItemModel>, folderSet:Set<String>):List<Folders>{
+     fun creatingCustomList(videoList:List<VideoItemModel>, folderSet:Set<String>):List<Folders>{
         val categoryVideoList= mutableListOf<Folders>()
         var folderList: List<VideoItemModel>
 

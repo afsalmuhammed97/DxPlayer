@@ -14,14 +14,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class VidViewModel(application: Application) : BaseViewModel(application) {
-  //  val scope= CoroutineScope(Dispatchers.IO + CoroutineName("myScope"))
+   val scope= CoroutineScope(Dispatchers.IO + CoroutineName("myScope"))
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
     }
-    val text: LiveData<String> = _text
 
-  val categoryVideoList= mutableListOf<Folders>()
-  val foldersNameSet= mutableSetOf<String>()
+    val foldersNameSet= mutableSetOf<String>()
+// val categoryVideoList= mutableListOf<Folders>()
+private val _categoryVideoList:MutableLiveData<List<Folders>> = MutableLiveData()
+    val categoryVideoList:LiveData<List<Folders>>
+    get() = _categoryVideoList
 
 
     private var _videoList:MutableLiveData<List<VideoItemModel>> = MutableLiveData()
@@ -31,11 +33,13 @@ class VidViewModel(application: Application) : BaseViewModel(application) {
     fun loadVideosFromStorage(){
 
         viewModelScope.launch {
-          _videoList.value =  CoreUttiles.loadVideos(context){
+       val videos =  CoreUttiles.loadVideos(context){              foldersNameSet.addAll(it)  }
+            _videoList.value=videos
 
-                             // foldersNameSet.addAll(it)
-                                categoryVideoList.addAll(it)
-          }
+
+
+           // scope.launch {}
+             _categoryVideoList.value=  CoreUttiles.creatingCustomList(videos,foldersNameSet)
 
 
         }
