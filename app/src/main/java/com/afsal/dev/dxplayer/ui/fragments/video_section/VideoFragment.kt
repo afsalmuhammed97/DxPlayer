@@ -20,6 +20,7 @@ import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
 import com.afsal.dev.dxplayer.databinding.ImageItemBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
+import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.view_models.VidViewModel
 
 class VideoFragment : Fragment(),OnItemClickListner {
@@ -37,7 +38,7 @@ private lateinit var videoViewModel:VidViewModel
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-         videoViewModel = ViewModelProvider(this).get(VidViewModel::class.java)
+         videoViewModel = ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
 
         _binding = FragmentVideoBinding.inflate(inflater, container, false)
 
@@ -57,7 +58,7 @@ private lateinit var videoViewModel:VidViewModel
         super.onViewCreated(view, savedInstanceState)
         videoViewModel.loadVideosFromStorage()
 
-                   videoViewModel.videoList.observe(requireActivity(), Observer {
+                   videoViewModel.videoList.observe(viewLifecycleOwner, Observer {
                        Log.d("Videos", it.toString())
 
                        recentVideoAdapter.differ.submitList(it)
@@ -66,7 +67,7 @@ private lateinit var videoViewModel:VidViewModel
                    })
 
 
-        videoViewModel.categoryVideoList.observe(requireActivity(), Observer {
+        videoViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer {
             Log.d("Videos","Live data ${it.toString()}")
             categoryAdapter.differ.submitList(it)
             categoryAdapter.notifyDataSetChanged()
@@ -79,8 +80,15 @@ private lateinit var videoViewModel:VidViewModel
 
     private fun setRecyclerView(){
         recentVideoAdapter=RecentVideoAdapter()
-        categoryAdapter=BaseCategoryAdapter(){
-            findNavController().navigate(R.id.action_navigation_video_to_galleryFragment)
+        categoryAdapter=BaseCategoryAdapter({ position->
+            //show more button
+           // CoreUttiles.showSnackBar("item Position $position",binding.root)
+           val action=VideoFragmentDirections.actionNavigationVideoToGalleryFragment(position)
+            findNavController().navigate(action)
+        })
+        { videoPosition->
+
+            CoreUttiles.showSnackBar("item cliked at $videoPosition",binding.root)
         }
 
         binding.baseRv.apply {
@@ -107,6 +115,6 @@ private lateinit var videoViewModel:VidViewModel
     }
 
     override fun onItemClick(Position: Int, photo: ImageModel) {
-       findNavController().navigate(R.id.action_navigation_video_to_galleryFragment)
+
     }
 }

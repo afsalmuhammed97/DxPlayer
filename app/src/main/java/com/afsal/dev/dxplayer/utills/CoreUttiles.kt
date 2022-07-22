@@ -1,6 +1,7 @@
 package com.afsal.dev.dxplayer.utills
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.RecoverableSecurityException
 import android.content.ContentUris
 import android.content.Context
@@ -14,6 +15,7 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.models.VideoSections.Folders
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel

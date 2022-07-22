@@ -12,24 +12,13 @@
         tools:layout="@layout/fragment_video" >
         <action
             android:id="@+id/action_navigation_video_to_galleryFragment"
-            app:destination="@id/galleryFragment" />
-        <action
-            android:id="@+id/action_navigation_video_to_galleryFragment2"
             app:destination="@id/galleryFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left"
-            app:popUpTo="@id/galleryFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/navgation_anim"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/navigation_video"
-            app:popUpToInclusive="true"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+
+
     </fragment>
 
     <fragment
@@ -48,8 +37,8 @@
             app:destination="@id/imageViewFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left" />
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_navigation_images_to_galleryViewFragment"
             app:destination="@id/galleryViewFragment" />
@@ -68,6 +57,9 @@
         <action
             android:id="@+id/action_galleryFragment_to_navigation_video"
             app:destination="@id/navigation_video" />
+        <argument
+            android:name="video_position"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/imageViewFragment"

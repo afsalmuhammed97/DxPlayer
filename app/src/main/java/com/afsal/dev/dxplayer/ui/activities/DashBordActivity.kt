@@ -1,4 +1,4 @@
-package com.afsal.dev.dxplayer.ui
+package com.afsal.dev.dxplayer.ui.activities
 
 import android.content.pm.PackageManager
 import android.os.Build

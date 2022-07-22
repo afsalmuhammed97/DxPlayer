@@ -26,11 +26,11 @@ import com.afsal.dev.dxplayer.view_models.PhotosViewModel
 class ImageViewFragment : Fragment() {
 
     private lateinit var intentSenderLauncher: ActivityResultLauncher<IntentSenderRequest>
-private val TAG="ImageViewFragment"
-private lateinit var photoPager: ViewPager2
-private lateinit var imagePagerAdapter: ImagePagerAdapter
-private lateinit var  photosViewModel:PhotosViewModel
-private  var _imageViewBinding: FragmentImageViewBinding? =null
+    private val TAG="ImageViewFragment"
+    private lateinit var photoPager: ViewPager2
+    private lateinit var imagePagerAdapter: ImagePagerAdapter
+    private lateinit var  photosViewModel:PhotosViewModel
+    private  var _imageViewBinding: FragmentImageViewBinding? =null
     private val imageViewBinding get() = _imageViewBinding!!
 
 
