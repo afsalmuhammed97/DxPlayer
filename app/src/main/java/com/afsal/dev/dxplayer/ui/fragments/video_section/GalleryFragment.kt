@@ -17,6 +17,7 @@ import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.VideosAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentGalleryViewBinding
 import com.afsal.dev.dxplayer.databinding.FragmentVideoGalleryBinding
+import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.ui.activities.PlayerScreenActivity
 import com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragmentArgs
 import com.afsal.dev.dxplayer.utills.CoreUttiles
@@ -54,13 +55,16 @@ class GalleryFragment : Fragment() {
         position=args.videoPosition
        Log.d(TAG,position.toString())
 
-        galleryViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG,it.toString())
-            videosAdapter=VideosAdapter(it[position].videosList){
-                  // CoreUttiles.showSnackBar("position $it clicked",galleryBinding.gridVideoRv)
+        galleryViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer { catogoryList->
+            Log.d(TAG,catogoryList.toString())
+            val videoList=catogoryList[position].videosList
 
-                startActivity()
+            videosAdapter=VideosAdapter(videoList){ vid_position->
+
+
+                          startPlayerActivity(videoList[vid_position])
             }
+
             galleryBinding.gridVideoRv.adapter=videosAdapter
         })
 
@@ -69,9 +73,12 @@ class GalleryFragment : Fragment() {
             layoutManager= GridLayoutManager(context,3)
         }
     }
-    private   fun startActivity(){
-                val intent=Intent(requireActivity(),PlayerScreenActivity::class.java)
-                    startActivity(intent)
+
+
+    private   fun startPlayerActivity(video:VideoItemModel){
+       Log.d(TAG,"video data $video")
+       val intent= galleryViewModel.launchPlayerScreen(requireContext(),video)
+        startActivity(intent)
             }
 
     override fun onDestroy() {

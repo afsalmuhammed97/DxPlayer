@@ -17,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DxPlayer">
         <activity
+            android:name=".ui.activities.DxPlayerActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.PlayerScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"

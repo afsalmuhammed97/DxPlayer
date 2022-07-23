@@ -13,5 +13,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         val intent=Intent(this, DashBordActivity::class.java)
         startActivity(intent)
+        this.finish()
     }
 }

@@ -35,6 +35,7 @@ object CoreUttiles {
     const val  IMAGE_FRAGMENT ="ImageFragment"
     const val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
    const val VIDEO_FRAGMENT="VideoFragment"
+    const val VIDEO="VideoItem"
 
 
 

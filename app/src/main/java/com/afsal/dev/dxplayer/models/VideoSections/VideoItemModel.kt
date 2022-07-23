@@ -1,7 +1,10 @@
 package com.afsal.dev.dxplayer.models.VideoSections
 
 import android.net.Uri
-
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
+@Parcelize
 data class VideoItemModel(
     val id:Long,
     val tittle:String,
@@ -9,6 +12,5 @@ data class VideoItemModel(
     val duration:Long,
     val dateAdded:String,
     val folderName:String,
-    val artUri: Uri,
-
-)
+    val artUri: Uri
+) :Parcelable    //Serializable

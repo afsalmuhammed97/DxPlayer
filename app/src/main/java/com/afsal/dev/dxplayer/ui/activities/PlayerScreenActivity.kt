@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
@@ -14,18 +15,20 @@ import android.widget.TextView
 
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityPlayerScreenBinding
+import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
+import com.afsal.dev.dxplayer.utills.CoreUttiles
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 class PlayerScreenActivity : AppCompatActivity() {
-
+     private val TAG="PlayerScreenActivity"
     private lateinit var binding: ActivityPlayerScreenBinding
     private lateinit var fullscreenContent: TextView
     private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
-
+     private lateinit var  currentVideo:VideoItemModel
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
@@ -60,6 +63,7 @@ class PlayerScreenActivity : AppCompatActivity() {
      */
     private val delayHideTouchListener = View.OnTouchListener { view, motionEvent ->
         when (motionEvent.action) {
+
             MotionEvent.ACTION_DOWN -> if (AUTO_HIDE) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS)
             }
@@ -91,6 +95,17 @@ class PlayerScreenActivity : AppCompatActivity() {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         binding.dummyButton.setOnTouchListener(delayHideTouchListener)
+
+
+
+       currentVideo= intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
+
+           Log.d(TAG, "current Item  ${currentVideo.toString()}")
+
+
+
+
+
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -98,8 +113,8 @@ class PlayerScreenActivity : AppCompatActivity() {
 
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
-        // are available.
-        delayedHide(100)
+
+       // delayedHide(100)
     }
 
     private fun toggle() {

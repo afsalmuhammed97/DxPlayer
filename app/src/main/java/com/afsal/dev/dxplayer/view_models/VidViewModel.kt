@@ -2,12 +2,17 @@ package com.afsal.dev.dxplayer.view_models
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.afsal.dev.dxplayer.models.VideoSections.Folders
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
+import com.afsal.dev.dxplayer.ui.activities.DxPlayerActivity
+import com.afsal.dev.dxplayer.ui.activities.PlayerScreenActivity
 import com.afsal.dev.dxplayer.utills.CoreUttiles
+import com.afsal.dev.dxplayer.utills.CoreUttiles.VIDEO
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,11 +49,15 @@ private val _categoryVideoList:MutableLiveData<List<Folders>> = MutableLiveData(
 
         }
 
-
-
-
-
     }
 
 
+    fun launchPlayerScreen(context: Context,video:VideoItemModel): Intent {
+
+        val intent = Intent(context,DxPlayerActivity::class.java)
+        intent.putExtra(VIDEO,video as Parcelable)
+
+
+        return intent
+    }
 }
