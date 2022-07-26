@@ -1,0 +1,1 @@
+package com.afsal.dev.dxplayer.models.photosSectionsdata class PhotoCollectionList(    val photosCollection:ImagesListByDate)

@@ -1,1 +1,1 @@
-package com.afsal.dev.dxplayer.interfacessinterface OnItemClickListner {    fun onItemClick(Position:Int)}
+package com.afsal.dev.dxplayer.interfacessimport com.afsal.dev.dxplayer.databinding.ImageItemBindingimport com.afsal.dev.dxplayer.models.photosSections.ImageModelinterface OnItemClickListner {    fun onItemClick(Position:Int,photo:ImageModel)}

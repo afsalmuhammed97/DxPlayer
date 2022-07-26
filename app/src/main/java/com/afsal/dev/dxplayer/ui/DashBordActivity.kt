@@ -4,34 +4,28 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavAction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDashBordBinding
-import com.afsal.dev.dxplayer.models.ImageModel
-import com.afsal.dev.dxplayer.utills.CorUttiles
+import com.afsal.dev.dxplayer.models.photosSections.ImageModel
+import com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragment
 import com.afsal.dev.dxplayer.view_models.BaseViewModel
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.launch
-import java.util.jar.Manifest
 
 class DashBordActivity : AppCompatActivity() {
 
@@ -72,20 +66,16 @@ class DashBordActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
-            loadImages()
+        hideAndShowNavigation()
+          //  loadImages()
 
 
 
     }
 
-    fun loadImages(){
 
-        baseViewModel.loadSystemImages(this)
-//        baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
-//                     Log.d(TAG,"data ${it.toString()}")
-//        })
-    }
+
+
 
 
     override fun onSupportNavigateUp(): Boolean {
@@ -121,9 +111,44 @@ class DashBordActivity : AppCompatActivity() {
 
     }
 
-     private fun loadMediaData(){
+     private fun hideAndShowNavigation(){
+          supportFragmentManager.registerFragmentLifecycleCallbacks(object :FragmentManager.FragmentLifecycleCallbacks(){
+              override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
+                  super.onFragmentViewCreated(fm, f, v, savedInstanceState)
 
+
+                  when(f){
+                      is ImageViewFragment -> {
+                          binding.navView.visibility=View.GONE
+                          supportActionBar?.hide()
+                      }
+                      else->{
+                          binding.navView.visibility=View.VISIBLE
+                          supportActionBar?.show()
+                      }
+                  }
+
+              }
+
+          },true)
 
      }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun loadImages(){
+
+        baseViewModel.loadSystemImages(this)
+        baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
+            Log.d(TAG,"data ${it.toString()}")
+        })
+
+
+    }
+
+
+    fun setBottomNavigationVisibility(visibility: Int) {
+
+        binding.navView.visibility=visibility
+    }
 
 }
