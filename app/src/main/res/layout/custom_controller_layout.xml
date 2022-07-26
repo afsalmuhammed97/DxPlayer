@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/controller_layout"
     android:background="#80000000">
 
 
@@ -61,59 +62,70 @@
 
     </LinearLayout>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_40dp"
+        android:orientation="horizontal">
 
 
         <ImageView
             android:id="@+id/exo_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:layout_alignParentStart="true"
+            android:padding="10dp"
             android:src="@drawable/ic_baseline_arrow_back_24"
             android:theme="@style/ClickableView" />
 
         <TextView
-            android:layout_gravity="center_vertical"
+            android:id="@+id/title_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:id="@+id/title_text"
             android:textSize="@dimen/item_title"
+            android:textStyle="bold"
 
             />
 
-               <ImageView
-                   android:id="@+id/exo_audio_track"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:padding="10dp"
-                   android:src="@drawable/ic_baseline_audiotrack_24"
-                   android:theme="@style/ClickableView" />
-               <ImageView
-                   android:id="@+id/exo_subtitles"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:padding="10dp"
-                   android:src="@drawable/ic_baseline_subtitles_24"
-                   android:theme="@style/ClickableView" />
-
         <ImageView
-            android:id="@+id/exo_lock"
+            android:id="@+id/exo_audio_track"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-
             android:padding="10dp"
-            android:src="@drawable/ic_baseline_lock_open_24"
+            android:src="@drawable/ic_baseline_audiotrack_24"
             android:theme="@style/ClickableView" />
 
-           </LinearLayout>
+        <ImageView
+            android:id="@+id/exo_subtitles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_subtitles_24"
+            android:theme="@style/ClickableView" />
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/exo_lock"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_alignParentEnd="true"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:src="@drawable/ic_baseline_lock_open_24"-->
+        <!--            android:theme="@style/ClickableView" />-->
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/exo_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_lock_open_24"
+        android:theme="@style/ClickableView" />
 
 
     <LinearLayout

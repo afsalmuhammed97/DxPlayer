@@ -1,33 +1,37 @@
 package com.afsal.dev.dxplayer.ui.activities
 
-import android.annotation.SuppressLint
-import android.app.ProgressDialog.show
+
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
 import com.afsal.dev.dxplayer.utills.CoreUttiles
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.dash.DashMediaSource
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.material.navigation.NavigationView
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 /*import com.google.android.gms.ads.*
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
@@ -40,6 +44,9 @@ class DxPlayerActivity : AppCompatActivity() {
     var isLock=false
     private var check=false
     private val ad=4000
+    private val audioTracks=ArrayList<String>()
+    private lateinit var drawerLayout:DrawerLayout
+    private lateinit var dialogDrawer:NavigationView
     private lateinit var bt_lockScreen:ImageView
     private lateinit var back_bt:ImageView
     private lateinit var tittle_text:TextView
@@ -48,6 +55,7 @@ class DxPlayerActivity : AppCompatActivity() {
     private lateinit var  currentVideo:VideoItemModel
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var handler: Handler
+    private lateinit var trackSelector:DefaultTrackSelector
     private lateinit var binding: ActivityDxPlayerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         binding= ActivityDxPlayerBinding.inflate(layoutInflater)
@@ -60,6 +68,8 @@ class DxPlayerActivity : AppCompatActivity() {
            back_bt=findViewById(R.id.exo_back)
            tittle_text=findViewById(R.id.title_text)
            track_bt=findViewById(R.id.exo_audio_track)
+          dialogDrawer=findViewById(R.id.dx_player_drawer)
+          drawerLayout=findViewById(R.id.drawer_layout)
 
 
         currentVideo= intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
@@ -70,7 +80,17 @@ class DxPlayerActivity : AppCompatActivity() {
            setPlayer(currentVideo)
 
         back_bt.setOnClickListener { onBackPressed() }
-        track_bt.setOnClickListener { showAudioTracks() }
+        track_bt.setOnClickListener {                // showAudioTracks()
+
+            drawerLayout.openDrawer(Gravity.END)
+         //   hideControls(true)
+
+
+        }
+
+
+
+
 
       bt_fullscreen.setOnClickListener {
 
@@ -103,24 +123,80 @@ class DxPlayerActivity : AppCompatActivity() {
 
             }
             isLock =!isLock
-            lockScreen(isLock)
+           // lockScreen(isLock)
+            hideControls(isLock,false)
 
         }
 
 
+
+
+
+
+
+        binding.drawerLayout.addDrawerListener(object :
+            DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+               Log.d(TAG,"drawer slided")
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                 hideControls(false, allControls = true)
+                Log.d(TAG,"drawer opened")
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                hideControls(false, allControls = false)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+                Log.d(TAG,"drawer state changed")
+            }
+        })
+
+        binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
+
+
     }
 
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        Log.d("Event",event.toString())
+        return super.onTouchEvent(event)
+
+    }
+
+
     private fun setPlayer(videoItem:VideoItemModel) {
+        trackSelector= DefaultTrackSelector(this)
+
         exoPlayer=ExoPlayer.Builder(this)
+            .setTrackSelector(trackSelector)
             .setSeekBackIncrementMs(5000)
             .setSeekForwardIncrementMs(5000)
             .build()
+
 
         binding.videoView.apply {
             player=exoPlayer
 
             keepScreenOn=true
         }
+
+        //track selection
+
+//        for (i in 0 until exoPlayer.currentTrackGroups.length){
+//
+//            if (exoPlayer.currentTrackGroups.get(i).getFormat(0).selectionFlags== C.SELECTION_FLAG_DEFAULT){
+//
+//                audioTracks.add(
+//                    Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
+//            }
+//
+//            Log.d(TAG,"audioTracks  ${audioTracks.toString()}")
+//        }
+
+
         tittle_text.text=videoItem.tittle
 
 
@@ -283,18 +359,45 @@ class DxPlayerActivity : AppCompatActivity() {
         exoPlayer.pause()
     }
 
-    private fun lockScreen(lock: Boolean) {
+//    private fun lockScreen(lock: Boolean) {
+//
+//        val sec_mid=findViewById<LinearLayout>(R.id.sec_controlvid1)
+//        val sec_bottom=findViewById<LinearLayout>(R.id.sec_controlvid2)
+//
+//        if (lock){
+//            sec_mid.visibility=View.INVISIBLE
+//            sec_bottom.visibility=View.INVISIBLE
+//        }else{
+//            sec_mid.visibility=View.VISIBLE
+//            sec_bottom.visibility=View.VISIBLE
+//        }
+//
+//    }
 
+    private fun hideControls(lock: Boolean,allControls:Boolean){
+       val top_layout=findViewById<LinearLayout>(R.id.title_layout)
         val sec_mid=findViewById<LinearLayout>(R.id.sec_controlvid1)
         val sec_bottom=findViewById<LinearLayout>(R.id.sec_controlvid2)
 
         if (lock){
+            top_layout.visibility=View.INVISIBLE
             sec_mid.visibility=View.INVISIBLE
             sec_bottom.visibility=View.INVISIBLE
-        }else{
-            sec_mid.visibility=View.VISIBLE
-            sec_bottom.visibility=View.VISIBLE
+
+        }else if (allControls){
+            sec_mid.visibility=View.INVISIBLE
+            top_layout.visibility=View.INVISIBLE
+            sec_bottom.visibility=View.INVISIBLE
+            bt_lockScreen.visibility=View.INVISIBLE
         }
+        else{
+            sec_mid.visibility=View.VISIBLE
+            top_layout.visibility=View.VISIBLE
+            sec_bottom.visibility=View.VISIBLE
+            bt_lockScreen.visibility=View.VISIBLE
+        }
+
+
 
     }
 }
