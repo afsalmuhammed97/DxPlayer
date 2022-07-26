@@ -58,8 +58,10 @@
             android:id="@+id/action_galleryFragment_to_navigation_video"
             app:destination="@id/navigation_video" />
         <argument
-            android:name="video_position"
-            app:argType="integer" />
+            android:name="position"
+            app:argType="integer"
+            />
+
     </fragment>
     <fragment
         android:id="@+id/imageViewFragment"

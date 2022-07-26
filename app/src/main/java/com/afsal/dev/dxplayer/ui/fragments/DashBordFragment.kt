@@ -10,7 +10,7 @@ import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.FragmentDashBordBinding
 
 
-class DashBordFragment : Fragment() {
+class   DashBordFragment : Fragment() {
 
     private    var _binding: FragmentDashBordBinding ?= null
     private val dashboardBinding get() = _binding!!

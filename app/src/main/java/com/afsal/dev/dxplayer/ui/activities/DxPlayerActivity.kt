@@ -1,8 +1,10 @@
 package com.afsal.dev.dxplayer.ui.activities
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog.show
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -17,10 +19,14 @@ import androidx.core.content.ContextCompat
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
+import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 
 /*import com.google.android.gms.ads.*
@@ -38,6 +44,7 @@ class DxPlayerActivity : AppCompatActivity() {
     private lateinit var back_bt:ImageView
     private lateinit var tittle_text:TextView
     private lateinit var   bt_fullscreen: ImageView
+    private lateinit var track_bt:ImageView
     private lateinit var  currentVideo:VideoItemModel
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var handler: Handler
@@ -52,6 +59,7 @@ class DxPlayerActivity : AppCompatActivity() {
             bt_lockScreen=findViewById(R.id.exo_lock)
            back_bt=findViewById(R.id.exo_back)
            tittle_text=findViewById(R.id.title_text)
+           track_bt=findViewById(R.id.exo_audio_track)
 
 
         currentVideo= intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
@@ -62,6 +70,7 @@ class DxPlayerActivity : AppCompatActivity() {
            setPlayer(currentVideo)
 
         back_bt.setOnClickListener { onBackPressed() }
+        track_bt.setOnClickListener { showAudioTracks() }
 
       bt_fullscreen.setOnClickListener {
 
@@ -137,13 +146,17 @@ class DxPlayerActivity : AppCompatActivity() {
         })
 
 
-        val mediaItem= MediaItem.fromUri(videoItem.artUri)  //vidioSourc
+        val mediaItem= MediaItem.fromUri(videoItem.artUri)
+
         exoPlayer.setMediaItem(mediaItem)
         exoPlayer.prepare()
         exoPlayer.play()
 
 
     }
+
+
+
 
     private val updateProgressAction = Runnable {   onProgress() }
      fun onProgress(){
@@ -176,6 +189,11 @@ class DxPlayerActivity : AppCompatActivity() {
 
     }
 }
+
+        private fun showAudioTracks(){
+            DialogBottomSheet().show(supportFragmentManager,"")
+        }
+
   //  var rewardedInterstitialAd: RewardedInterstitialAd?=null
 //  private fun initAd() {
 //        if (rewardedInterstitialAd !=null)  return

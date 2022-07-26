@@ -1,89 +1,69 @@
 package com.afsal.dev.dxplayer.ui.fragments.video_section
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.VideosAdapter
-import com.afsal.dev.dxplayer.databinding.FragmentGalleryViewBinding
 import com.afsal.dev.dxplayer.databinding.FragmentVideoGalleryBinding
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
-import com.afsal.dev.dxplayer.ui.activities.PlayerScreenActivity
-import com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragmentArgs
-import com.afsal.dev.dxplayer.utills.CoreUttiles
+import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.view_models.VidViewModel
 
 
-class GalleryFragment : Fragment() {
-   private val TAG="GalleryFragment"
-    private  var _binding: FragmentVideoGalleryBinding?=null
-    private val galleryBinding get() = _binding!!
+class GalleryFragment : BaseFragment<FragmentVideoGalleryBinding>(
+    FragmentVideoGalleryBinding::inflate
+) {
 
-  private var position:Int=0
+
+    private val TAG="GalleryFragment"
+    private var position:Int=0
 
     val args:GalleryFragmentArgs by navArgs()
     private lateinit var galleryViewModel: VidViewModel
     private lateinit var videosAdapter: VideosAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
 
-        galleryViewModel= ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
-       _binding= FragmentVideoGalleryBinding.inflate(inflater,container,false)
-
-        return galleryBinding.root
-    }
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//
-//        if (item.itemId == androidx.appcompat.R.id.home)
-//        Toast.makeText(context,"back pressed", Toast.LENGTH_SHORT).show()
-//        return super.onOptionsItemSelected(item)
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        position=args.videoPosition
-       Log.d(TAG,position.toString())
+        position=args.position
+        Log.d(TAG,position.toString())
+        galleryViewModel= ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
+
 
         galleryViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer { catogoryList->
             Log.d(TAG,catogoryList.toString())
             val videoList=catogoryList[position].videosList
 
-            videosAdapter=VideosAdapter(videoList){ vid_position->
+            videosAdapter=VideosAdapter(videoList){ vid_position,video->
 
 
-                          startPlayerActivity(videoList[vid_position])
+
+                galleryViewModel.launchPlayerScreen(requireContext(),video,this)
             }
 
-            galleryBinding.gridVideoRv.adapter=videosAdapter
+            binding.gridVideoRv.adapter=videosAdapter
         })
 
 
-        galleryBinding.gridVideoRv.apply {
+        binding.gridVideoRv.apply {
             layoutManager= GridLayoutManager(context,3)
         }
     }
 
 
-    private   fun startPlayerActivity(video:VideoItemModel){
-       Log.d(TAG,"video data $video")
-       val intent= galleryViewModel.launchPlayerScreen(requireContext(),video)
-        startActivity(intent)
-            }
+//    private   fun startPlayerActivity(video:VideoItemModel){
+//       Log.d(TAG,"video data $video")
+//       val intent= galleryViewModel.launchPlayerScreen(requireContext(),video)
+//        startActivity(intent)
+//
+//
+//            }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding=null
-    }
+
 
 }

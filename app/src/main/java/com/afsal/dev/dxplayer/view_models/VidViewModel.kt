@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
+import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -52,12 +54,15 @@ private val _categoryVideoList:MutableLiveData<List<Folders>> = MutableLiveData(
     }
 
 
-    fun launchPlayerScreen(context: Context,video:VideoItemModel): Intent {
+    fun launchPlayerScreen(context: Context,video:VideoItemModel,fragment:Fragment): Intent {
 
         val intent = Intent(context,DxPlayerActivity::class.java)
         intent.putExtra(VIDEO,video as Parcelable)
 
-
+        fragment.startActivity(intent)
         return intent
     }
+
+
+
 }

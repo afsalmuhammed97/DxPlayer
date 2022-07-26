@@ -88,7 +88,20 @@
 
             />
 
-
+               <ImageView
+                   android:id="@+id/exo_audio_track"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="10dp"
+                   android:src="@drawable/ic_baseline_audiotrack_24"
+                   android:theme="@style/ClickableView" />
+               <ImageView
+                   android:id="@+id/exo_subtitles"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="10dp"
+                   android:src="@drawable/ic_baseline_subtitles_24"
+                   android:theme="@style/ClickableView" />
 
         <ImageView
             android:id="@+id/exo_lock"
@@ -101,9 +114,6 @@
             android:theme="@style/ClickableView" />
 
            </LinearLayout>
-
-
-
 
 
     <LinearLayout
@@ -159,9 +169,14 @@
             android:layout_height="30dp"
             android:src="@drawable/ic_fullscreen_icon"
             android:theme="@style/ClickableView"
-
-
             />
+        <ImageView
+            android:id="@+id/exo_pip_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_picture_in_picture_alt_24"
+            android:theme="@style/ClickableView" />
 
 
     </LinearLayout>

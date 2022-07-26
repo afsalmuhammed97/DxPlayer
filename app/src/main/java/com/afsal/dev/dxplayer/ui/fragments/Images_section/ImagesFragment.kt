@@ -23,49 +23,32 @@ import com.afsal.dev.dxplayer.databinding.FragmentImagesBinding
 import com.afsal.dev.dxplayer.databinding.ImageItemBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
+import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.view_models.PhotosViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 
 
-class ImagesFragment : Fragment(),OnItemClickListner {
+class ImagesFragment :BaseFragment<FragmentImagesBinding>(
+    FragmentImagesBinding::inflate),OnItemClickListner {
+
      private val TAG="ImagesFragment"
     private lateinit var photosViewModel: PhotosViewModel
-   private lateinit var imagesAdapter: ImagesAdapter
-    private var _binding:FragmentImagesBinding ? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-       photosViewModel = ViewModelProvider(requireActivity()).get(PhotosViewModel::class.java)
-
-        _binding = FragmentImagesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        setGridRv()
-//         setBaseRv()
-     //   val textView: TextView = binding.textNotifications
-//        notificationsViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-        return root
-    }
+    private lateinit var imagesAdapter: ImagesAdapter
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        photosViewModel = ViewModelProvider(requireActivity()).get(PhotosViewModel::class.java)
+
+        setGridRv()
         photosViewModel.loadSystemImages()
         photosViewModel.photoList.observe(requireActivity(), Observer {
                imagesAdapter.differList.submitList(it)
