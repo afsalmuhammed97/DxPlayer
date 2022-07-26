@@ -1,31 +1,68 @@
 package com.afsal.dev.dxplayer.ui.fragments.video_section
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MenuItem
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import com.afsal.dev.dxplayer.R
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import com.afsal.dev.dxplayer.adapters.VideosAdapter
+import com.afsal.dev.dxplayer.databinding.FragmentVideoGalleryBinding
+import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
+import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
+import com.afsal.dev.dxplayer.view_models.VidViewModel
 
 
-class GalleryFragment : Fragment() {
+class GalleryFragment : BaseFragment<FragmentVideoGalleryBinding>(
+    FragmentVideoGalleryBinding::inflate
+) {
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video_gallery, container, false)
+    private val TAG="GalleryFragment"
+    private var position:Int=0
+
+    val args:GalleryFragmentArgs by navArgs()
+    private lateinit var galleryViewModel: VidViewModel
+    private lateinit var videosAdapter: VideosAdapter
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        position=args.position
+        Log.d(TAG,position.toString())
+        galleryViewModel= ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
+
+
+        galleryViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer { catogoryList->
+            Log.d(TAG,catogoryList.toString())
+            val videoList=catogoryList[position].videosList
+
+            videosAdapter=VideosAdapter(videoList){ vid_position,video->
+
+
+
+                galleryViewModel.launchPlayerScreen(requireContext(),video,this)
+            }
+
+            binding.gridVideoRv.adapter=videosAdapter
+        })
+
+
+        binding.gridVideoRv.apply {
+            layoutManager= GridLayoutManager(context,3)
+        }
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (item.itemId == androidx.appcompat.R.id.home)
-        Toast.makeText(context,"back pressed", Toast.LENGTH_SHORT).show()
-        return super.onOptionsItemSelected(item)
-    }
+
+//    private   fun startPlayerActivity(video:VideoItemModel){
+//       Log.d(TAG,"video data $video")
+//       val intent= galleryViewModel.launchPlayerScreen(requireContext(),video)
+//        startActivity(intent)
+//
+//
+//            }
 
 
 

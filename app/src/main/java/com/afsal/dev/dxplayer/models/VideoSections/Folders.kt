@@ -1,0 +1,1 @@
+package com.afsal.dev.dxplayer.models.VideoSectionsdata class Folders(    val videosList:List<VideoItemModel>    ,val folderName:String)

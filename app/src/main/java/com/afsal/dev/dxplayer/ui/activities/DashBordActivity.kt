@@ -1,9 +1,10 @@
-package com.afsal.dev.dxplayer.ui
+package com.afsal.dev.dxplayer.ui.activities
 
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +38,9 @@ class DashBordActivity : AppCompatActivity() {
     private val TAG="DashBordActivity"
 
    private val baseViewModel: BaseViewModel by viewModels()
+//    override fun inflateBinding(layoutInflater: LayoutInflater): ActivityDashBordBinding {
+//    return ActivityDashBordBinding.inflate(layoutInflater)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,7 +141,7 @@ class DashBordActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     fun loadImages(){
 
-        baseViewModel.loadSystemImages(this)
+        baseViewModel.loadSystemImages()
         baseViewModel.photoList.observe(this,Observer<List<ImageModel>>{
             Log.d(TAG,"data ${it.toString()}")
         })
@@ -150,5 +154,7 @@ class DashBordActivity : AppCompatActivity() {
 
         binding.navView.visibility=visibility
     }
+
+
 
 }

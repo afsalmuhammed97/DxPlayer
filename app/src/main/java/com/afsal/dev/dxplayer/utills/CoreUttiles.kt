@@ -1,6 +1,7 @@
 package com.afsal.dev.dxplayer.utills
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.RecoverableSecurityException
 import android.content.ContentUris
 import android.content.Context
@@ -14,8 +15,10 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.afsal.dev.dxplayer.R
-import com.afsal.dev.dxplayer.models.VideoItemModel
+import com.afsal.dev.dxplayer.models.VideoSections.Folders
+import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -29,66 +32,15 @@ import java.util.*
 
 object CoreUttiles {
 
-    val  IMAGE_FRAGMENT ="ImageFragment"
-    val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
-    val VIDEO_FRAGMENT="VideoFragment"
-
-    @SuppressLint("Range")
-    fun loadVideosList(context: Context):ArrayList<VideoItemModel>{
-
-        val tempList=ArrayList<VideoItemModel>()
-        val projection= arrayOf(
-            MediaStore.Video.Media._ID,
-            MediaStore.Video.Media.TITLE,
-            MediaStore.Video.Media.ALBUM,
-            MediaStore.Video.Media.DISPLAY_NAME,
-            MediaStore.Video.Media.DATE_ADDED,
-            MediaStore.Video.Media.DURATION,
-            MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
-            MediaStore.Video.Media.DATA,
-        )
-        val cursor=context.contentResolver.query(
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,projection,null,null,MediaStore.Video.Media.DATE_ADDED+" DESC")
-
-        if (cursor!=null){
-            if (cursor.moveToNext()){
-                do {
-
-                    val idC=cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media._ID))
-                    val tittleC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE))
-                    val albumC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.ALBUM))
-                    val folderC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME))
-                    val dateAddedC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED))
-                    val durationC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DURATION)).toLong()
-                    val sizeC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE))
-                    val pathC=cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA))
-
-                    try {
-                        val file=File(pathC)
-                        val artUriC= Uri.fromFile(file)
-                        val videoData=VideoItemModel(id = idC, tittle = tittleC, size = sizeC,
-                                                     duration = durationC, folderName = folderC,
-                                                     dateAdded=dateAddedC, artUri = artUriC)// path = pathC
-
-                         if (file.exists()){
-                             tempList.add(videoData)
-                         }
-                    }catch (e:Exception){
-                          e.printStackTrace()
-                    }
+    const val  IMAGE_FRAGMENT ="ImageFragment"
+    const val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
+   const val VIDEO_FRAGMENT="VideoFragment"
+    const val VIDEO="VideoItem"
 
 
 
-                }while (cursor.moveToNext())
-
-                cursor.close()
-            }
-        }
-
-     return  tempList
-    }
-
-    suspend fun loadVideos(context:Context):List<VideoItemModel>{
+    suspend fun loadVideos(context:Context, getFolderSet:((MutableSet<String>)->Unit) ):List<VideoItemModel>{
+        val foldersNameSet= mutableSetOf<String>()
 
        return    withContext(Dispatchers.IO){
             val collection= sdk29AndUp {
@@ -139,13 +91,20 @@ object CoreUttiles {
                                 val file=File(path)
                                 val artUri=Uri.fromFile(file)
 
-                                videos.add(VideoItemModel(id =id, tittle =  displayName, size =size , duration = duration,
-                                    dateAdded = dateFormat(dateAdded), folderName = folderName,  artUri = artUri ))
+                                videos.add(
+                                    VideoItemModel(id =id, tittle =  displayName, size =size , duration = duration,
+                                    dateAdded = dateFormat(dateAdded), folderName = folderName,  artUri = artUri )
+                                )
+                                foldersNameSet.add(folderName)
+
 
                             }catch (e:Exception){}
 
 
                    }
+
+                  // getFolderList(creatingCustomList(videos.toList(),foldersNameSet))
+                    getFolderSet(foldersNameSet)
                    videos.toList()
 
 
@@ -153,6 +112,23 @@ object CoreUttiles {
                }?: emptyList()
         }
 
+    }
+
+
+     fun creatingCustomList(videoList:List<VideoItemModel>, folderSet:Set<String>):List<Folders>{
+        val categoryVideoList= mutableListOf<Folders>()
+        var folderList: List<VideoItemModel>
+
+        for ( name in folderSet){
+
+            folderList= videoList.filter {
+                it.folderName == name
+            }
+
+            categoryVideoList.add(Folders(folderList,name))
+
+        }
+        return  categoryVideoList
     }
 
     //to load images from storage

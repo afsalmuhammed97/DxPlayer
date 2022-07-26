@@ -14,4 +14,7 @@
     <string name="show_more">see more</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="title_activity_playscreen">Player Screen</string>
+    <string name="ad_in_5">Add in 5</string>
 </resources>
