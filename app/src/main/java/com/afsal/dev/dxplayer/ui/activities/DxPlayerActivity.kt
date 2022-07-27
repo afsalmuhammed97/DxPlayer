@@ -22,15 +22,15 @@ import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
 import com.afsal.dev.dxplayer.utills.CoreUttiles
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.exoplayer2.ui.DefaultTrackNameProvider
+import com.google.android.exoplayer2.util.Assertions
+import com.google.android.exoplayer2.util.Util
 import com.google.android.material.navigation.NavigationView
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /*import com.google.android.gms.ads.*
@@ -44,6 +44,11 @@ class DxPlayerActivity : AppCompatActivity() {
     var isLock=false
     private var check=false
     private val ad=4000
+    private var playWhenReady=false
+    private var currentItem=0
+    private var playBackPosition= 0L
+
+
     private val audioTracks=ArrayList<String>()
     private lateinit var drawerLayout:DrawerLayout
     private lateinit var dialogDrawer:NavigationView
@@ -77,14 +82,13 @@ class DxPlayerActivity : AppCompatActivity() {
         Log.d(TAG, "current Item  ${currentVideo.toString()}")
         handler= Handler(Looper.getMainLooper())
 
-           setPlayer(currentVideo)
-
+//         initPlayer()
         back_bt.setOnClickListener { onBackPressed() }
         track_bt.setOnClickListener {                // showAudioTracks()
 
             drawerLayout.openDrawer(Gravity.END)
          //   hideControls(true)
-
+               getAudioTracks()
 
         }
 
@@ -167,8 +171,11 @@ class DxPlayerActivity : AppCompatActivity() {
     }
 
 
-    private fun setPlayer(videoItem:VideoItemModel) {
+    private fun initPlayer() {
         trackSelector= DefaultTrackSelector(this)
+
+        val mediaItem= MediaItem.fromUri(currentVideo.artUri)
+
 
         exoPlayer=ExoPlayer.Builder(this)
             .setTrackSelector(trackSelector)
@@ -176,28 +183,39 @@ class DxPlayerActivity : AppCompatActivity() {
             .setSeekForwardIncrementMs(5000)
             .build()
 
+                binding.videoView.apply {
+                    player=exoPlayer
+                    keepScreenOn=true }
+        exoPlayer.setMediaItem(mediaItem)
+        exoPlayer.playWhenReady=playWhenReady
+        exoPlayer.seekTo(currentItem,playBackPosition)
+        exoPlayer.prepare()
+        exoPlayer.play()
 
-        binding.videoView.apply {
-            player=exoPlayer
 
-            keepScreenOn=true
-        }
+       // Log.d(TAG,"Tracks  ${ exoPlayer.currentTrackGroups.get().getFormat().language}")
+
+
 
         //track selection
 
-//        for (i in 0 until exoPlayer.currentTrackGroups.length){
+
+
+//            Log.d(TAG,"Tracks  ${ exoPlayer.currentTrackGroups.get(0).getFormat(0).language}")
+
 //
-//            if (exoPlayer.currentTrackGroups.get(i).getFormat(0).selectionFlags== C.SELECTION_FLAG_DEFAULT){
 //
 //                audioTracks.add(
 //                    Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
 //            }
-//
+//            audioTracks.add(
+              //  Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
+
 //            Log.d(TAG,"audioTracks  ${audioTracks.toString()}")
-//        }
 
 
-        tittle_text.text=videoItem.tittle
+
+        tittle_text.text=currentVideo.tittle
 
 
         exoPlayer.addListener(object :Player.Listener{
@@ -222,15 +240,25 @@ class DxPlayerActivity : AppCompatActivity() {
         })
 
 
-        val mediaItem= MediaItem.fromUri(videoItem.artUri)
 
-        exoPlayer.setMediaItem(mediaItem)
-        exoPlayer.prepare()
-        exoPlayer.play()
 
 
     }
 
+    fun getAudioTracks(){
+
+        for (i in 0 until exoPlayer.currentTrackGroups.length) {
+
+            if (exoPlayer.currentTrackGroups.get(i)
+                    .getFormat(0).selectionFlags == C.SELECTION_FLAG_DEFAULT) {
+
+                audioTracks.add(Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
+
+            }
+
+        }
+        Log.d(TAG,"audio tracks ${audioTracks.toString()}")
+    }
 
 
 
@@ -344,9 +372,50 @@ class DxPlayerActivity : AppCompatActivity() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (Util.SDK_INT >23 ||exoPlayer == null){
+            initPlayer()
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Util.SDK_INT <23 ||exoPlayer == null){
+            initPlayer()
+        }
+
+    }
     override fun onStop() {
         super.onStop()
+        if (Util.SDK_INT > 23){
+            releasePlayer()
+        }
+
         exoPlayer.stop()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+//        if (Util.SDK_INT <=23){
+//            releasePlayer()
+//        }
+        exoPlayer.pause()
+    }
+
+    private fun releasePlayer() {
+        exoPlayer.let {
+
+            playWhenReady=exoPlayer.playWhenReady
+            currentItem=exoPlayer.currentMediaItemIndex
+            playBackPosition=exoPlayer.currentPosition
+            exoPlayer.stop()
+            exoPlayer.release()
+
+        }
+       // exoPlayer=null
     }
 
     override fun onDestroy() {
@@ -354,10 +423,6 @@ class DxPlayerActivity : AppCompatActivity() {
         exoPlayer.release()
     }
 
-    override fun onPause() {
-        super.onPause()
-        exoPlayer.pause()
-    }
 
 //    private fun lockScreen(lock: Boolean) {
 //
@@ -400,4 +465,8 @@ class DxPlayerActivity : AppCompatActivity() {
 
 
     }
+}
+
+class   TrackSelectionDialog {
+
 }
