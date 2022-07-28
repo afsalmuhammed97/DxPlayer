@@ -100,12 +100,12 @@
             android:theme="@style/ClickableView" />
 
         <ImageView
-            android:id="@+id/exo_subtitles"
+            android:id="@+id/exo_subtitles1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_subtitles_24"
-            android:theme="@style/ClickableView" />
+           />
 
         <!--        <ImageView-->
         <!--            android:id="@+id/exo_lock"-->
@@ -183,12 +183,12 @@
             android:theme="@style/ClickableView"
             />
         <ImageView
-            android:id="@+id/exo_pip_mode"
+            android:id="@+id/exo_pip_mode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_picture_in_picture_alt_24"
-            android:theme="@style/ClickableView" />
+           />
 
 
     </LinearLayout>

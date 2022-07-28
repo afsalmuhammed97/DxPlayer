@@ -2,8 +2,10 @@ package com.afsal.dev.dxplayer.ui.activities
 
 
 import android.content.pm.ActivityInfo
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,11 +13,11 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.ViewGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
@@ -24,10 +26,7 @@ import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.DefaultTrackNameProvider
-import com.google.android.exoplayer2.util.Assertions
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.navigation.NavigationView
 import java.util.*
@@ -42,18 +41,20 @@ class DxPlayerActivity : AppCompatActivity() {
     private val TAG="DxPlayer"
     var isFullScreen=false
     var isLock=false
+    var isCreated =false
     private var check=false
     private val ad=4000
     private var playWhenReady=false
     private var currentItem=0
     private var playBackPosition= 0L
 
-
     private val audioTracks=ArrayList<String>()
+    private lateinit var radioGroupAudio: RadioGroup
     private lateinit var drawerLayout:DrawerLayout
     private lateinit var dialogDrawer:NavigationView
     private lateinit var bt_lockScreen:ImageView
     private lateinit var back_bt:ImageView
+    private lateinit var checkBox: CheckBox
     private lateinit var tittle_text:TextView
     private lateinit var   bt_fullscreen: ImageView
     private lateinit var track_bt:ImageView
@@ -75,7 +76,8 @@ class DxPlayerActivity : AppCompatActivity() {
            track_bt=findViewById(R.id.exo_audio_track)
           dialogDrawer=findViewById(R.id.dx_player_drawer)
           drawerLayout=findViewById(R.id.drawer_layout)
-
+           radioGroupAudio=findViewById(R.id.radio_group)
+          checkBox=findViewById(R.id.checkBox)
 
         currentVideo= intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
 
@@ -84,16 +86,28 @@ class DxPlayerActivity : AppCompatActivity() {
 
 //         initPlayer()
         back_bt.setOnClickListener { onBackPressed() }
-        track_bt.setOnClickListener {                // showAudioTracks()
+        track_bt.setOnClickListener {
 
-            drawerLayout.openDrawer(Gravity.END)
+           drawerLayout.openDrawer(Gravity.END)
          //   hideControls(true)
-               getAudioTracks()
+             getAudioTracks()
+
+
 
         }
 
 
+        checkBox.setOnClickListener {
 
+
+            if (checkBox.isChecked){
+                trackSelector.parameters=DefaultTrackSelector.ParametersBuilder(this)
+                    .setRendererDisabled(C.TRACK_TYPE_VIDEO,false).build()
+            }else{
+                trackSelector.parameters=DefaultTrackSelector.ParametersBuilder(this)
+                    .setRendererDisabled(C.TRACK_TYPE_VIDEO,true).build()
+            }
+        }
 
 
       bt_fullscreen.setOnClickListener {
@@ -141,7 +155,7 @@ class DxPlayerActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(object :
             DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-               Log.d(TAG,"drawer slided")
+             //  Log.d(TAG,"drawer slided")
             }
 
             override fun onDrawerOpened(drawerView: View) {
@@ -173,7 +187,7 @@ class DxPlayerActivity : AppCompatActivity() {
 
     private fun initPlayer() {
         trackSelector= DefaultTrackSelector(this)
-
+        trackSelector.setParameters( trackSelector.parameters.buildUpon().setPreferredAudioLanguage("eng"))
         val mediaItem= MediaItem.fromUri(currentVideo.artUri)
 
 
@@ -193,25 +207,12 @@ class DxPlayerActivity : AppCompatActivity() {
         exoPlayer.play()
 
 
-       // Log.d(TAG,"Tracks  ${ exoPlayer.currentTrackGroups.get().getFormat().language}")
+        exoPlayer.addListener(object : Player.Listener {
+            override fun onTracksChanged(tracks: Tracks) {
+                // Update UI using current tracks.
+            }
+        })
 
-
-
-        //track selection
-
-
-
-//            Log.d(TAG,"Tracks  ${ exoPlayer.currentTrackGroups.get(0).getFormat(0).language}")
-
-//
-//
-//                audioTracks.add(
-//                    Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
-//            }
-//            audioTracks.add(
-              //  Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
-
-//            Log.d(TAG,"audioTracks  ${audioTracks.toString()}")
 
 
 
@@ -227,6 +228,7 @@ class DxPlayerActivity : AppCompatActivity() {
 
                 }else if ( playbackState == Player.STATE_READY){
                     binding.progressBar.visibility= View.GONE
+
                 }
 
                 if (!exoPlayer.playWhenReady){
@@ -234,9 +236,15 @@ class DxPlayerActivity : AppCompatActivity() {
                 }else{
                     onProgress()
                 }
+            }
 
+            override fun onTracksChanged(tracks: Tracks) {
+
+                super.onTracksChanged(tracks)
 
             }
+
+
         })
 
 
@@ -245,20 +253,46 @@ class DxPlayerActivity : AppCompatActivity() {
 
     }
 
-    fun getAudioTracks(){
+    private fun getAudioTracks(){
+
+           audioTracks.clear()
 
         for (i in 0 until exoPlayer.currentTrackGroups.length) {
 
             if (exoPlayer.currentTrackGroups.get(i)
-                    .getFormat(0).selectionFlags == C.SELECTION_FLAG_DEFAULT) {
+                    .getFormat(0).selectionFlags == C.SELECTION_FLAG_DEFAULT) {         //SELECTION_FLAG_DEFAULT
 
+                Log.d(TAG,"TracksList ${exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()}")
                 audioTracks.add(Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
 
             }
 
         }
         Log.d(TAG,"audio tracks ${audioTracks.toString()}")
+
+
+          /* creating radiobutton for track selection         */
+        creatingRadioButtons(audioTracks)
+
+
+
+            radioGroupAudio.setOnCheckedChangeListener { group, checkedId ->
+
+                val selectedButton=findViewById<RadioButton>(checkedId)
+                val trackPosition= audioTracks.indexOf(selectedButton.text.toString())
+
+
+                trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredAudioLanguage(audioTracks[trackPosition]))
+            }
+
+
+
+
+
+
+
     }
+
 
 
 
@@ -465,8 +499,42 @@ class DxPlayerActivity : AppCompatActivity() {
 
 
     }
+
+
+private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
+
+
+    if (Build.VERSION.SDK_INT >= 21) {}
+        val colorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_enabled),
+                intArrayOf(android.R.attr.state_enabled)
+            ), intArrayOf(
+                Color.BLACK,  // disabled
+                Color.WHITE // enabled
+
+            )
+        )
+
+
+
+
+           radioGroupAudio.removeAllViews()
+          radioGroupAudio.orientation=LinearLayout.VERTICAL
+    for (i in 0 until audioTracksList.size) {
+        val radioButton = RadioButton(this)
+        radioButton.setTextColor(Color.WHITE)
+        radioButton.buttonTintList = colorStateList
+        radioButton.id = View.generateViewId()
+
+        radioButton.text = audioTracksList[i]
+        val params =
+            LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT , ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+        radioButton.layoutParams = params
+        radioGroupAudio.addView(radioButton)
+        radioButton.defaultFocusHighlightEnabled=true
+    }
+
+}
 }
 
-class   TrackSelectionDialog {
-
-}
