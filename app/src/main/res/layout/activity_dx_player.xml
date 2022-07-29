@@ -21,6 +21,7 @@
         app:controller_layout_id="@layout/custom_controller_layout"
         app:layout_constraintTop_toTopOf="parent"
         app:player_layout_id="@layout/exo_player_view"
+        app:hide_on_touch="false"
         app:use_controller="true"
 
 

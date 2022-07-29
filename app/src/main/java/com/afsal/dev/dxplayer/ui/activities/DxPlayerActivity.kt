@@ -1,23 +1,24 @@
 package com.afsal.dev.dxplayer.ui.activities
 
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Color
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
+import androidx.core.view.GestureDetectorCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
@@ -30,6 +31,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.navigation.NavigationView
 import java.util.*
+import kotlin.math.abs
 
 
 /*import com.google.android.gms.ads.*
@@ -47,8 +49,11 @@ class DxPlayerActivity : AppCompatActivity() {
     private var playWhenReady=false
     private var currentItem=0
     private var playBackPosition= 0L
-
+    private var brightness =0F
+    private var volume=0F
     private val audioTracks=ArrayList<String>()
+    private lateinit var audioManager: AudioManager
+    private lateinit var detector:GestureDetectorCompat
     private lateinit var radioGroupAudio: RadioGroup
     private lateinit var drawerLayout:DrawerLayout
     private lateinit var dialogDrawer:NavigationView
@@ -79,19 +84,27 @@ class DxPlayerActivity : AppCompatActivity() {
            radioGroupAudio=findViewById(R.id.radio_group)
           checkBox=findViewById(R.id.checkBox)
 
+            detector=GestureDetectorCompat(this,SwipeListener())
+
         currentVideo= intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
+
+         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         Log.d(TAG, "current Item  ${currentVideo.toString()}")
         handler= Handler(Looper.getMainLooper())
 
 //         initPlayer()
-        back_bt.setOnClickListener { onBackPressed() }
+        automateScreenMode()
+        back_bt.setOnClickListener {
+            onBackPressed()
+            this.finish()
+        }
         track_bt.setOnClickListener {
 
            drawerLayout.openDrawer(Gravity.END)
-         //   hideControls(true)
-             getAudioTracks()
 
+             getAudioTracks()
+           //  setScreenBrightness(23)
 
 
         }
@@ -119,6 +132,12 @@ class DxPlayerActivity : AppCompatActivity() {
               binding.videoView.resizeMode = AspectRatioFrameLayout. RESIZE_MODE_FILL
 
               requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+//              val params = binding.videoView.layoutParams
+//              params.width = params.width
+//              params.height = ( 200 * applicationContext.resources.displayMetrics.density).toInt()
+
+
+
           }else{
               bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(applicationContext
                   ,R.drawable.ic_fullscreen_icon))
@@ -174,16 +193,57 @@ class DxPlayerActivity : AppCompatActivity() {
 
         binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
 
+        binding.videoView.setOnTouchListener{_,event->
+
+                 detector.onTouchEvent(event)
+            return@setOnTouchListener false
+        }
 
     }
+
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        Log.d("Event",event.toString())
+        if (event != null) {
+            Log.d("EEE",event.action.toString())
+        }
         return super.onTouchEvent(event)
-
     }
+//        return   if(event?.let { detector.onTouchEvent(it) } == true){
+//                  true
+//                }else{
+//
+//                  super.onTouchEvent(event)
+//        }
 
+
+
+
+
+      private fun automateScreenMode(){
+          val displayMetrics = DisplayMetrics()
+          this.windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+
+          if (currentVideo.width >=displayMetrics.widthPixels){
+              //landscape
+              bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(applicationContext,
+                  R.drawable.ic_baseline_fullscreen_exit))
+              binding.videoView.resizeMode = AspectRatioFrameLayout. RESIZE_MODE_FILL
+
+              requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+              isFullScreen=true
+
+          }else{
+              //portrait
+              bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(applicationContext
+                  ,R.drawable.ic_fullscreen_icon))
+
+              requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+              binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+              isFullScreen=false
+          }
+      }
 
     private fun initPlayer() {
         trackSelector= DefaultTrackSelector(this)
@@ -416,9 +476,12 @@ class DxPlayerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         if (Util.SDK_INT <23 ||exoPlayer == null){
             initPlayer()
         }
+        if (brightness !=0F ) setScreenBrightness(brightness.toInt())
+
 
     }
     override fun onStop() {
@@ -475,7 +538,7 @@ class DxPlayerActivity : AppCompatActivity() {
 
     private fun hideControls(lock: Boolean,allControls:Boolean){
        val top_layout=findViewById<LinearLayout>(R.id.title_layout)
-        val sec_mid=findViewById<LinearLayout>(R.id.sec_controlvid1)
+        val sec_mid=findViewById<LinearLayout>(R.id.sec_controlvid12)
         val sec_bottom=findViewById<LinearLayout>(R.id.sec_controlvid2)
 
         if (lock){
@@ -536,5 +599,60 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
     }
 
 }
+
+
+    inner class SwipeListener:GestureDetector.SimpleOnGestureListener(){
+        override fun onScroll(
+            douwnEvent: MotionEvent?,
+            moveEvent: MotionEvent?,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
+         val screenWidth=Resources.getSystem().displayMetrics.widthPixels
+
+            if (abs(distanceX) < abs(distanceY) ){
+               if (douwnEvent!!.x <screenWidth/2){
+                //left side event
+                val increase=distanceY >= 0
+                val newValue= if (increase) brightness +0.5 else brightness -0.5
+
+                   if(newValue in 0F ..30F) {
+                       brightness = newValue.toFloat()
+
+                       this@DxPlayerActivity.setScreenBrightness(brightness.toInt())
+                       //need to implement brightness progress on right side
+                   }
+
+               }else{
+                  // right side event
+                   val maxVolume= audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                   val increase=distanceY >= 0
+                   val newValue= if (increase) volume +0.5 else volume -0.5
+
+                   if(newValue in 0F ..maxVolume.toFloat()) {
+                       volume = newValue.toFloat()
+                       audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,volume.toInt(),0)
+
+                         //need to implement volume progress on left side
+                   }
+
+               }
+            }
+
+            return super.onScroll(douwnEvent, moveEvent, distanceX, distanceY)
+        }
+
+
+
+    }
+    fun setScreenBrightness(value:Int){
+        val d =1.0f/30
+        val layoutParams=this.window.attributes
+
+        layoutParams.screenBrightness=d * value
+         this.window.attributes=layoutParams
+    }
+
+
 }
 

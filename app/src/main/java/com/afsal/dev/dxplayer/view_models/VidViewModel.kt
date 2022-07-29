@@ -57,6 +57,7 @@ private val _categoryVideoList:MutableLiveData<List<Folders>> = MutableLiveData(
     fun launchPlayerScreen(context: Context,video:VideoItemModel,fragment:Fragment): Intent {
 
         val intent = Intent(context,DxPlayerActivity::class.java)
+       // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra(VIDEO,video as Parcelable)
 
         fragment.startActivity(intent)

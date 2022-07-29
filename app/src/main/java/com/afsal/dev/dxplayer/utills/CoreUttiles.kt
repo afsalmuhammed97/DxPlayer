@@ -57,6 +57,8 @@ object CoreUttiles {
                    MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
                    MediaStore.Video.Media.BUCKET_ID,
                    MediaStore.Video.Media.SIZE,
+                   MediaStore.Video.Media.WIDTH,
+                   MediaStore.Video.Media.HEIGHT,
                    MediaStore.Video.Media.DATA,
                )
                val videos = mutableListOf<VideoItemModel>()
@@ -74,6 +76,9 @@ object CoreUttiles {
                    val sizeColumn=cursor.getColumnIndex(MediaStore.Video.Media.SIZE)
                    val dateAddedColumn=cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED)
                    val pathColumn=cursor.getColumnIndex(MediaStore.Video.Media.DATA)
+                   val heightColumn=cursor.getColumnIndex(MediaStore.Video.Media.HEIGHT)
+                   val widthColumn=cursor.getColumnIndex(MediaStore.Video.Media.WIDTH)
+
 
                    while (cursor.moveToNext()){
                        val id=cursor.getLong(idColumn)
@@ -85,6 +90,9 @@ object CoreUttiles {
                        val folderName=cursor.getString(folderColumn)
                        val dateAdded=cursor.getLong(dateAddedColumn)
                        val path=cursor.getString(pathColumn)
+                       val height=cursor.getInt(heightColumn)
+                       val width=cursor.getInt(widthColumn)
+
                      //  val dataUri=ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,id)
 
                             try {
@@ -93,7 +101,8 @@ object CoreUttiles {
 
                                 videos.add(
                                     VideoItemModel(id =id, tittle =  displayName, size =size , duration = duration,
-                                    dateAdded = dateFormat(dateAdded), folderName = folderName,  artUri = artUri )
+                                    dateAdded = dateFormat(dateAdded), folderName = folderName,  artUri = artUri,
+                                        width = width , height = height )
                                 )
                                 foldersNameSet.add(folderName)
 
