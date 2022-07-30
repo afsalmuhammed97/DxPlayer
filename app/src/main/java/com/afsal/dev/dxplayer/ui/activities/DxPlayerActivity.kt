@@ -43,8 +43,8 @@ class DxPlayerActivity : AppCompatActivity() {
     private val TAG="DxPlayer"
     var isFullScreen=false
     var isLock=false
-    var isCreated =false
     private var check=false
+    private var brightnessScroll=false
     private val ad=4000
     private var playWhenReady=false
     private var currentItem=0
@@ -52,6 +52,7 @@ class DxPlayerActivity : AppCompatActivity() {
     private var brightness =0F
     private var volume=0F
     private val audioTracks=ArrayList<String>()
+
     private lateinit var audioManager: AudioManager
     private lateinit var detector:GestureDetectorCompat
     private lateinit var radioGroupAudio: RadioGroup
@@ -67,7 +68,7 @@ class DxPlayerActivity : AppCompatActivity() {
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var handler: Handler
     private lateinit var trackSelector:DefaultTrackSelector
-    private lateinit var binding: ActivityDxPlayerBinding
+    private lateinit var binding:ActivityDxPlayerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         binding= ActivityDxPlayerBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -83,6 +84,8 @@ class DxPlayerActivity : AppCompatActivity() {
           drawerLayout=findViewById(R.id.drawer_layout)
            radioGroupAudio=findViewById(R.id.radio_group)
           checkBox=findViewById(R.id.checkBox)
+              //  volumeProgressBar=findViewById(R.id.volume_progress)
+          //volumeLayout=findViewById(R.id.volume_layout)
 
             detector=GestureDetectorCompat(this,SwipeListener())
 
@@ -287,7 +290,7 @@ class DxPlayerActivity : AppCompatActivity() {
                  //binding.progressBar.visibility= View.VISIBLE
 
                 }else if ( playbackState == Player.STATE_READY){
-                    binding.progressBar.visibility= View.GONE
+                  //  binding.progressBar.visibility= View.GONE
 
                 }
 
@@ -538,7 +541,7 @@ class DxPlayerActivity : AppCompatActivity() {
 
     private fun hideControls(lock: Boolean,allControls:Boolean){
        val top_layout=findViewById<LinearLayout>(R.id.title_layout)
-        val sec_mid=findViewById<LinearLayout>(R.id.sec_controlvid12)
+        val sec_mid=findViewById<LinearLayout>(R.id.sec_controlvid1)
         val sec_bottom=findViewById<LinearLayout>(R.id.sec_controlvid2)
 
         if (lock){
@@ -610,47 +613,109 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
         ): Boolean {
          val screenWidth=Resources.getSystem().displayMetrics.widthPixels
 
+
+            val diffX= moveEvent?.x?.minus(douwnEvent!!.x) ?:0.0F
+            //to control volume and brightness
             if (abs(distanceX) < abs(distanceY) ){
                if (douwnEvent!!.x <screenWidth/2){
+
+              // brightnessScroll= if (douwnEvent.action==0) true
+//                val time=   douwnEvent.flags
+//                   Log.d("TTTT"," delayatime $time")
                 //left side event
+
                 val increase=distanceY >= 0
-                val newValue= if (increase) brightness +0.5 else brightness -0.5
+                val newValue= if (increase) brightness +0.25 else brightness -0.25
 
                    if(newValue in 0F ..30F) {
                        brightness = newValue.toFloat()
 
                        this@DxPlayerActivity.setScreenBrightness(brightness.toInt())
+                       binding.brightnessLayout.visibility=View.VISIBLE
                        //need to implement brightness progress on right side
                    }
 
                }else{
                   // right side event
+
                    val maxVolume= audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
                    val increase=distanceY >= 0
-                   val newValue= if (increase) volume +0.5 else volume -0.5
+                   val newValue= if (increase) volume +0.25 else volume -0.25
 
                    if(newValue in 0F ..maxVolume.toFloat()) {
                        volume = newValue.toFloat()
+
                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,volume.toInt(),0)
+
+                       updateVolumeProgress(volume,maxVolume)
+
+                       Log.d("Volume","volume ${volume.toInt()}")
 
                          //need to implement volume progress on left side
                    }
 
+
+
                }
+            }else{
+
+                var seek=5000+abs(diffX).toInt()
+
+               Log.d("DDD","diffx   $seek")
+
+                  if (diffX >0){
+
+                      exoPlayer.seekTo(exoPlayer.currentPosition +seek)
+                  }else{
+                      exoPlayer.seekTo(exoPlayer.currentPosition -seek)
+                  }
+
             }
 
             return super.onScroll(douwnEvent, moveEvent, distanceX, distanceY)
         }
 
+        private fun updateVolumeProgress(value: Float,max:Int) {
+
+
+            val p=(value.div(max))*100
+            binding.volumeProgress.progress=p.toInt()
+            Log.d("Volume","volume progerss ${p})")
+
+        }
+
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            Log.d("DDD","single tap${e?.action}")
+            return super.onSingleTapUp(e)
+        }
+
+        override fun onDoubleTap(e: MotionEvent?): Boolean {
+            Log.d("DDD","double tap${e?.action}")
+            return super.onDoubleTap(e)
+        }
+
+
 
 
     }
     fun setScreenBrightness(value:Int){
+
+
+        val bright=value.toFloat()
+        val p=(bright.div(30))*100
+        Log.d(TAG,"brghtness b $p")
+         binding.brightnessProgress.progress=p.toInt()
+        // binding.brightnessLayout.visibility=View.VISIBLE
+
+
         val d =1.0f/30
         val layoutParams=this.window.attributes
 
         layoutParams.screenBrightness=d * value
          this.window.attributes=layoutParams
+
+
+
     }
 
 
