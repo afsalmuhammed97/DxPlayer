@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,22 +8,25 @@
     android:background="#80000000">
 
 
+    <ImageView
+        android:id="@+id/exo_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_baseline_lock_open_24"
+        android:theme="@style/ClickableView" />
+
     <LinearLayout
 
         android:id="@+id/sec_controlvid1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerInParent="true">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/exo_rew"
-
-            android:src="@drawable/ic_baseline_replay_5"
-            android:theme="@style/ClickableView"
-            android:layout_marginStart="@dimen/_30dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Space
             android:layout_width="0dp"
@@ -30,35 +34,67 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/exo_prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:src="@drawable/ic_baseline_skip_previous_24"
+            android:theme="@style/ClickableView" />
+        <!--        android:rotation="270"-->
+
+        <!--        <Space-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1" />-->
+
+        <ImageView
             android:id="@+id/exo_play"
-            android:src="@drawable/ic_play"
-            android:theme="@style/ClickableView"/>
-        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_play"
+            android:theme="@style/ClickableView" />
+
+        <ImageView
             android:id="@+id/exo_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:src="@drawable/ic_pause"
-            android:theme="@style/ClickableView"/>
+            android:theme="@style/ClickableView" />
+
+
+        <ImageView
+            android:id="@+id/exo_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+
+            android:src="@drawable/ic_baseline_skip_next_24"
+            android:theme="@style/ClickableView" />
+        <!--        android:layout_marginEnd="@dimen/_30dp"-->
+
+
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
+        <!--        <ImageView-->
+        <!--            android:id="@+id/exo_pip_mode1"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:src="@drawable/ic_baseline_picture_in_picture_alt_24" />-->
+
         <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/exo_ffwd"
+            android:id="@+id/bt_fullscreen"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="@dimen/_30dp"
-        android:src="@drawable/ic_baseline_forward_5"
-        android:theme="@style/ClickableView"
-            android:layout_marginStart="20dp"/>
-
-
-
-
-
+            android:src="@drawable/ic_fullscreen_icon"
+            android:theme="@style/ClickableView" />
 
     </LinearLayout>
 
@@ -66,7 +102,7 @@
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_40dp"
+
         android:orientation="horizontal">
 
 
@@ -85,6 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:maxLines="2"
             android:textColor="@color/white"
             android:textSize="@dimen/item_title"
             android:textStyle="bold"
@@ -100,12 +137,12 @@
             android:theme="@style/ClickableView" />
 
         <ImageView
-            android:id="@+id/exo_subtitles"
+            android:id="@+id/exo_subtitles1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_subtitles_24"
-            android:theme="@style/ClickableView" />
+            android:layout_marginEnd="@dimen/_20dp"/>
 
         <!--        <ImageView-->
         <!--            android:id="@+id/exo_lock"-->
@@ -118,26 +155,18 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/exo_lock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:padding="10dp"
-        android:src="@drawable/ic_baseline_lock_open_24"
-        android:theme="@style/ClickableView" />
+
 
 
     <LinearLayout
         android:id="@+id/sec_controlvid2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/sec_controlvid1"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="8dp">
+     >
 
         <TextView
             android:id="@+id/exo_position"
@@ -158,9 +187,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            app:buffered_color="#494747"
             app:played_color="#9F9B9B"
-            app:unplayed_color="@color/white" />
+            app:unplayed_color="@color/white"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:id="@+id/exo_duration"
@@ -175,20 +204,6 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/bt_fullscreen"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_fullscreen_icon"
-            android:theme="@style/ClickableView"
-            />
-        <ImageView
-            android:id="@+id/exo_pip_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:src="@drawable/ic_baseline_picture_in_picture_alt_24"
-            android:theme="@style/ClickableView" />
 
 
     </LinearLayout>

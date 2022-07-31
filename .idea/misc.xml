@@ -11,6 +11,8 @@
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.2035" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_folder_24.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_forward_5.xml" value="0.178" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_keyboard_double_arrow_left_24.xml" value="0.2075" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_keyboard_double_arrow_right_24.xml" value="0.18" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_photo_24.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_library_music_24.xml" value="0.1165" />
@@ -25,9 +27,11 @@
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/music_selector.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/music_selectot.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/player_drawer_bg.xml" value="0.1065" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_horizonta.xml" value="0.17" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_vertical.xml" value="0.17" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/vid_selector.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dash_bord.xml" value="0.15" />
-        <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dx_player.xml" value="0.1859375" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dx_player.xml" value="0.22" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_fullscreen.xml" value="0.1859375" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_player_screen.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/app_bar_main.xml" value="0.22" />
