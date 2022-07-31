@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -212,6 +213,7 @@ object CoreUttiles {
 
     }
 
+     fun durationToHour(duration:Long)= DateUtils.formatElapsedTime(duration /1000)
 
 
     private fun dateFormat(date: Long): String {

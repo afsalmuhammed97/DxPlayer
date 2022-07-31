@@ -28,13 +28,17 @@
 
             />
         <androidx.cardview.widget.CardView
+            android:visibility="gone"
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:id="@+id/volume_layout"
             android:layout_width="@dimen/_40dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_30dp"
-            android:backgroundTint="@color/black">
+            android:backgroundTint="@color/card_background_color"
+            app:cardCornerRadius="@dimen/_4dp"
+            >
+
 
 
             <LinearLayout
@@ -70,7 +74,8 @@
             android:layout_width="@dimen/_40dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_30dp"
-            android:backgroundTint="@color/black">
+            android:backgroundTint="@color/card_background_color"
+            app:cardCornerRadius="@dimen/_4dp">
 
 
             <LinearLayout
@@ -99,6 +104,48 @@
 
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_20dp">
+
+            <ImageView
+                android:id="@+id/skip_left"
+                android:layout_width="@dimen/_40dp"
+                android:layout_height="@dimen/_40dp"
+                android:visibility="gone"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_baseline_keyboard_double_arrow_left_24" />
+
+            <TextView
+                android:id="@+id/skipp_count_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15dp"
+                android:background="@android:color/transparent"
+                android:gravity="bottom"
+                android:padding="@dimen/_5dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text20sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+
+                />
+
+            <ImageView
+                android:id="@+id/skip_right"
+                android:layout_width="@dimen/_40dp"
+                android:layout_height="@dimen/_40dp"
+                android:visibility="gone"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_baseline_keyboard_double_arrow_right_24" />
+        </LinearLayout>
+
+
 <!--    <ProgressBar-->
 <!--        android:id="@+id/progressBar"-->
 <!--        style="?android:attr/progressBarStyle"-->
@@ -106,30 +153,6 @@
 <!--        android:layout_height="80dp"-->
 <!--        android:layout_centerInParent="true"-->
 <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/sect_ad_countdown"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:paddingTop="10dp"-->
-<!--        android:paddingBottom="10dp"-->
-<!--        android:paddingLeft="15dp"-->
-<!--        android:paddingRight="15dp"-->
-<!--        android:layout_marginEnd="12dp"-->
-<!--        android:layout_marginBottom="70dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:visibility="gone">-->
-<!--        <TextView-->
-<!--            android:id="@+id/tx_ad_countdown"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/ad_in_5"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="20sp"/>-->
-<!--    </LinearLayout>-->
 
     </RelativeLayout>
 

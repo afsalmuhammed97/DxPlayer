@@ -19,9 +19,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
+
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
 import com.afsal.dev.dxplayer.utills.CoreUttiles
@@ -44,7 +46,6 @@ class DxPlayerActivity : AppCompatActivity() {
     var isFullScreen=false
     var isLock=false
     private var check=false
-    private var brightnessScroll=false
     private val ad=4000
     private var playWhenReady=false
     private var currentItem=0
@@ -61,6 +62,7 @@ class DxPlayerActivity : AppCompatActivity() {
     private lateinit var bt_lockScreen:ImageView
     private lateinit var back_bt:ImageView
     private lateinit var checkBox: CheckBox
+    private lateinit var skippCountText:TextView
     private lateinit var tittle_text:TextView
     private lateinit var   bt_fullscreen: ImageView
     private lateinit var track_bt:ImageView
@@ -68,7 +70,7 @@ class DxPlayerActivity : AppCompatActivity() {
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var handler: Handler
     private lateinit var trackSelector:DefaultTrackSelector
-    private lateinit var binding:ActivityDxPlayerBinding
+    private lateinit var binding: ActivityDxPlayerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         binding= ActivityDxPlayerBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -84,8 +86,7 @@ class DxPlayerActivity : AppCompatActivity() {
           drawerLayout=findViewById(R.id.drawer_layout)
            radioGroupAudio=findViewById(R.id.radio_group)
           checkBox=findViewById(R.id.checkBox)
-              //  volumeProgressBar=findViewById(R.id.volume_progress)
-          //volumeLayout=findViewById(R.id.volume_layout)
+           skippCountText=findViewById(R.id.skipp_count_text)
 
             detector=GestureDetectorCompat(this,SwipeListener())
 
@@ -209,6 +210,7 @@ class DxPlayerActivity : AppCompatActivity() {
 
         if (event != null) {
             Log.d("EEE",event.action.toString())
+            CoreUttiles
         }
         return super.onTouchEvent(event)
     }
@@ -605,6 +607,8 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
 
 
     inner class SwipeListener:GestureDetector.SimpleOnGestureListener(){
+      private val SWIP_THRESHOLD=120
+        private val DOWN_SWIP_THERSHOLD=80
         override fun onScroll(
             douwnEvent: MotionEvent?,
             moveEvent: MotionEvent?,
@@ -615,13 +619,16 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
 
 
             val diffX= moveEvent?.x?.minus(douwnEvent!!.x) ?:0.0F
+             val diffY=moveEvent?.y?.minus(douwnEvent!!.y) ?:0.0F
+            Log.d("DDD","fiffy $diffY")
             //to control volume and brightness
-            if (abs(distanceX) < abs(distanceY) ){
+            if (abs(distanceX) < abs(distanceY)  ){
+
+                if (abs(diffY) > DOWN_SWIP_THERSHOLD){
                if (douwnEvent!!.x <screenWidth/2){
 
-              // brightnessScroll= if (douwnEvent.action==0) true
-//                val time=   douwnEvent.flags
-//                   Log.d("TTTT"," delayatime $time")
+
+                 //  if (douwnEvent?.action== MotionEvent.ACTION_DOWN ) binding.brightnessLayout.visibility=View.VISIBLE
                 //left side event
 
                 val increase=distanceY >= 0
@@ -631,14 +638,18 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
                        brightness = newValue.toFloat()
 
                        this@DxPlayerActivity.setScreenBrightness(brightness.toInt())
-                       binding.brightnessLayout.visibility=View.VISIBLE
-                       //need to implement brightness progress on right side
+
                    }
+
+
+
+
 
                }else{
                   // right side event
 
                    val maxVolume= audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+
                    val increase=distanceY >= 0
                    val newValue= if (increase) volume +0.25 else volume -0.25
 
@@ -651,24 +662,59 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
 
                        Log.d("Volume","volume ${volume.toInt()}")
 
+
                          //need to implement volume progress on left side
                    }
 
 
 
-               }
-            }else{
 
+
+               }
+
+            }
+            }else{
+                Log.d("DDD","diffx   $diffX")
                 var seek=5000+abs(diffX).toInt()
 
-               Log.d("DDD","diffx   $seek")
+
+
+                         Log.d("DDD","diffx+seek   $seek")
+
+                  if ( abs(diffX) >SWIP_THRESHOLD){
+
+                      skippCountText.visibility=View.VISIBLE
 
                   if (diffX >0){
 
+                      binding.skipRight.visibility=View.VISIBLE
+                      val tex= CoreUttiles.durationToHour((exoPlayer.currentPosition +seek))
+                      skippCountText.text="[ $tex ]"
                       exoPlayer.seekTo(exoPlayer.currentPosition +seek)
+
+
                   }else{
                       exoPlayer.seekTo(exoPlayer.currentPosition -seek)
+                      val tex=CoreUttiles.durationToHour((exoPlayer.currentPosition -seek))
+                      skippCountText.text="[ $tex ]"
+                      binding.skipLeft.visibility=View.VISIBLE
+
                   }
+                  }
+                binding.skippCountText.postDelayed( {
+                    run {
+
+                        binding.apply {
+                            skippCountText.visibility=View.INVISIBLE
+                            skipLeft.visibility=View.INVISIBLE
+                            skipRight.visibility=View.INVISIBLE
+                        }
+                        this@DxPlayerActivity.hideControls(false,true)
+                    }
+                }, 1600);
+
+
+
 
             }
 
@@ -677,22 +723,37 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
 
         private fun updateVolumeProgress(value: Float,max:Int) {
 
+            binding.volumeLayout.visibility=View.VISIBLE
 
             val p=(value.div(max))*100
             binding.volumeProgress.progress=p.toInt()
             Log.d("Volume","volume progerss ${p})")
 
+
+            binding.volumeLayout.postDelayed( {
+                run {
+                    binding.volumeLayout.visibility=View.INVISIBLE
+                    this@DxPlayerActivity.hideControls(false,true)
+                }
+            }, 2000);
+
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
             Log.d("DDD","single tap${e?.action}")
+                  if (e?.action ==1){
+                      this@DxPlayerActivity.hideControls(false,false)
+                  }
+
             return super.onSingleTapUp(e)
         }
 
         override fun onDoubleTap(e: MotionEvent?): Boolean {
             Log.d("DDD","double tap${e?.action}")
+
             return super.onDoubleTap(e)
         }
+
 
 
 
@@ -714,6 +775,14 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
         layoutParams.screenBrightness=d * value
          this.window.attributes=layoutParams
 
+        binding.brightnessLayout.visibility=View.VISIBLE
+
+        binding.brightnessLayout.postDelayed( {
+            run {
+                binding.brightnessLayout.visibility=View.INVISIBLE
+                hideControls(false,true)
+            }
+        }, 2000);
 
 
     }
