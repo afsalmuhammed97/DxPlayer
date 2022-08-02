@@ -14,6 +14,7 @@ import com.afsal.dev.dxplayer.adapters.BaseCategoryAdapter
 import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
+import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.utills.CoreUttiles
@@ -40,8 +41,8 @@ private lateinit var videoViewModel:VidViewModel
         videoViewModel = ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
         videoViewModel.loadVideosFromStorage()
 
-                   videoViewModel.videoList.observe(viewLifecycleOwner, Observer {
-                       Log.d("Videos", it.toString())
+                   videoViewModel.recentVideoLiveData.observe(viewLifecycleOwner, Observer {
+                       Log.d("recentVideos", it.toString())
 
                        recentVideoAdapter.differ.submitList(it)
                        recentVideoAdapter.notifyDataSetChanged()
@@ -61,7 +62,9 @@ private lateinit var videoViewModel:VidViewModel
 
 
     private fun setRecyclerView(){
-        recentVideoAdapter=RecentVideoAdapter()
+        recentVideoAdapter=RecentVideoAdapter({ lastPlayed->
+
+        })
         categoryAdapter=BaseCategoryAdapter({ position->
             //show more button
 
@@ -93,9 +96,40 @@ private lateinit var videoViewModel:VidViewModel
     }
 
 
+    override fun onResume() {
+        super.onResume()
 
 
+            val lastPlayed=     CoreUttiles.retrievingPlayedVideoId(requireContext())
 
+                      Log.d("TTT","last played video ${lastPlayed.toString()}")
+        addingCurrentVideoToRecentList(lastPlayed)
+        videoViewModel.apply {
+            recentVideoLiveData.value=recentVideosList.asReversed()
+        }
+
+    }
+
+    private fun addingCurrentVideoToRecentList(lastVideo:PlayedVideoItem) {
+
+        //val a= videoViewModel.recentVideosList.forEachIndexed()
+        if (videoViewModel.recentVideosList.size>1) {
+
+        for (item in videoViewModel.recentVideosList) {
+            if (item.videoId == lastVideo.videoId) {
+
+                videoViewModel.recentVideosList.remove(item)
+                break
+            }
+        }
+    }
+
+        videoViewModel.recentVideosList.add(lastVideo)
+
+        Log.d("TTT","recentList new ${videoViewModel.recentVideosList.toString()}")
+        Log.d("TTT","recentList size ${videoViewModel.recentVideosList.size}")
+
+    }
 
 
     override fun onItemClick(Position: Int, photo: ImageModel) {

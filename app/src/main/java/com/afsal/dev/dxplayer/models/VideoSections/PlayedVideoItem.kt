@@ -1,0 +1,1 @@
+package com.afsal.dev.dxplayer.models.VideoSectionsimport android.graphics.Bitmapimport android.net.Uridata class PlayedVideoItem(    val videoId:Long,    val videoUri: Uri,    val videoDuration:Long,    val lastPlayedPosition:Long)

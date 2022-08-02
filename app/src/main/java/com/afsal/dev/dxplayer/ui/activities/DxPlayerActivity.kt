@@ -23,6 +23,7 @@ import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
+import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
@@ -40,7 +41,7 @@ import kotlin.math.abs
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback */
 
-class DxPlayerActivity : AppCompatActivity() {
+class DxPlayerActivity() : AppCompatActivity() {
 
     private val TAG="DxPlayer"
     var isFullScreen=false
@@ -91,6 +92,7 @@ class DxPlayerActivity : AppCompatActivity() {
             detector=GestureDetectorCompat(this,SwipeListener())
 
         currentVideo= intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
+        playBackPosition=intent.getLongExtra(CoreUttiles.VIDEO_POSITION,0L)!!
 
          audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -99,6 +101,9 @@ class DxPlayerActivity : AppCompatActivity() {
 
 //         initPlayer()
         automateScreenMode()
+
+
+
         back_bt.setOnClickListener {
             onBackPressed()
             this.finish()
@@ -504,6 +509,7 @@ class DxPlayerActivity : AppCompatActivity() {
 //        if (Util.SDK_INT <=23){
 //            releasePlayer()
 //        }
+        saveLastPlayedItem(exoPlayer.currentPosition)
         exoPlayer.pause()
     }
 
@@ -522,6 +528,7 @@ class DxPlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        saveLastPlayedItem(exoPlayer.currentPosition)
         exoPlayer.release()
     }
 
@@ -607,7 +614,7 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
 
 
     inner class SwipeListener:GestureDetector.SimpleOnGestureListener(){
-      private val SWIP_THRESHOLD=120
+      private val SWIP_THRESHOLD=100
         private val DOWN_SWIP_THERSHOLD=80
         override fun onScroll(
             douwnEvent: MotionEvent?,
@@ -785,6 +792,19 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
         }, 2000);
 
 
+    }
+
+    private fun saveLastPlayedItem(currentPosition:Long){
+    //    val video=currentVideo
+
+
+//        val playedVideoItem=PlayedVideoItem(videoId =video.id, videoUri = video.artUri,
+//              videoDuration =video.duration, lastPlayedPosition = currentPosition)
+//        Log.d("DDD","last video ${playedVideoItem.toString()}")
+
+
+        CoreUttiles.saveLastPlayedVideo(this,currentPosition,currentVideo)
+            // CoreUttiles.saveLastPlayedItem(this,playedVideoItem)
     }
 
 

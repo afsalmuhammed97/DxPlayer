@@ -43,7 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_15dp"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="1dp" />
+            tools:layout_editor_absoluteY="1dp"
+            app:stackFromEnd="true"
+            app:reverseLayout="true"/>
 
         <View
             android:id="@+id/view"
@@ -57,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:itemCount="4"
-            tools:listitem="@layout/video_item" />
+            />
 
 
     </LinearLayout>

@@ -1,30 +1,33 @@
 package com.afsal.dev.dxplayer.utills
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.RecoverableSecurityException
 import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.text.format.DateUtils
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.models.VideoSections.Folders
+import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -37,6 +40,12 @@ object CoreUttiles {
     const val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
    const val VIDEO_FRAGMENT="VideoFragment"
     const val VIDEO="VideoItem"
+   const val LASTPLAYED_VIDEO="LastPlayedVideo"
+    const val LASTPLAYED_DATA="LastPlayedData"
+    const val VIDEO_POSITION="VideoPosition"
+    const val VIDEO_ID="VideoId"
+    const val VIDEO_URI="VideoUri"
+    const val VIDEO_DURATION="VideoDuration"
 
 
 
@@ -96,6 +105,7 @@ object CoreUttiles {
 
                      //  val dataUri=ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,id)
 
+
                             try {
                                 val file=File(path)
                                 val artUri=Uri.fromFile(file)
@@ -103,7 +113,7 @@ object CoreUttiles {
                                 videos.add(
                                     VideoItemModel(id =id, tittle =  displayName, size =size , duration = duration,
                                     dateAdded = dateFormat(dateAdded), folderName = folderName,  artUri = artUri,
-                                        width = width , height = height )
+                                        width = width , height = height , path = path  )
                                 )
                                 foldersNameSet.add(folderName)
 
@@ -215,6 +225,14 @@ object CoreUttiles {
 
      fun durationToHour(duration:Long)= DateUtils.formatElapsedTime(duration /1000)
 
+     fun generateThumbNail(path:String):Bitmap{
+
+         val videoThumb= ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND)
+
+       return  videoThumb!!
+     }
+
+
 
     private fun dateFormat(date: Long): String {
 
@@ -322,4 +340,71 @@ object CoreUttiles {
 
 
 
+    fun saveLastPlayedVideo(context: Context,currentPosition:Long,video:VideoItemModel){
+
+       // val lastPlayed= GsonBuilder().create().toJson(lastPlayedVideo)
+
+        val sharedPreference =context.getSharedPreferences(LASTPLAYED_VIDEO,Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+
+        editor.apply {
+            putLong(VIDEO_POSITION,currentPosition)
+            putLong(VIDEO_ID,video.id)
+            putLong(VIDEO_DURATION,video.duration)
+            putString(VIDEO_URI,video.artUri.toString())
+
+        }
+
+        editor.commit()
+
+
+        //val jSonString= GsonBuilder().create().toJson(lastplayedSong)
+    }
+
+    fun saveLastPlayedItem(context: Context,videoItem: PlayedVideoItem){
+        val lastPlayed= GsonBuilder().create().toJson(videoItem)
+
+        val sharedPreference =context.getSharedPreferences(LASTPLAYED_VIDEO,Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+         editor.clear()
+         editor.putString(LASTPLAYED_DATA,lastPlayed)
+         editor.commit()
+
+    }
+
+    fun retrievingPlayedVideoId(context: Context):PlayedVideoItem{
+        val editor=context.getSharedPreferences(LASTPLAYED_VIDEO, Context.MODE_PRIVATE)
+
+
+        val lastPosition=editor.getLong(VIDEO_POSITION,0L)
+        val videoId=editor.getLong(VIDEO_ID, 0L)
+        val videoDuration=editor.getLong(VIDEO_DURATION,0L)
+        val videoUriString=editor.getString(VIDEO_URI,"")
+        val videoUri=Uri.parse(videoUriString)
+
+        Log.d("TTT","video position $lastPosition")
+        Log.d("TTT","video id $videoId")
+        return  PlayedVideoItem(videoId,videoUri,videoDuration,lastPosition)
+
+    }
+
+    fun retrievingLatPlayedVideo(context: Context): PlayedVideoItem? {
+
+        val editor = context.getSharedPreferences(LASTPLAYED_VIDEO, Context.MODE_PRIVATE)
+
+        val jsonString = editor.getString(LASTPLAYED_DATA, "")
+        val typeToken = object : TypeToken<PlayedVideoItem>() {}.type
+
+        return GsonBuilder().create().fromJson(jsonString, typeToken)
+
+    }
+
+    fun getProgressPercent(curretProgress:Long,tottalProgress:Long):Int{
+
+        val current=curretProgress.toFloat()
+        val tottel=tottalProgress.toFloat()
+
+        val progress=(current.div(tottel))*100
+        return progress.toInt()
+    }
 }

@@ -10,21 +10,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.afsal.dev.dxplayer.models.VideoSections.Folders
+import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
 import com.afsal.dev.dxplayer.ui.activities.DxPlayerActivity
 import com.afsal.dev.dxplayer.ui.activities.PlayerScreenActivity
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.utills.CoreUttiles.VIDEO
+import com.afsal.dev.dxplayer.utills.CoreUttiles.VIDEO_POSITION
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class VidViewModel(application: Application) : BaseViewModel(application) {
-   val scope= CoroutineScope(Dispatchers.IO + CoroutineName("myScope"))
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
+
+    val recentVideosList= mutableListOf<PlayedVideoItem>()
+     val recentVideoLiveData=MutableLiveData<List<PlayedVideoItem>>()
+
+
+
+//   val scope= CoroutineScope(Dispatchers.IO + CoroutineName("myScope"))
+//    private val _text = MutableLiveData<String>().apply {
+//        value = "This is home Fragment"
+//    }
 
     val foldersNameSet= mutableSetOf<String>()
 // val categoryVideoList= mutableListOf<Folders>()
@@ -55,11 +63,19 @@ private val _categoryVideoList:MutableLiveData<List<Folders>> = MutableLiveData(
 
 
     fun launchPlayerScreen(context: Context,video:VideoItemModel,fragment:Fragment): Intent {
+         var videoPostion=0L
+        if (recentVideosList.isNotEmpty())
+        for (item in recentVideosList){
+            if (item.videoId==video.id){
+                videoPostion=item.lastPlayedPosition
+                break
+            }
+        }
 
         val intent = Intent(context,DxPlayerActivity::class.java)
        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra(VIDEO,video as Parcelable)
-
+        intent.putExtra(VIDEO_POSITION,videoPostion)
         fragment.startActivity(intent)
         return intent
     }
