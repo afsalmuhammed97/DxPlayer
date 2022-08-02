@@ -44,9 +44,9 @@ class ImageViewFragment : BaseFragment<FragmentImageViewBinding>(
             registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
 
                 if (it.resultCode == RESULT_OK) {
-                   CoreUttiles.showSnackBar("Photo deleted successfully",binding.imageViewLayout)
+                   CoreUttiles.showSnackBar("Photo deleted successfully",binding.imageViewLayout,"") {}
                 }else{
-                    CoreUttiles.showSnackBar("Photo couldn't be deleted ",binding.imageViewLayout)
+                    CoreUttiles.showSnackBar("Photo couldn't be deleted ",binding.imageViewLayout,"") {}
                 }
 
 
@@ -82,10 +82,10 @@ class ImageViewFragment : BaseFragment<FragmentImageViewBinding>(
 
                  }
 
-                 favoriteBt.setOnClickListener { CoreUttiles.showSnackBar("not implemented yet",this.imageViewLayout) }
-                 editBt.setOnClickListener { CoreUttiles.showSnackBar("not implemented yet",this.imageViewLayout) }
+                 favoriteBt.setOnClickListener { CoreUttiles.showSnackBar("not implemented yet",this.imageViewLayout,""){} }
+                 editBt.setOnClickListener { CoreUttiles.showSnackBar("not implemented yet",this.imageViewLayout,""){} }
 
-                 moreBt.setOnClickListener { CoreUttiles.showSnackBar("not implemented yet",this.imageViewLayout) }
+                 moreBt.setOnClickListener { CoreUttiles.showSnackBar("not implemented yet",this.imageViewLayout,""){} }
 
              }
 

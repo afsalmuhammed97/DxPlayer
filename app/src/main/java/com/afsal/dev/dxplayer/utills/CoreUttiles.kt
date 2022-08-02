@@ -169,7 +169,7 @@ object CoreUttiles {
           MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
           MediaStore.Images.Media.ORIENTATION,
           MediaStore.Images.Media.TITLE,
-          MediaStore.Images.Media.IS_FAVORITE,
+//          MediaStore.Images.Media.IS_FAVORITE,
 
       )
            val photos= mutableListOf<ImageModel>()
@@ -189,7 +189,7 @@ object CoreUttiles {
                val addedDateColumn=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN) //getColumnIndex(MediaStore.Images.Media.DATE_ADDED)
                val folderNameColumn=cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
                val titleColumn=cursor.getColumnIndex(MediaStore.Images.Media.TITLE)
-               val favoriteColumn=cursor.getColumnIndex(MediaStore.Images.Media.IS_FAVORITE)
+//               val favoriteColumn=cursor.getColumnIndex(MediaStore.Images.Media.IS_FAVORITE)
 
                while (cursor.moveToNext()){
                    val id= cursor.getLong(idColumn)
@@ -199,7 +199,7 @@ object CoreUttiles {
                    val addedDate=cursor.getLong(addedDateColumn)
                    val folderName=cursor.getString(folderNameColumn)
                    val tittle=cursor.getString(titleColumn)
-                   val isFavorite=cursor.getString(favoriteColumn)
+//                   val isFavorite=cursor.getString(favoriteColumn)
                    val contentUri=ContentUris.withAppendedId(
                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
                    )
@@ -209,7 +209,7 @@ object CoreUttiles {
                        ImageModel(
                        id =id, name = displayName, width = width, height = height,
                                        contentUri = contentUri, addedDate = dateFormat(addedDate),          // dateFormater(addedDate) ,
-                                       folderName =folderName, title = tittle , isFavorite = isFavorite)
+                                       folderName =folderName, title = tittle )
                    )
                }
                photos.toList()
@@ -298,13 +298,15 @@ object CoreUttiles {
        context.startActivity(Intent.createChooser(shareIntent, "image"))
     }
 
-    fun showSnackBar(text:String, layout: View){
+    fun showSnackBar(text:String, layout: View,actionText:String?,actionClicked:()->Unit){
 
               Snackbar.make(layout,text,Snackbar.LENGTH_SHORT)
                   .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                   .setBackgroundTint(Color.BLACK)
                   .setTextColor(Color.WHITE)
-                 // .setAction("confirm.",){}
+                  .setAction(actionText){
+                      actionClicked()
+                  }
                   .show()
 
     }
@@ -384,6 +386,7 @@ object CoreUttiles {
 
         Log.d("TTT","video position $lastPosition")
         Log.d("TTT","video id $videoId")
+        //need to clear the list after reading
         return  PlayedVideoItem(videoId,videoUri,videoDuration,lastPosition)
 
     }

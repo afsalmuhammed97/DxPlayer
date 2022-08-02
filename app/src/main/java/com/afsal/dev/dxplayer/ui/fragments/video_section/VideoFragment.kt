@@ -62,9 +62,11 @@ private lateinit var videoViewModel:VidViewModel
 
 
     private fun setRecyclerView(){
-        recentVideoAdapter=RecentVideoAdapter({ lastPlayed->
+        recentVideoAdapter=RecentVideoAdapter { lastPlayedId ->
 
-        })
+            setPlayerScreenWithRecentItem(lastPlayedId)
+        }
+
         categoryAdapter=BaseCategoryAdapter({ position->
             //show more button
 
@@ -131,6 +133,17 @@ private lateinit var videoViewModel:VidViewModel
 
     }
 
+    private fun setPlayerScreenWithRecentItem(lastPlayedId:Long){
+
+        for (item in videoViewModel.videoList.value!!){
+
+            if (item.id== lastPlayedId){
+                videoViewModel.launchPlayerScreen(requireContext(),item,this)
+
+                break
+            }
+        }
+    }
 
     override fun onItemClick(Position: Int, photo: ImageModel) {
 

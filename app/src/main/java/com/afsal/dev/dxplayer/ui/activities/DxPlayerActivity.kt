@@ -102,7 +102,14 @@ class DxPlayerActivity() : AppCompatActivity() {
 //         initPlayer()
         automateScreenMode()
 
-
+           if (playBackPosition >0){
+               CoreUttiles.showSnackBar("Continue from where you stopped "
+                   ,binding.volumeLayout,
+                   "START OVER"){
+//
+                   exoPlayer.seekTo(0L)
+               }
+           }
 
         back_bt.setOnClickListener {
             onBackPressed()

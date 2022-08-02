@@ -13,5 +13,5 @@ data class ImageModel(
     val addedDate:String?,
     val folderName:String,
     val title: String?,
-    val isFavorite:String
+//    val isFavorite:String?
 ):Serializable
