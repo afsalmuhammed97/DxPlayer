@@ -48,7 +48,7 @@ class ImagesAdapter(val context: Context, private  val listener: OnItemClickList
             val photo=differList.currentList[position]
        // holder.binding.image.setImageURI(photo.contentUri)
 
-            CoreUttiles.loadImageIntoView(photo.contentUri,holder.binding.image,null,CoreUttiles.IMAGE_FRAGMENT)
+            CoreUttiles.loadImageIntoView(photo.contentUri,holder.binding.image,null,CoreUttiles.IMAGE_VIEW)
 
  /// need to implement more like glide ...
     }

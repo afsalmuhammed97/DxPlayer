@@ -21,6 +21,7 @@ import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.models.VideoSections.Folders
 import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
+import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -36,8 +37,8 @@ import java.util.*
 
 object CoreUttiles {
 
-    const val  IMAGE_FRAGMENT ="ImageFragment"
-    const val IMAGE_VIEW_FRAGMENT="ImageViewFragment"
+    const val  IMAGE_VIEW ="ImageFragment"
+    const val CUSTOM_IMAGE_VIEW="CustomImageView"
    const val VIDEO_FRAGMENT="VideoFragment"
     const val VIDEO="VideoItem"
    const val LASTPLAYED_VIDEO="LastPlayedVideo"
@@ -151,13 +152,90 @@ object CoreUttiles {
         return  categoryVideoList
     }
 
+    //to load all musics from storage
+    suspend fun loadAllMusics(context: Context):List<MusicItem>{
+
+      //  val sortOrder= arrayOf( "${MediaStore.Audio.Media.DATE_TAKEN} DESC")
+
+     return   withContext(Dispatchers.IO) {
+
+            val musicList= mutableListOf<MusicItem>()
+            val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0"
+            val projection = arrayOf(
+                MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATE_ADDED,
+                MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID,
+                MediaStore.Audio.Media.BUCKET_DISPLAY_NAME
+            )
+
+            val collection = sdk29AndUp {
+                MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+            } ?: MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+            context.contentResolver.query(
+
+                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,projection,
+                selection,null,
+                MediaStore.Audio.Media.DURATION + ">= 60000",null
+
+//                collection, projection, selection, null,
+//                MediaStore.Audio.Media.DURATION + ">= 60000", null
+            )?.use { cursor ->
+
+                val idColumn = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
+                val tittleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
+                val albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
+                val artistsColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
+                val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
+                val albumIdColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)
+                val artUriColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
+                val folderNameColumn = cursor.getColumnIndex(MediaStore.Audio.Media.BUCKET_DISPLAY_NAME)
+
+                while (cursor.moveToNext()){
+                    val id=cursor.getString(idColumn)
+                    val tittle=cursor.getString(tittleColumn)
+                    val album=cursor.getString(albumColumn)
+                    val artists=cursor.getString(artistsColumn)
+                    val duration=cursor.getLong(durationColumn)
+//                   val path=cursor.getString(pathColumn)
+                    val uri=cursor.getString(artUriColumn)
+                    val folder=cursor.getString(folderNameColumn)
+                    val albumId=cursor.getString(albumIdColumn)
+
+
+                      try {
+                           val uri1 = Uri.parse("content://media/external/audio/albumart")
+                                         val artUri= Uri.withAppendedPath(uri1, albumId)
+                         // val file=File(uri)
+//                          val artUri=Uri.fromFile(file)
+
+                          musicList.add(
+                              MusicItem(id = id, tittle = tittle, album = album,
+                              artist = artists, duration = duration,
+                              path ="", artUri = artUri, folderName = folder )
+                          )
+
+                      }catch (e:Exception){
+                          e.stackTrace
+                      }
+
+                }
+
+                musicList.toList()
+
+            }?: emptyList()
+
+        }
+
+    }
     //to load images from storage
   @RequiresApi(Build.VERSION_CODES.R)
   suspend     fun loadPhotos(context: Context):List<ImageModel>{
        return withContext(Dispatchers.IO){
       val collection= sdk29AndUp {
           MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
-      }?:MediaStore.Images.Media.EXTERNAL_CONTENT_URI                        //EXTERNAL_CONTENT_URI
+      }?:MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 
            val projection= arrayOf(
           MediaStore.Images.Media._ID,
@@ -212,6 +290,8 @@ object CoreUttiles {
                                        folderName =folderName, title = tittle )
                    )
                }
+
+             //  cursor.close()
                photos.toList()
 
 
@@ -258,12 +338,12 @@ object CoreUttiles {
 
 
 
-    fun loadImageIntoView(imageUri:Uri,view:ImageView?,customView: CustomZoomImageView? ,screenName:String){
+    fun loadImageIntoView(imageUri:Uri,view:ImageView?,customView: CustomZoomImageView? ,screenType:String){
 
         val requestOptions=RequestOptions()
-               when(screenName){
+               when(screenType){
 
-                 IMAGE_FRAGMENT -> {
+                 IMAGE_VIEW -> {
                        requestOptions.centerCrop()
 
                        if (view != null) {
@@ -276,7 +356,7 @@ object CoreUttiles {
 
                    }
 
-                   IMAGE_VIEW_FRAGMENT->{ requestOptions.centerInside()
+                   CUSTOM_IMAGE_VIEW->{ requestOptions.centerInside()
                        if (customView != null) {
                            Glide.with(customView.context)
                                .load(imageUri)

@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/button_color</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/purple_200</item>
+        <item name="colorSecondary">@color/light_blue_A400</item>
         <item name="colorSecondaryVariant">@color/button_color</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
