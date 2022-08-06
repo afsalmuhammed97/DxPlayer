@@ -13,11 +13,11 @@ import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
 
 
-class MusicFragment :BaseFragment<MusicFragmentBinding>(
+class MusicFragment : BaseFragment<MusicFragmentBinding>(
     MusicFragmentBinding::inflate
-){
+) {
 
-   private val TAG="MusicFragment"
+    private val TAG = "MusicFragment"
     private lateinit var musicViewModel: MusicViewModel
     private lateinit var songsAdapter: SongsAdapter
 //    override fun onCreateView(
@@ -32,21 +32,21 @@ class MusicFragment :BaseFragment<MusicFragmentBinding>(
         super.onViewCreated(view, savedInstanceState)
         musicViewModel = ViewModelProvider(this)[MusicViewModel::class.java]
 
-        songsAdapter= SongsAdapter(){
+        songsAdapter = SongsAdapter() {
 
 
         }
         binding.apply {
-            audioRv.layoutManager= GridLayoutManager(context,3)
-            audioRv.adapter=songsAdapter
+            audioRv.layoutManager = GridLayoutManager(context, 3)
+            audioRv.adapter = songsAdapter
 
 
         }
         binding.audioRv.setOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            var scrollDy = 0
+            //            var scrollDy = 0
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                  //  Log.d(TAG,"new state  $newState")
+                //  Log.d(TAG,"new state  $newState")
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -73,14 +73,12 @@ class MusicFragment :BaseFragment<MusicFragmentBinding>(
 
         musicViewModel.musicList.observe(viewLifecycleOwner, Observer {
 
-            Log.d(TAG,"musics ${it.toString()}")
+            Log.d(TAG, "musics ${it.toString()}")
             songsAdapter.differ.submitList(it)
         })
 
 
     }
-
-
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

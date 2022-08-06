@@ -43,73 +43,74 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoa
 
 class DxPlayerActivity() : AppCompatActivity() {
 
-    private val TAG="DxPlayer"
-    var isFullScreen=false
-    var isLock=false
-    private var check=false
-    private val ad=4000
-    private var playWhenReady=false
-    private var currentItem=0
-    private var playBackPosition= 0L
-    private var brightness =0F
-    private var volume=0F
-    private val audioTracks=ArrayList<String>()
+    private val TAG = "DxPlayer"
+    var isFullScreen = false
+    var isLock = false
+    private var check = false
+    private val ad = 4000
+    private var playWhenReady = false
+    private var currentItem = 0
+    private var playBackPosition = 0L
+    private var brightness = 0F
+    private var volume = 0F
+    private val audioTracks = ArrayList<String>()
 
     private lateinit var audioManager: AudioManager
-    private lateinit var detector:GestureDetectorCompat
+    private lateinit var detector: GestureDetectorCompat
     private lateinit var radioGroupAudio: RadioGroup
-    private lateinit var drawerLayout:DrawerLayout
-    private lateinit var dialogDrawer:NavigationView
-    private lateinit var bt_lockScreen:ImageView
-    private lateinit var back_bt:ImageView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var dialogDrawer: NavigationView
+    private lateinit var bt_lockScreen: ImageView
+    private lateinit var back_bt: ImageView
     private lateinit var checkBox: CheckBox
-    private lateinit var skippCountText:TextView
-    private lateinit var tittle_text:TextView
-    private lateinit var   bt_fullscreen: ImageView
-    private lateinit var track_bt:ImageView
-    private lateinit var  currentVideo:VideoItemModel
+    private lateinit var skippCountText: TextView
+    private lateinit var tittle_text: TextView
+    private lateinit var bt_fullscreen: ImageView
+    private lateinit var track_bt: ImageView
+    private lateinit var currentVideo: VideoItemModel
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var handler: Handler
-    private lateinit var trackSelector:DefaultTrackSelector
+    private lateinit var trackSelector: DefaultTrackSelector
     private lateinit var binding: ActivityDxPlayerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding= ActivityDxPlayerBinding.inflate(layoutInflater)
+        binding = ActivityDxPlayerBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         supportActionBar?.hide()
 
-            bt_fullscreen=findViewById(R.id.bt_fullscreen)
-            bt_lockScreen=findViewById(R.id.exo_lock)
-           back_bt=findViewById(R.id.exo_back)
-           tittle_text=findViewById(R.id.title_text)
-           track_bt=findViewById(R.id.exo_audio_track)
-          dialogDrawer=findViewById(R.id.dx_player_drawer)
-          drawerLayout=findViewById(R.id.drawer_layout)
-           radioGroupAudio=findViewById(R.id.radio_group)
-          checkBox=findViewById(R.id.checkBox)
-           skippCountText=findViewById(R.id.skipp_count_text)
+        bt_fullscreen = findViewById(R.id.bt_fullscreen)
+        bt_lockScreen = findViewById(R.id.exo_lock)
+        back_bt = findViewById(R.id.exo_back)
+        tittle_text = findViewById(R.id.title_text)
+        track_bt = findViewById(R.id.exo_audio_track)
+        dialogDrawer = findViewById(R.id.dx_player_drawer)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        radioGroupAudio = findViewById(R.id.radio_group)
+        checkBox = findViewById(R.id.checkBox)
+        skippCountText = findViewById(R.id.skipp_count_text)
 
-            detector=GestureDetectorCompat(this,SwipeListener())
+        detector = GestureDetectorCompat(this, SwipeListener())
 
-        currentVideo= intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
-        playBackPosition=intent.getLongExtra(CoreUttiles.VIDEO_POSITION,0L)!!
+        currentVideo = intent.getParcelableExtra<VideoItemModel>(CoreUttiles.VIDEO)!!
+        playBackPosition = intent.getLongExtra(CoreUttiles.VIDEO_POSITION, 0L)!!
 
-         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         Log.d(TAG, "current Item  ${currentVideo.toString()}")
-        handler= Handler(Looper.getMainLooper())
+        handler = Handler(Looper.getMainLooper())
 
 //         initPlayer()
         automateScreenMode()
 
-           if (playBackPosition >0){
-               CoreUttiles.showSnackBar("Continue from where you stopped "
-                   ,binding.volumeLayout,
-                   "START OVER"){
+        if (playBackPosition > 0) {
+            CoreUttiles.showSnackBar(
+                "Continue from where you stopped ", binding.volumeLayout,
+                "START OVER"
+            ) {
 //
-                   exoPlayer.seekTo(0L)
-               }
-           }
+                exoPlayer.seekTo(0L)
+            }
+        }
 
         back_bt.setOnClickListener {
             onBackPressed()
@@ -117,10 +118,10 @@ class DxPlayerActivity() : AppCompatActivity() {
         }
         track_bt.setOnClickListener {
 
-           drawerLayout.openDrawer(Gravity.END)
+            drawerLayout.openDrawer(Gravity.END)
 
-             getAudioTracks()
-           //  setScreenBrightness(23)
+            getAudioTracks()
+            //  setScreenBrightness(23)
 
 
         }
@@ -129,55 +130,69 @@ class DxPlayerActivity() : AppCompatActivity() {
         checkBox.setOnClickListener {
 
 
-            if (checkBox.isChecked){
-                trackSelector.parameters=DefaultTrackSelector.ParametersBuilder(this)
-                    .setRendererDisabled(C.TRACK_TYPE_VIDEO,false).build()
-            }else{
-                trackSelector.parameters=DefaultTrackSelector.ParametersBuilder(this)
-                    .setRendererDisabled(C.TRACK_TYPE_VIDEO,true).build()
+            if (checkBox.isChecked) {
+                trackSelector.parameters = DefaultTrackSelector.ParametersBuilder(this)
+                    .setRendererDisabled(C.TRACK_TYPE_VIDEO, false).build()
+            } else {
+                trackSelector.parameters = DefaultTrackSelector.ParametersBuilder(this)
+                    .setRendererDisabled(C.TRACK_TYPE_VIDEO, true).build()
             }
         }
 
 
-      bt_fullscreen.setOnClickListener {
+        bt_fullscreen.setOnClickListener {
 
-          if (!isFullScreen){
+            if (!isFullScreen) {
 
-              bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(applicationContext,
-                  R.drawable.ic_baseline_fullscreen_exit))
-              binding.videoView.resizeMode = AspectRatioFrameLayout. RESIZE_MODE_FILL
+                bt_fullscreen.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        R.drawable.ic_baseline_fullscreen_exit
+                    )
+                )
+                binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
 
-              requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 //              val params = binding.videoView.layoutParams
 //              params.width = params.width
 //              params.height = ( 200 * applicationContext.resources.displayMetrics.density).toInt()
 
 
+            } else {
+                bt_fullscreen.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        applicationContext, R.drawable.ic_fullscreen_icon
+                    )
+                )
 
-          }else{
-              bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(applicationContext
-                  ,R.drawable.ic_fullscreen_icon))
+                requestedOrientation = (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            }
 
-              requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                           binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-          }
-
-          isFullScreen =! isFullScreen
-      }
+            isFullScreen = !isFullScreen
+        }
 
         bt_lockScreen.setOnClickListener {
-            if (! isLock){
-                bt_lockScreen.setImageDrawable(ContextCompat.getDrawable(applicationContext,
-                   R.drawable.ic_baseline_lock))
+            if (!isLock) {
+                bt_lockScreen.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        R.drawable.ic_baseline_lock
+                    )
+                )
 
-            }else{
-                bt_lockScreen.setImageDrawable(ContextCompat.getDrawable(applicationContext,
-                    R.drawable.ic_baseline_lock_open_24))
+            } else {
+                bt_lockScreen.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        R.drawable.ic_baseline_lock_open_24
+                    )
+                )
 
             }
-            isLock =!isLock
-           // lockScreen(isLock)
-            hideControls(isLock,false)
+            isLock = !isLock
+            // lockScreen(isLock)
+            hideControls(isLock, false)
 
         }
 
@@ -190,12 +205,12 @@ class DxPlayerActivity() : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(object :
             DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-             //  Log.d(TAG,"drawer slided")
+                //  Log.d(TAG,"drawer slided")
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                 hideControls(false, allControls = true)
-                Log.d(TAG,"drawer opened")
+                hideControls(false, allControls = true)
+                Log.d(TAG, "drawer opened")
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -203,15 +218,15 @@ class DxPlayerActivity() : AppCompatActivity() {
             }
 
             override fun onDrawerStateChanged(newState: Int) {
-                Log.d(TAG,"drawer state changed")
+                Log.d(TAG, "drawer state changed")
             }
         })
 
         binding.drawerLayout.setScrimColor(Color.TRANSPARENT)
 
-        binding.videoView.setOnTouchListener{_,event->
+        binding.videoView.setOnTouchListener { _, event ->
 
-                 detector.onTouchEvent(event)
+            detector.onTouchEvent(event)
             return@setOnTouchListener false
         }
 
@@ -221,7 +236,7 @@ class DxPlayerActivity() : AppCompatActivity() {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
         if (event != null) {
-            Log.d("EEE",event.action.toString())
+            Log.d("EEE", event.action.toString())
             CoreUttiles
         }
         return super.onTouchEvent(event)
@@ -234,52 +249,59 @@ class DxPlayerActivity() : AppCompatActivity() {
 //        }
 
 
+    private fun automateScreenMode() {
+        val displayMetrics = DisplayMetrics()
+        this.windowManager.defaultDisplay.getMetrics(displayMetrics)
 
 
+        if (currentVideo.width >= displayMetrics.widthPixels) {
+            //landscape
+            bt_fullscreen.setImageDrawable(
+                ContextCompat.getDrawable(
+                    applicationContext,
+                    R.drawable.ic_baseline_fullscreen_exit
+                )
+            )
+            binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
 
-      private fun automateScreenMode(){
-          val displayMetrics = DisplayMetrics()
-          this.windowManager.defaultDisplay.getMetrics(displayMetrics)
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            isFullScreen = true
 
+        } else {
+            //portrait
+            bt_fullscreen.setImageDrawable(
+                ContextCompat.getDrawable(
+                    applicationContext, R.drawable.ic_fullscreen_icon
+                )
+            )
 
-          if (currentVideo.width >=displayMetrics.widthPixels){
-              //landscape
-              bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(applicationContext,
-                  R.drawable.ic_baseline_fullscreen_exit))
-              binding.videoView.resizeMode = AspectRatioFrameLayout. RESIZE_MODE_FILL
-
-              requestedOrientation= ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-              isFullScreen=true
-
-          }else{
-              //portrait
-              bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(applicationContext
-                  ,R.drawable.ic_fullscreen_icon))
-
-              requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-              binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-              isFullScreen=false
-          }
-      }
+            requestedOrientation = (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+            binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            isFullScreen = false
+        }
+    }
 
     private fun initPlayer() {
-        trackSelector= DefaultTrackSelector(this)
-        trackSelector.setParameters( trackSelector.parameters.buildUpon().setPreferredAudioLanguage("eng"))
-        val mediaItem= MediaItem.fromUri(currentVideo.artUri)
+        trackSelector = DefaultTrackSelector(this)
+        trackSelector.setParameters(
+            trackSelector.parameters.buildUpon().setPreferredAudioLanguage("eng")
+        )
+        val mediaItem = MediaItem.fromUri(currentVideo.artUri)
 
 
-        exoPlayer=ExoPlayer.Builder(this)
+        exoPlayer = ExoPlayer.Builder(this)
             .setTrackSelector(trackSelector)
             .setSeekBackIncrementMs(5000)
             .setSeekForwardIncrementMs(5000)
             .build()
 
-                binding.videoView.apply {
-                    player=exoPlayer
-                    keepScreenOn=true }
+        binding.videoView.apply {
+            player = exoPlayer
+            keepScreenOn = true
+        }
         exoPlayer.setMediaItem(mediaItem)
-        exoPlayer.playWhenReady=playWhenReady
-        exoPlayer.seekTo(currentItem,playBackPosition)
+        exoPlayer.playWhenReady = playWhenReady
+        exoPlayer.seekTo(currentItem, playBackPosition)
         exoPlayer.prepare()
         exoPlayer.play()
 
@@ -293,24 +315,24 @@ class DxPlayerActivity() : AppCompatActivity() {
 
 
 
-        tittle_text.text=currentVideo.tittle
+        tittle_text.text = currentVideo.tittle
 
 
-        exoPlayer.addListener(object :Player.Listener{
+        exoPlayer.addListener(object : Player.Listener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 super.onPlayerStateChanged(playWhenReady, playbackState)
 
-                if (playbackState ==Player.STATE_BUFFERING){
-                 //binding.progressBar.visibility= View.VISIBLE
+                if (playbackState == Player.STATE_BUFFERING) {
+                    //binding.progressBar.visibility= View.VISIBLE
 
-                }else if ( playbackState == Player.STATE_READY){
-                  //  binding.progressBar.visibility= View.GONE
+                } else if (playbackState == Player.STATE_READY) {
+                    //  binding.progressBar.visibility= View.GONE
 
                 }
 
-                if (!exoPlayer.playWhenReady){
+                if (!exoPlayer.playWhenReady) {
                     handler.removeCallbacks(updateProgressAction)
-                }else{
+                } else {
                     onProgress()
                 }
             }
@@ -325,91 +347,94 @@ class DxPlayerActivity() : AppCompatActivity() {
         })
 
 
-
-
-
     }
 
-    private fun getAudioTracks(){
+    private fun getAudioTracks() {
 
-           audioTracks.clear()
+        audioTracks.clear()
 
         for (i in 0 until exoPlayer.currentTrackGroups.length) {
 
             if (exoPlayer.currentTrackGroups.get(i)
-                    .getFormat(0).selectionFlags == C.SELECTION_FLAG_DEFAULT) {         //SELECTION_FLAG_DEFAULT
+                    .getFormat(0).selectionFlags == C.SELECTION_FLAG_DEFAULT
+            ) {         //SELECTION_FLAG_DEFAULT
 
-                Log.d(TAG,"TracksList ${exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()}")
-                audioTracks.add(Locale(exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
+                Log.d(
+                    TAG,
+                    "TracksList ${
+                        exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()
+                    }"
+                )
+                audioTracks.add(
+                    Locale(
+                        exoPlayer.currentTrackGroups.get(i).getFormat(0).language.toString()
+                    ).displayLanguage
+                )
 
             }
 
         }
-        Log.d(TAG,"audio tracks ${audioTracks.toString()}")
+        Log.d(TAG, "audio tracks ${audioTracks.toString()}")
 
 
-          /* creating radiobutton for track selection         */
+        /* creating radiobutton for track selection         */
         creatingRadioButtons(audioTracks)
 
 
 
-            radioGroupAudio.setOnCheckedChangeListener { group, checkedId ->
+        radioGroupAudio.setOnCheckedChangeListener { group, checkedId ->
 
-                val selectedButton=findViewById<RadioButton>(checkedId)
-                val trackPosition= audioTracks.indexOf(selectedButton.text.toString())
-
-
-                trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredAudioLanguage(audioTracks[trackPosition]))
-            }
+            val selectedButton = findViewById<RadioButton>(checkedId)
+            val trackPosition = audioTracks.indexOf(selectedButton.text.toString())
 
 
-
-
-
+            trackSelector.setParameters(
+                trackSelector.buildUponParameters()
+                    .setPreferredAudioLanguage(audioTracks[trackPosition])
+            )
+        }
 
 
     }
 
 
+    private val updateProgressAction = Runnable { onProgress() }
+    fun onProgress() {
 
-
-    private val updateProgressAction = Runnable {   onProgress() }
-     fun onProgress(){
-
-        val player= exoPlayer
-        val position:Long =if (player == null) 0 else exoPlayer .currentPosition
+        val player = exoPlayer
+        val position: Long = if (player == null) 0 else exoPlayer.currentPosition
 
         handler.removeCallbacks(updateProgressAction)
 
-        val playbackState= if (player != null) Player.STATE_IDLE  else  exoPlayer.playbackState
+        val playbackState = if (player != null) Player.STATE_IDLE else exoPlayer.playbackState
 
-         if (playbackState !=Player.STATE_IDLE && playbackState != Player.STATE_ENDED){
+        if (playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED) {
 
-             var delayMs:Long
-             if (player.playWhenReady && playbackState == Player.STATE_READY){
-                 delayMs= 1000 -position %1000
-                 if (delayMs <200){
-                     delayMs +=1000
-                 }
-             }else{
-                 delayMs =1000
-             }
+            var delayMs: Long
+            if (player.playWhenReady && playbackState == Player.STATE_READY) {
+                delayMs = 1000 - position % 1000
+                if (delayMs < 200) {
+                    delayMs += 1000
+                }
+            } else {
+                delayMs = 1000
+            }
 
-             if ((ad-3000 <= position &&  position <= ad) && !check){
+            if ((ad - 3000 <= position && position <= ad) && !check) {
 
-                 check=true
-               ///  initAd()
-             }
-             handler.postDelayed(updateProgressAction,delayMs)
+                check = true
+                ///  initAd()
+            }
+            handler.postDelayed(updateProgressAction, delayMs)
 
-    }
-}
-
-        private fun showAudioTracks(){
-            DialogBottomSheet().show(supportFragmentManager,"")
         }
+    }
 
-  //  var rewardedInterstitialAd: RewardedInterstitialAd?=null
+    private fun showAudioTracks() {
+        DialogBottomSheet().show(supportFragmentManager, "")
+    }
+
+    //  var rewardedInterstitialAd: RewardedInterstitialAd?=null
 //  private fun initAd() {
 //        if (rewardedInterstitialAd !=null)  return
 //
@@ -474,18 +499,17 @@ class DxPlayerActivity() : AppCompatActivity() {
     override fun onBackPressed() {
 
         if (isLock) return
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
             bt_fullscreen.performClick()
-        }
-        else    super.onBackPressed()
+        } else super.onBackPressed()
 
 
     }
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT >23 ||exoPlayer == null){
+        if (Util.SDK_INT > 23 || exoPlayer == null) {
             initPlayer()
         }
 
@@ -494,16 +518,17 @@ class DxPlayerActivity() : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (Util.SDK_INT <23 ||exoPlayer == null){
+        if (Util.SDK_INT < 23 || exoPlayer == null) {
             initPlayer()
         }
-        if (brightness !=0F ) setScreenBrightness(brightness.toInt())
+        if (brightness != 0F) setScreenBrightness(brightness.toInt())
 
 
     }
+
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23){
+        if (Util.SDK_INT > 23) {
             releasePlayer()
         }
 
@@ -523,14 +548,14 @@ class DxPlayerActivity() : AppCompatActivity() {
     private fun releasePlayer() {
         exoPlayer.let {
 
-            playWhenReady=exoPlayer.playWhenReady
-            currentItem=exoPlayer.currentMediaItemIndex
-            playBackPosition=exoPlayer.currentPosition
+            playWhenReady = exoPlayer.playWhenReady
+            currentItem = exoPlayer.currentMediaItemIndex
+            playBackPosition = exoPlayer.currentPosition
             exoPlayer.stop()
             exoPlayer.release()
 
         }
-       // exoPlayer=null
+        // exoPlayer=null
     }
 
     override fun onDestroy() {
@@ -555,38 +580,37 @@ class DxPlayerActivity() : AppCompatActivity() {
 //
 //    }
 
-    private fun hideControls(lock: Boolean,allControls:Boolean){
-       val top_layout=findViewById<LinearLayout>(R.id.title_layout)
-        val sec_mid=findViewById<LinearLayout>(R.id.sec_controlvid1)
-        val sec_bottom=findViewById<LinearLayout>(R.id.sec_controlvid2)
+    private fun hideControls(lock: Boolean, allControls: Boolean) {
+        val top_layout = findViewById<LinearLayout>(R.id.title_layout)
+        val sec_mid = findViewById<LinearLayout>(R.id.sec_controlvid1)
+        val sec_bottom = findViewById<LinearLayout>(R.id.sec_controlvid2)
 
-        if (lock){
-            top_layout.visibility=View.INVISIBLE
-            sec_mid.visibility=View.INVISIBLE
-            sec_bottom.visibility=View.INVISIBLE
+        if (lock) {
+            top_layout.visibility = View.INVISIBLE
+            sec_mid.visibility = View.INVISIBLE
+            sec_bottom.visibility = View.INVISIBLE
 
-        }else if (allControls){
-            sec_mid.visibility=View.INVISIBLE
-            top_layout.visibility=View.INVISIBLE
-            sec_bottom.visibility=View.INVISIBLE
-            bt_lockScreen.visibility=View.INVISIBLE
+        } else if (allControls) {
+            sec_mid.visibility = View.INVISIBLE
+            top_layout.visibility = View.INVISIBLE
+            sec_bottom.visibility = View.INVISIBLE
+            bt_lockScreen.visibility = View.INVISIBLE
+        } else {
+            sec_mid.visibility = View.VISIBLE
+            top_layout.visibility = View.VISIBLE
+            sec_bottom.visibility = View.VISIBLE
+            bt_lockScreen.visibility = View.VISIBLE
         }
-        else{
-            sec_mid.visibility=View.VISIBLE
-            top_layout.visibility=View.VISIBLE
-            sec_bottom.visibility=View.VISIBLE
-            bt_lockScreen.visibility=View.VISIBLE
-        }
-
 
 
     }
 
 
-private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
+    private fun creatingRadioButtons(audioTracksList: ArrayList<String>) {
 
 
-    if (Build.VERSION.SDK_INT >= 21) {}
+        if (Build.VERSION.SDK_INT >= 21) {
+        }
         val colorStateList = ColorStateList(
             arrayOf(
                 intArrayOf(-android.R.attr.state_enabled),
@@ -601,133 +625,133 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
 
 
 
-           radioGroupAudio.removeAllViews()
-          radioGroupAudio.orientation=LinearLayout.VERTICAL
-    for (i in 0 until audioTracksList.size) {
-        val radioButton = RadioButton(this)
-        radioButton.setTextColor(Color.WHITE)
-        radioButton.buttonTintList = colorStateList
-        radioButton.id = View.generateViewId()
+        radioGroupAudio.removeAllViews()
+        radioGroupAudio.orientation = LinearLayout.VERTICAL
+        for (i in 0 until audioTracksList.size) {
+            val radioButton = RadioButton(this)
+            radioButton.setTextColor(Color.WHITE)
+            radioButton.buttonTintList = colorStateList
+            radioButton.id = View.generateViewId()
 
-        radioButton.text = audioTracksList[i]
-        val params =
-            LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT , ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-        radioButton.layoutParams = params
-        radioGroupAudio.addView(radioButton)
-        radioButton.defaultFocusHighlightEnabled=true
+            radioButton.text = audioTracksList[i]
+            val params =
+                LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    1f
+                )
+            radioButton.layoutParams = params
+            radioGroupAudio.addView(radioButton)
+            radioButton.defaultFocusHighlightEnabled = true
+        }
+
     }
 
-}
 
-
-    inner class SwipeListener:GestureDetector.SimpleOnGestureListener(){
-      private val SWIP_THRESHOLD=100
-        private val DOWN_SWIP_THERSHOLD=80
+    inner class SwipeListener : GestureDetector.SimpleOnGestureListener() {
+        private val SWIP_THRESHOLD = 100
+        private val DOWN_SWIP_THERSHOLD = 80
         override fun onScroll(
             douwnEvent: MotionEvent?,
             moveEvent: MotionEvent?,
             distanceX: Float,
             distanceY: Float
         ): Boolean {
-         val screenWidth=Resources.getSystem().displayMetrics.widthPixels
+            val screenWidth = Resources.getSystem().displayMetrics.widthPixels
 
 
-            val diffX= moveEvent?.x?.minus(douwnEvent!!.x) ?:0.0F
-             val diffY=moveEvent?.y?.minus(douwnEvent!!.y) ?:0.0F
-            Log.d("DDD","fiffy $diffY")
+            val diffX = moveEvent?.x?.minus(douwnEvent!!.x) ?: 0.0F
+            val diffY = moveEvent?.y?.minus(douwnEvent!!.y) ?: 0.0F
+            Log.d("DDD", "fiffy $diffY")
             //to control volume and brightness
-            if (abs(distanceX) < abs(distanceY)  ){
+            if (abs(distanceX) < abs(distanceY)) {
 
-                if (abs(diffY) > DOWN_SWIP_THERSHOLD){
-               if (douwnEvent!!.x <screenWidth/2){
-
-
-                 //  if (douwnEvent?.action== MotionEvent.ACTION_DOWN ) binding.brightnessLayout.visibility=View.VISIBLE
-                //left side event
-
-                val increase=distanceY >= 0
-                val newValue= if (increase) brightness +0.25 else brightness -0.25
-
-                   if(newValue in 0F ..30F) {
-                       brightness = newValue.toFloat()
-
-                       this@DxPlayerActivity.setScreenBrightness(brightness.toInt())
-
-                   }
+                if (abs(diffY) > DOWN_SWIP_THERSHOLD) {
+                    if (douwnEvent!!.x < screenWidth / 2) {
 
 
+                        //  if (douwnEvent?.action== MotionEvent.ACTION_DOWN ) binding.brightnessLayout.visibility=View.VISIBLE
+                        //left side event
+
+                        val increase = distanceY >= 0
+                        val newValue = if (increase) brightness + 0.25 else brightness - 0.25
+
+                        if (newValue in 0F..30F) {
+                            brightness = newValue.toFloat()
+
+                            this@DxPlayerActivity.setScreenBrightness(brightness.toInt())
+
+                        }
 
 
+                    } else {
+                        // right side event
 
-               }else{
-                  // right side event
+                        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 
-                   val maxVolume= audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                        val increase = distanceY >= 0
+                        val newValue = if (increase) volume + 0.25 else volume - 0.25
 
-                   val increase=distanceY >= 0
-                   val newValue= if (increase) volume +0.25 else volume -0.25
+                        if (newValue in 0F..maxVolume.toFloat()) {
+                            volume = newValue.toFloat()
 
-                   if(newValue in 0F ..maxVolume.toFloat()) {
-                       volume = newValue.toFloat()
+                            audioManager.setStreamVolume(
+                                AudioManager.STREAM_MUSIC,
+                                volume.toInt(),
+                                0
+                            )
 
-                       audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,volume.toInt(),0)
+                            updateVolumeProgress(volume, maxVolume)
 
-                       updateVolumeProgress(volume,maxVolume)
-
-                       Log.d("Volume","volume ${volume.toInt()}")
-
-
-                         //need to implement volume progress on left side
-                   }
-
+                            Log.d("Volume", "volume ${volume.toInt()}")
 
 
+                            //need to implement volume progress on left side
+                        }
 
 
-               }
+                    }
 
-            }
-            }else{
-                Log.d("DDD","diffx   $diffX")
-                var seek=5000+abs(diffX).toInt()
+                }
+            } else {
+                Log.d("DDD", "diffx   $diffX")
+                var seek = 5000 + abs(diffX).toInt()
 
 
 
-                         Log.d("DDD","diffx+seek   $seek")
+                Log.d("DDD", "diffx+seek   $seek")
 
-                  if ( abs(diffX) >SWIP_THRESHOLD){
+                if (abs(diffX) > SWIP_THRESHOLD) {
 
-                      skippCountText.visibility=View.VISIBLE
+                    skippCountText.visibility = View.VISIBLE
 
-                  if (diffX >0){
+                    if (diffX > 0) {
 
-                      binding.skipRight.visibility=View.VISIBLE
-                      val tex= CoreUttiles.durationToHour((exoPlayer.currentPosition +seek))
-                      skippCountText.text="[ $tex ]"
-                      exoPlayer.seekTo(exoPlayer.currentPosition +seek)
+                        binding.skipRight.visibility = View.VISIBLE
+                        val tex = CoreUttiles.durationToHour((exoPlayer.currentPosition + seek))
+                        skippCountText.text = "[ $tex ]"
+                        exoPlayer.seekTo(exoPlayer.currentPosition + seek)
 
 
-                  }else{
-                      exoPlayer.seekTo(exoPlayer.currentPosition -seek)
-                      val tex=CoreUttiles.durationToHour((exoPlayer.currentPosition -seek))
-                      skippCountText.text="[ $tex ]"
-                      binding.skipLeft.visibility=View.VISIBLE
+                    } else {
+                        exoPlayer.seekTo(exoPlayer.currentPosition - seek)
+                        val tex = CoreUttiles.durationToHour((exoPlayer.currentPosition - seek))
+                        skippCountText.text = "[ $tex ]"
+                        binding.skipLeft.visibility = View.VISIBLE
 
-                  }
-                  }
-                binding.skippCountText.postDelayed( {
+                    }
+                }
+                binding.skippCountText.postDelayed({
                     run {
 
                         binding.apply {
-                            skippCountText.visibility=View.INVISIBLE
-                            skipLeft.visibility=View.INVISIBLE
-                            skipRight.visibility=View.INVISIBLE
+                            skippCountText.visibility = View.INVISIBLE
+                            skipLeft.visibility = View.INVISIBLE
+                            skipRight.visibility = View.INVISIBLE
                         }
-                        this@DxPlayerActivity.hideControls(false,true)
+                        this@DxPlayerActivity.hideControls(false, true)
                     }
                 }, 1600);
-
-
 
 
             }
@@ -735,74 +759,72 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
             return super.onScroll(douwnEvent, moveEvent, distanceX, distanceY)
         }
 
-        private fun updateVolumeProgress(value: Float,max:Int) {
+        private fun updateVolumeProgress(value: Float, max: Int) {
 
-            binding.volumeLayout.visibility=View.VISIBLE
+            binding.volumeLayout.visibility = View.VISIBLE
 
-            val p=(value.div(max))*100
-            binding.volumeProgress.progress=p.toInt()
-            Log.d("Volume","volume progerss ${p})")
+            val p = (value.div(max)) * 100
+            binding.volumeProgress.progress = p.toInt()
+            Log.d("Volume", "volume progerss ${p})")
 
 
-            binding.volumeLayout.postDelayed( {
+            binding.volumeLayout.postDelayed({
                 run {
-                    binding.volumeLayout.visibility=View.INVISIBLE
-                    this@DxPlayerActivity.hideControls(false,true)
+                    binding.volumeLayout.visibility = View.INVISIBLE
+                    this@DxPlayerActivity.hideControls(false, true)
                 }
             }, 2000);
 
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            Log.d("DDD","single tap${e?.action}")
-                  if (e?.action ==1){
-                      this@DxPlayerActivity.hideControls(false,false)
-                  }
+            Log.d("DDD", "single tap${e?.action}")
+            if (e?.action == 1) {
+                this@DxPlayerActivity.hideControls(false, false)
+            }
 
             return super.onSingleTapUp(e)
         }
 
         override fun onDoubleTap(e: MotionEvent?): Boolean {
-            Log.d("DDD","double tap${e?.action}")
+            Log.d("DDD", "double tap${e?.action}")
 
             return super.onDoubleTap(e)
         }
 
 
-
-
-
     }
-    fun setScreenBrightness(value:Int){
+
+    fun setScreenBrightness(value: Int) {
 
 
-        val bright=value.toFloat()
-        val p=(bright.div(30))*100
-        Log.d(TAG,"brghtness b $p")
-         binding.brightnessProgress.progress=p.toInt()
+        val bright = value.toFloat()
+        val p = (bright.div(30)) * 100
+        Log.d(TAG, "brghtness b $p")
+        binding.brightnessProgress.progress = p.toInt()
         // binding.brightnessLayout.visibility=View.VISIBLE
 
 
-        val d =1.0f/30
-        val layoutParams=this.window.attributes
+        val d = 1.0f / 30
+        val layoutParams = this.window.attributes
 
-        layoutParams.screenBrightness=d * value
-         this.window.attributes=layoutParams
+        layoutParams.screenBrightness = d * value
+        this.window.attributes = layoutParams
 
-        binding.brightnessLayout.visibility=View.VISIBLE
+        binding.brightnessLayout.visibility = View.VISIBLE
 
-        binding.brightnessLayout.postDelayed( {
+        binding.brightnessLayout.postDelayed({
             run {
-                binding.brightnessLayout.visibility=View.INVISIBLE
-                hideControls(false,true)
+                binding.brightnessLayout.visibility = View.INVISIBLE
+                hideControls(false, true)
             }
         }, 2000);
 
 
     }
 
-    private fun saveLastPlayedItem(currentPosition:Long){
-    //    val video=currentVideo
+    private fun saveLastPlayedItem(currentPosition: Long) {
+        //    val video=currentVideo
 
 
 //        val playedVideoItem=PlayedVideoItem(videoId =video.id, videoUri = video.artUri,
@@ -810,8 +832,8 @@ private fun creatingRadioButtons(audioTracksList:ArrayList<String>) {
 //        Log.d("DDD","last video ${playedVideoItem.toString()}")
 
 
-        CoreUttiles.saveLastPlayedVideo(this,currentPosition,currentVideo)
-            // CoreUttiles.saveLastPlayedItem(this,playedVideoItem)
+        CoreUttiles.saveLastPlayedVideo(this, currentPosition, currentVideo)
+        // CoreUttiles.saveLastPlayedItem(this,playedVideoItem)
     }
 
 
