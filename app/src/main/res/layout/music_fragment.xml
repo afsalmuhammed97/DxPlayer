@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/_30dp"
     tools:context=".ui.fragments.music_section.MusicFragment"
 
     >
@@ -111,7 +113,87 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <LinearLayout
 
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/player_drawer_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/_2.5dp">
+
+        <ImageView
+            android:id="@+id/close_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="@dimen/_10dp"
+            android:src="@drawable/ic_baseline_close_24"
+            android:theme="@style/ClickableView" />
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/circle_image_border"-->
+<!--            android:layout_width="@dimen/_45dp"-->
+<!--            android:layout_height="@dimen/_45dp"-->
+<!--            app:cardBackgroundColor="@color/white"-->
+<!--            app:cardCornerRadius="70dp">-->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/_40dp"
+                android:layout_height="@dimen/_40dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="70dp">
+
+                <ImageView
+                    android:id="@+id/music_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/fish" />
+
+            </androidx.cardview.widget.CardView>
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/_5dp"
+            android:text="@string/tittle"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/player_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10dp"
+            android:src="@drawable/ic_baseline_skip_previous_34"
+            android:theme="@style/ClickableView" />
+
+        <ImageView
+            android:id="@+id/player_play"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10dp"
+            android:src="@drawable/ic_baseline_play"
+            android:theme="@style/ClickableView" />
+
+        <ImageView
+            android:id="@+id/player_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10dp"
+            android:layout_marginEnd="@dimen/_10dp"
+            android:src="@drawable/ic_baseline_skip_next_34"
+            android:theme="@style/ClickableView" />
+
+    </LinearLayout>
 
 
 </FrameLayout>

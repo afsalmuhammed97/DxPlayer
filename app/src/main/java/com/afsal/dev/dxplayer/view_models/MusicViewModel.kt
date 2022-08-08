@@ -1,7 +1,12 @@
 package com.afsal.dev.dxplayer.view_models
 
 import android.app.Application
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,20 +19,21 @@ import kotlinx.coroutines.launch
 
 class MusicViewModel(application: Application) : BaseViewModel(application) {
 
+     private val TAG="MusicViewModel"
+
+    val isPlaying=MutableLiveData<Boolean>()
     private val _musicList: MutableLiveData<List<MusicItem>> = MutableLiveData()
     val musicList: LiveData<List<MusicItem>>
         get() = _musicList
 
+
+
+
     init {
 
-        loadAllMusicFiles()
 
 
-            // val intent = Intent(context, MusicServices::class.java)
-        //// need  foreground service call ***************************
 
-       // requireActivity().bindService(intent,this, AppCompatActivity.BIND_AUTO_CREATE)
-       // requireActivity().startService(intent)
     }
 
     fun loadAllMusicFiles() {
@@ -37,6 +43,9 @@ class MusicViewModel(application: Application) : BaseViewModel(application) {
         }
 
     }
+
+
+
 
 
 }

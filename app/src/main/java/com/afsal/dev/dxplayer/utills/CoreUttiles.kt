@@ -221,15 +221,15 @@ object CoreUttiles {
 
                     try {
                         val uri1 = Uri.parse("content://media/external/audio/albumart")
-                        val artUri = Uri.withAppendedPath(uri1, albumId)
-                        // val file=File(uri)
-//                          val artUri=Uri.fromFile(file)
+                        val imageUri = Uri.withAppendedPath(uri1, albumId)
+                         val file=File(uri)
+                          val artUri=Uri.fromFile(file)
 
                         musicList.add(
                             MusicItem(
                                 id = id, tittle = tittle, album = album,
                                 artist = artists, duration = duration,
-                                path = "", artUri = artUri, folderName = folder
+                                imageUri = imageUri, artUri = artUri, folderName = folder
                             )
                         )
 

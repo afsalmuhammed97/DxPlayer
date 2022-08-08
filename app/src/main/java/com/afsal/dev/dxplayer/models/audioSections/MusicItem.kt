@@ -1,1 +1,1 @@
-package com.afsal.dev.dxplayer.models.audioSectionsimport android.net.Uridata class MusicItem(    val id:String,    val tittle:String,    val album:String,    val artist:String,    val duration:Long,    val path:String,    val artUri:Uri,    val folderName:String)
+package com.afsal.dev.dxplayer.models.audioSectionsimport android.net.Uridata class MusicItem(    val id:String,    val tittle:String,    val album:String,    val artist:String,    val duration:Long,    val imageUri:Uri,    val artUri:Uri,    val folderName:String)

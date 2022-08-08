@@ -20,17 +20,16 @@ import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.view_models.VidViewModel
 
-class VideoFragment :BaseFragment<FragmentVideoBinding>(
+class VideoFragment : BaseFragment<FragmentVideoBinding>(
     FragmentVideoBinding::inflate
-),OnItemClickListner {
+), OnItemClickListner {
 
-    private lateinit var dataList:List<List<String>>
+    private lateinit var dataList: List<List<String>>
 
     private lateinit var recentVideoAdapter: RecentVideoAdapter
     private lateinit var categoryAdapter: BaseCategoryAdapter
 
-private lateinit var videoViewModel:VidViewModel
-
+    private lateinit var videoViewModel: VidViewModel
 
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -41,56 +40,55 @@ private lateinit var videoViewModel:VidViewModel
         videoViewModel = ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
         videoViewModel.loadVideosFromStorage()
 
-                   videoViewModel.recentVideoLiveData.observe(viewLifecycleOwner, Observer {
-                       Log.d("recentVideos", it.toString())
+        videoViewModel.recentVideoLiveData.observe(viewLifecycleOwner, Observer {
+            Log.d("recentVideos", it.toString())
 
-                       recentVideoAdapter.differ.submitList(it)
-                       recentVideoAdapter.notifyDataSetChanged()
+            recentVideoAdapter.differ.submitList(it)
+            recentVideoAdapter.notifyDataSetChanged()
 
-                   })
+        })
 
 
         videoViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer {
-            Log.d("Videos","Live data ${it.toString()}")
+            Log.d("Videos", "Live data ${it.toString()}")
             categoryAdapter.differ.submitList(it)
             categoryAdapter.notifyDataSetChanged()
         })
 
 
-
     }
 
 
-    private fun setRecyclerView(){
-        recentVideoAdapter=RecentVideoAdapter { lastPlayedId ->
+    private fun setRecyclerView() {
+        recentVideoAdapter = RecentVideoAdapter { lastPlayedId ->
 
             setPlayerScreenWithRecentItem(lastPlayedId)
         }
 
-        categoryAdapter=BaseCategoryAdapter({ position->
+        categoryAdapter = BaseCategoryAdapter({ position ->
             //show more button
 
-           val action=VideoFragmentDirections.actionNavigationVideoToGalleryFragment(position)
+            val action = VideoFragmentDirections.actionNavigationVideoToGalleryFragment(position)
 
             findNavController().navigate(action)
 
         })
-        { folderPositio,videoPosition,video->
-           /* folder position and video postitions are need for playing from playlist
+        { folderPositio, videoPosition, video ->
+            /* folder position and video postitions are need for playing from playlist
 
-           not implemented yet
-           * */
+            not implemented yet
+            * */
 
-            videoViewModel.launchPlayerScreen(requireContext(),video,this)
+            videoViewModel.launchPlayerScreen(requireContext(), video, this)
         }
 
         binding.baseRv.apply {
-            layoutManager= LinearLayoutManager(context)
-            adapter= categoryAdapter
+            layoutManager = LinearLayoutManager(context)
+            adapter = categoryAdapter
 
             binding.recentItemRv.apply {
-                layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter=recentVideoAdapter
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = recentVideoAdapter
             }
         }
 
@@ -102,43 +100,43 @@ private lateinit var videoViewModel:VidViewModel
         super.onResume()
 
 
-            val lastPlayed=     CoreUttiles.retrievingPlayedVideoId(requireContext())
+        val lastPlayed = CoreUttiles.retrievingPlayedVideoId(requireContext())
 
-                      Log.d("TTT","last played video ${lastPlayed.toString()}")
+        Log.d("TTT", "last played video ${lastPlayed.toString()}")
         addingCurrentVideoToRecentList(lastPlayed)
         videoViewModel.apply {
-            recentVideoLiveData.value=recentVideosList.asReversed()
+            recentVideoLiveData.value = recentVideosList.asReversed()
         }
 
     }
 
-    private fun addingCurrentVideoToRecentList(lastVideo:PlayedVideoItem) {
+    private fun addingCurrentVideoToRecentList(lastVideo: PlayedVideoItem) {
 
         //val a= videoViewModel.recentVideosList.forEachIndexed()
-        if (videoViewModel.recentVideosList.size>1) {
+        if (videoViewModel.recentVideosList.size > 1) {
 
-        for (item in videoViewModel.recentVideosList) {
-            if (item.videoId == lastVideo.videoId) {
+            for (item in videoViewModel.recentVideosList) {
+                if (item.videoId == lastVideo.videoId) {
 
-                videoViewModel.recentVideosList.remove(item)
-                break
+                    videoViewModel.recentVideosList.remove(item)
+                    break
+                }
             }
         }
-    }
 
         videoViewModel.recentVideosList.add(lastVideo)
 
-        Log.d("TTT","recentList new ${videoViewModel.recentVideosList.toString()}")
-        Log.d("TTT","recentList size ${videoViewModel.recentVideosList.size}")
+        Log.d("TTT", "recentList new ${videoViewModel.recentVideosList.toString()}")
+        Log.d("TTT", "recentList size ${videoViewModel.recentVideosList.size}")
 
     }
 
-    private fun setPlayerScreenWithRecentItem(lastPlayedId:Long){
+    private fun setPlayerScreenWithRecentItem(lastPlayedId: Long) {
 
-        for (item in videoViewModel.videoList.value!!){
+        for (item in videoViewModel.videoList.value!!) {
 
-            if (item.id== lastPlayedId){
-                videoViewModel.launchPlayerScreen(requireContext(),item,this)
+            if (item.id == lastPlayedId) {
+                videoViewModel.launchPlayerScreen(requireContext(), item, this)
 
                 break
             }
