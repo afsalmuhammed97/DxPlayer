@@ -30,7 +30,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
     private var musicService: MusicService? = null
     private val TAG = "MusicFragment"
-    private var serviceConnected=false
+    private var serviceConnected = false
     private lateinit var musicViewModel: MusicViewModel
     private lateinit var songsAdapter: SongsAdapter
 //    override fun onCreateView(
@@ -46,13 +46,15 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             musicService = binder.currentService()
             Log.d(TAG, "MusicService connected $name")
-               serviceConnected=true
-             musicService!!.songsList.value=musicViewModel.musicList.value
+            serviceConnected = true
+            musicService!!.songsList.value = musicViewModel.musicList.value
 
-            musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying->
+            musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying ->
 
-                binding.playerPlay.setImageResource(if (isplaying == true)
-                    R.drawable.ic_baseline_pause_circle_outline_24 else R.drawable.ic_baseline_play)
+                binding.playerPlay.setImageResource(
+                    if (isplaying == true)
+                        R.drawable.ic_baseline_pause_circle_outline_24 else R.drawable.ic_baseline_play
+                )
 
             })
 
@@ -130,7 +132,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
         binding.apply {
             playerPlay.setOnClickListener {
-               musicService!!.playOrPauseSong()
+                musicService!!.playOrPauseSong()
 
 
             }
@@ -139,7 +141,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
                 musicService!!.playNext()
             }
             playerPrev.setOnClickListener {
-              musicService!!.playPrev()
+                musicService!!.playPrev()
             }
         }
 
