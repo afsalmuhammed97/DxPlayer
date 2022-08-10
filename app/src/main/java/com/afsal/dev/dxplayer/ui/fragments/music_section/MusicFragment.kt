@@ -10,15 +10,18 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.SongsAdapter
 import com.afsal.dev.dxplayer.databinding.MusicFragmentBinding
-
+import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
 import com.afsal.dev.dxplayer.ui.services.MusicService
+import com.afsal.dev.dxplayer.utills.CoreUttiles
+import com.afsal.dev.dxplayer.utills.CoreUttiles.IMAGE_VIEW
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
 
 
@@ -58,6 +61,12 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             })
 
+
+            musicService!!.currentSong.observe(viewLifecycleOwner, Observer { song->
+                Log.d("SSSS4","song item  ${song.tittle}")
+                updateTittle(song)
+            })
+
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -86,7 +95,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             Log.d(TAG, "selected song ${song.toString()}")
             musicService!!.setMediaItem(song)
-
+            binding.miniPlayerLayout.visibility=View.VISIBLE
 
         }
         binding.apply {
@@ -143,11 +152,24 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
             playerPrev.setOnClickListener {
                 musicService!!.playPrev()
             }
+
+            closeBt.setOnClickListener {
+                musicService!!.stopPlayer()
+                binding.miniPlayerLayout.visibility=View.GONE
+            }
+            miniPlayerLayout.setOnClickListener{
+                DialogBottomSheet().show( requireActivity().supportFragmentManager, "")
+
+
+            }
         }
 
 
     }
-
+           private fun updateTittle(song:MusicItem){
+               binding.titleText.text=song.tittle
+               CoreUttiles.loadImageIntoView(song.imageUri,binding.musicImage,null,IMAGE_VIEW)
+           }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
