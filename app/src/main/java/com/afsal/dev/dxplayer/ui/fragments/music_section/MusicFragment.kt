@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.media.session.PlaybackState
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -23,6 +24,7 @@ import com.afsal.dev.dxplayer.ui.services.MusicService
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.utills.CoreUttiles.IMAGE_VIEW
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
+import com.google.android.exoplayer2.Player
 
 
 class MusicFragment : BaseFragment<MusicFragmentBinding>(
@@ -50,9 +52,13 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
             musicService = binder.currentService()
             Log.d(TAG, "MusicService connected $name")
             serviceConnected = true
+
             musicService!!.songsList.value = musicViewModel.musicList.value
 
+
+
             musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying ->
+                binding.miniPlayerLayout.visibility = View.VISIBLE
 
                 binding.playerPlay.setImageResource(
                     if (isplaying == true)
@@ -62,8 +68,15 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
             })
 
 
-            musicService!!.currentSong.observe(viewLifecycleOwner, Observer { song->
-                Log.d("SSSS4","song item  ${song.tittle}")
+            musicService!!.playbackState.observe(viewLifecycleOwner, Observer { playbackState ->
+                Log.d("YYY", "play states  $playbackState")
+                if (playbackState == PlaybackState.STATE_PLAYING) {
+                    Log.d("YYY", "play state is playing ")
+                }
+            })
+
+            musicService!!.currentSong.observe(viewLifecycleOwner, Observer { song ->
+                Log.d(TAG, "song item  ${song.tittle}")
                 updateTittle(song)
             })
 
@@ -95,7 +108,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             Log.d(TAG, "selected song ${song.toString()}")
             musicService!!.setMediaItem(song)
-            binding.miniPlayerLayout.visibility=View.VISIBLE
+            binding.miniPlayerLayout.visibility = View.VISIBLE
 
         }
         binding.apply {
@@ -155,10 +168,10 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             closeBt.setOnClickListener {
                 musicService!!.stopPlayer()
-                binding.miniPlayerLayout.visibility=View.GONE
+                binding.miniPlayerLayout.visibility = View.GONE
             }
-            miniPlayerLayout.setOnClickListener{
-                DialogBottomSheet().show( requireActivity().supportFragmentManager, "")
+            miniPlayerLayout.setOnClickListener {
+                DialogBottomSheet().show(requireActivity().supportFragmentManager, "")
 
 
             }
@@ -166,10 +179,11 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
 
     }
-           private fun updateTittle(song:MusicItem){
-               binding.titleText.text=song.tittle
-               CoreUttiles.loadImageIntoView(song.imageUri,binding.musicImage,null,IMAGE_VIEW)
-           }
+
+    private fun updateTittle(song: MusicItem) {
+        binding.titleText.text = song.tittle
+        CoreUttiles.loadImageIntoView(song.imageUri, binding.musicImage, null, IMAGE_VIEW)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

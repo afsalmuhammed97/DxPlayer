@@ -112,15 +112,24 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-
     <LinearLayout
-
         android:id="@+id/mini_player_layout"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorPrimaryVariant"
         android:layout_marginBottom="@dimen/_25dp"
+        android:orientation="vertical">
+
+
+
+        <LinearLayout
+
+
+
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone"
         android:background="@drawable/player_drawer_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -135,12 +144,6 @@
             android:src="@drawable/ic_baseline_close_24"
             android:theme="@style/ClickableView" />
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:id="@+id/circle_image_border"-->
-<!--            android:layout_width="@dimen/_45dp"-->
-<!--            android:layout_height="@dimen/_45dp"-->
-<!--            app:cardBackgroundColor="@color/white"-->
-<!--            app:cardCornerRadius="70dp">-->
 
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/_40dp"
@@ -157,7 +160,6 @@
 
             </androidx.cardview.widget.CardView>
 
-<!--        </androidx.cardview.widget.CardView>-->
 
 
         <com.google.android.material.textview.MaterialTextView
@@ -198,8 +200,19 @@
             android:src="@drawable/ic_baseline_skip_next_34"
             android:theme="@style/ClickableView" />
 
-    </LinearLayout>
 
+    </LinearLayout>
+        <ProgressBar
+            android:padding="0dp"
+            android:id="@+id/exo_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_6dp"
+            android:progressTint="?attr/colorSecondaryVariant"
+            android:progress="30"/>
+
+
+    </LinearLayout>
 
 </FrameLayout>
 
