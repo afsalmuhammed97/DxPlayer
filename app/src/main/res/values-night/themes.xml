@@ -18,8 +18,9 @@
         <item name="android:statusBarColor">?attr/colorOnPrimary</item>
         <item name="android:navigationBarColor">@color/bg_color</item>
         <item name="actionBarItemBackground">@color/bg_color</item>
+        <item name="actionBarTheme">@style/MyActionBar</item>
         <!--        <item name="toolbarSurfaceStyle">@style/MyActionBar</item>-->
-        <item name="toolbarStyle">@style/MyActionBar</item>
+<!--        <item name="toolbarStyle">@style/MyActionBar</item>-->
         <!-- Customize your theme here. -->
 
 
