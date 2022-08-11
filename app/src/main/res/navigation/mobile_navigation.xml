@@ -39,9 +39,9 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
-        <action
-            android:id="@+id/action_navigation_images_to_galleryViewFragment"
-            app:destination="@id/galleryViewFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_navigation_images_to_galleryViewFragment"-->
+<!--            app:destination="@id/galleryViewFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/navigation_music"
@@ -76,9 +76,9 @@
             app:argType="integer" />
 
     </fragment>
-    <fragment
-        android:id="@+id/galleryViewFragment"
-        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.GalleryViewFragment"
-        android:label="fragment_gallery_view"
-        tools:layout="@layout/fragment_gallery_view" />
+<!--    <fragment-->
+<!--        android:id="@+id/galleryViewFragment"-->
+<!--        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.GalleryViewFragment"-->
+<!--        android:label="fragment_gallery_view"-->
+<!--        tools:layout="@layout/fragment_gallery_view" />-->
 </navigation>
