@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-     android:paddingTop="@dimen/_20dp"
+
     tools:context=".ui.fragments.music_section.MusicFragment"
 
     >
@@ -18,7 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_100dp"
@@ -32,13 +32,13 @@
                     android:layout_gravity="center"
 
                     android:clickable="true"
+                    android:focusable="true"
                     android:src="@drawable/ic_baseline_favorite_border_24"
                     app:layout_constraintBottom_toTopOf="@+id/textView"
                     app:layout_constraintEnd_toStartOf="@+id/bt_playlist"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:focusable="true" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/bt_playlist"
@@ -47,13 +47,13 @@
                     android:layout_gravity="center"
 
                     android:clickable="true"
+                    android:focusable="true"
                     android:src="@drawable/ic_baseline_playlist_play_24"
                     app:layout_constraintBottom_toTopOf="@+id/textView2"
                     app:layout_constraintEnd_toStartOf="@+id/bt_resent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/bt_fav"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:focusable="true" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/bt_resent"
@@ -108,41 +108,39 @@
                 android:id="@+id/audio_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="@dimen/_55dp"/>
+                android:paddingBottom="@dimen/_55dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/mini_player_layout"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_55dp"
         android:background="?attr/colorPrimaryVariant"
-        android:layout_marginBottom="@dimen/_25dp"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:visibility="visible">
 
 
         <LinearLayout
 
 
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/player_drawer_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/_2.5dp">
 
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/player_drawer_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingVertical="@dimen/_2.5dp">
+            <ImageView
+                android:id="@+id/close_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        <ImageView
-            android:id="@+id/close_bt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_margin="@dimen/_10dp"
-            android:src="@drawable/ic_baseline_close_24"
-            android:theme="@style/ClickableView" />
+                android:layout_margin="@dimen/_10dp"
+                android:src="@drawable/ic_baseline_close_24"
+                android:theme="@style/ClickableView" />
 
 
             <androidx.cardview.widget.CardView
@@ -161,55 +159,55 @@
             </androidx.cardview.widget.CardView>
 
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingHorizontal="@dimen/_2.5dp"
+                android:paddingVertical="@dimen/_5dp"
+                android:singleLine="true"
+                android:text="@string/tittle"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingVertical="@dimen/_5dp"
-            android:paddingHorizontal="@dimen/_2.5dp"
-            android:singleLine="true"
-            android:text="@string/tittle"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_16sp"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/player_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5dp"
+                android:src="@drawable/ic_baseline_skip_previous_34"
+                android:theme="@style/ClickableView" />
 
-        <ImageView
-            android:id="@+id/player_prev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5dp"
-            android:src="@drawable/ic_baseline_skip_previous_34"
-            android:theme="@style/ClickableView" />
+            <ImageView
+                android:id="@+id/player_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5dp"
+                android:src="@drawable/ic_baseline_play"
+                android:theme="@style/ClickableView" />
 
-        <ImageView
-            android:id="@+id/player_play"
-             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5dp"
-            android:src="@drawable/ic_baseline_play"
-            android:theme="@style/ClickableView" />
-
-        <ImageView
-            android:id="@+id/player_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5dp"
-            android:layout_marginEnd="@dimen/_5dp"
-            android:src="@drawable/ic_baseline_skip_next_34"
-            android:theme="@style/ClickableView" />
+            <ImageView
+                android:id="@+id/player_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5dp"
+                android:padding="@dimen/_5dp"
+                android:src="@drawable/ic_baseline_skip_next_34"
+                android:theme="@style/ClickableView" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
         <ProgressBar
-            android:padding="0dp"
             android:id="@+id/exo_progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_6dp"
-            android:progressTint="?attr/colorSecondaryVariant"
-            android:progress="30"/>
+            android:padding="0dp"
+            android:progress="30"
+            android:progressTint="?attr/colorSecondaryVariant" />
 
 
     </LinearLayout>
