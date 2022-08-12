@@ -29,6 +29,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.jsibbold.zoomage.ZoomageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -328,7 +329,7 @@ object CoreUttiles {
 
     }
 
-    fun durationToHour(duration: Long) = DateUtils.formatElapsedTime(duration / 1000)
+    fun durationToHour(duration: Long): String = DateUtils.formatElapsedTime(duration / 1000)
 
     fun generateThumbNail(path: String): Bitmap {
 
@@ -366,7 +367,7 @@ object CoreUttiles {
     fun loadImageIntoView(
         imageUri: Uri,
         view: ImageView?,
-        customView: CustomZoomImageView?,
+        customView: ZoomageView?,
         screenType: String
     ) {
 

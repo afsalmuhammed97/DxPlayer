@@ -25,25 +25,21 @@ import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.utills.CoreUttiles.IMAGE_VIEW
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
 import com.google.android.exoplayer2.Player
+import kotlin.math.abs
 
 
 class MusicFragment : BaseFragment<MusicFragmentBinding>(
     MusicFragmentBinding::inflate
 ) {
 
-//    DialogBottomSheet().show( requireActivity().supportFragmentManager, "")
-
+    //    Dialog     BottomSheet().show( requireActivity().supportFragmentManager, "")
+    private lateinit var currentSong: MusicItem
     private var musicService: MusicService? = null
     private val TAG = "MusicFragment"
     private var serviceConnected = false
     private lateinit var musicViewModel: MusicViewModel
     private lateinit var songsAdapter: SongsAdapter
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return inflater.inflate(R.layout.music_fragment, container, false)
-//    }
+
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -53,11 +49,17 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
             Log.d(TAG, "MusicService connected $name")
             serviceConnected = true
 
+
             musicService!!.songsList.value = musicViewModel.musicList.value
 
+            musicService!!.currentPosition.observe(viewLifecycleOwner, Observer {
+
+                updateSongProgress(it, currentSong.duration)
+            })
 
 
             musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying ->
+
                 binding.miniPlayerLayout.visibility = View.VISIBLE
 
                 binding.playerPlay.setImageResource(
@@ -77,6 +79,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             musicService!!.currentSong.observe(viewLifecycleOwner, Observer { song ->
                 Log.d(TAG, "song item  ${song.tittle}")
+                currentSong = song
                 updateTittle(song)
             })
 
@@ -93,7 +96,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
         super.onStart()
         val intent = Intent(requireContext(), MusicService::class.java)
         requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        requireActivity().stopService(intent)
+       // requireActivity().stopService(intent)
     }
 
 
@@ -117,32 +120,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
 
         }
-        binding.audioRv.setOnScrollListener(object : RecyclerView.OnScrollListener() {
-            //            var scrollDy = 0
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                //  Log.d(TAG,"new state  $newState")
-            }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-
-//                if (dy >0){
-//                    binding.headerLayout.visibility=View.VISIBLE
-//                }else{
-//                    binding.headerLayout.visibility=View.INVISIBLE
-//                }
-//                if (recyclerView.scrollState==RecyclerView.SCROLL_STATE_SETTLING){
-//                    Log.d(TAG,"recyclerview setting dy $dy dx $dx" )
-//                }else if (recyclerView.scrollState==RecyclerView.SCROLL_STATE_SETTLING){
-//                    Log.d(TAG,"recyclerview scrolling dy $dy dx $dx\"")
-//                }else if (recyclerView.scrollState==RecyclerView.SCROLL_STATE_IDLE){
-//                    Log.d(TAG,"recyclerview idieal     dy $dy dx $dx\"")
-//                }
-//                else{
-//
-//                }
-            }
-        })
 
 
 
@@ -191,4 +169,11 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
         // TODO: Use the ViewModel
     }
 
+    private fun updateSongProgress(currentPosition: Long, duration: Long) {
+        val p = currentPosition.toFloat()
+        val d = duration.toFloat()
+        val progress = p.div(d) * 100
+        Log.d(TAG, "current progress $progress")
+        binding.exoProgress.progress = progress.toInt()
+    }
 }

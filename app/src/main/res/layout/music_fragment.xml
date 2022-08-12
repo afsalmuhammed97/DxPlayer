@@ -117,10 +117,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+
         android:layout_marginBottom="@dimen/_55dp"
         android:background="?attr/colorPrimaryVariant"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
 
         <LinearLayout
@@ -206,7 +207,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_6dp"
             android:padding="0dp"
-            android:progress="30"
             android:progressTint="?attr/colorSecondaryVariant" />
 
 

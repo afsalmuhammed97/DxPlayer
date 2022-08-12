@@ -642,7 +642,7 @@ class DxPlayerActivity() : AppCompatActivity() {
                 )
             radioButton.layoutParams = params
             radioGroupAudio.addView(radioButton)
-            radioButton.defaultFocusHighlightEnabled = true
+            //radioButton.defaultFocusHighlightEnabled = true
         }
 
     }
