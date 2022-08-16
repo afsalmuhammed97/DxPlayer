@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.services.MusicService
 import com.afsal.dev.dxplayer.utills.CoreUttiles
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MusicViewModel(application: Application) : BaseViewModel(application) {
@@ -38,8 +39,8 @@ class MusicViewModel(application: Application) : BaseViewModel(application) {
 
     fun loadAllMusicFiles() {
 
-        viewModelScope.launch {
-            _musicList.value = CoreUttiles.loadAllMusics(context)
+        viewModelScope.launch (Dispatchers.IO) {
+            _musicList.postValue(CoreUttiles.loadAllMusics(context))           //CoreUttiles.loadAllMusics(context)
         }
 
     }

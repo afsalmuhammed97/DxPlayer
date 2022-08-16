@@ -3,16 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimaryVariant"
-    tools:context=".ui.fragments.video_section.GalleryFragment">
+    tools:context=".PlayListFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/grid_video_rv"
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/_8dp"
+        android:text="@string/hello_blank_fragment" />
 
-        />
-<!--    android:paddingBottom="@dimen/_55dp"-->
 </FrameLayout>

@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.SongsAdapter
 import com.afsal.dev.dxplayer.databinding.MusicFragmentBinding
@@ -24,16 +23,13 @@ import com.afsal.dev.dxplayer.ui.services.MusicService
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.utills.CoreUttiles.IMAGE_VIEW
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
-import com.google.android.exoplayer2.Player
-import kotlin.math.abs
 
 
 class MusicFragment : BaseFragment<MusicFragmentBinding>(
     MusicFragmentBinding::inflate
 ) {
 
-    //    Dialog     BottomSheet().show( requireActivity().supportFragmentManager, "")
-    private lateinit var currentSong: MusicItem
+
     private var musicService: MusicService? = null
     private val TAG = "MusicFragment"
     private var serviceConnected = false
@@ -50,38 +46,40 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
             serviceConnected = true
 
 
-            musicService!!.songsList.value = musicViewModel.musicList.value
 
-            musicService!!.currentPosition.observe(viewLifecycleOwner, Observer {
 
-                updateSongProgress(it, currentSong.duration)
+            musicViewModel.musicList.observe(viewLifecycleOwner, Observer {
+                musicService!!.songsList.value=it
             })
 
 
-            musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying ->
 
-                binding.miniPlayerLayout.visibility = View.VISIBLE
 
-                binding.playerPlay.setImageResource(
-                    if (isplaying == true)
-                        R.drawable.ic_baseline_pause_circle_outline_24 else R.drawable.ic_baseline_play
-                )
-
-            })
+//            musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying ->
+//
+//            //   binding.miniPlayerLayout.visibility = View.VISIBLE
+//
+//                binding.playerPlay.setImageResource(
+//                    if (isplaying == true)
+//                        R.drawable.ic_baseline_pause_circle_outline_34 else R.drawable.ic_baseline_play
+//                )
+//            })
 
 
             musicService!!.playbackState.observe(viewLifecycleOwner, Observer { playbackState ->
-                Log.d("YYY", "play states  $playbackState")
+                Log.d(TAG, "play states  $playbackState")
                 if (playbackState == PlaybackState.STATE_PLAYING) {
-                    Log.d("YYY", "play state is playing ")
+
                 }
             })
 
-            musicService!!.currentSong.observe(viewLifecycleOwner, Observer { song ->
-                Log.d(TAG, "song item  ${song.tittle}")
-                currentSong = song
-                updateTittle(song)
-            })
+//            musicService!!.currentSong.observe(viewLifecycleOwner, Observer { song ->
+//                Log.d(TAG, "song item  ${song.tittle}")
+//             //   currentSong = song
+//                updateTittle(song)
+//            })
+
+
 
         }
 
@@ -111,7 +109,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             Log.d(TAG, "selected song ${song.toString()}")
             musicService!!.setMediaItem(song)
-            binding.miniPlayerLayout.visibility = View.VISIBLE
+
 
         }
         binding.apply {
@@ -131,49 +129,36 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
         })
 
         binding.apply {
-            playerPlay.setOnClickListener {
-                musicService!!.playOrPauseSong()
 
-
-            }
-            playerNext.setOnClickListener {
-
-                musicService!!.playNext()
-            }
-            playerPrev.setOnClickListener {
-                musicService!!.playPrev()
-            }
-
-            closeBt.setOnClickListener {
-                musicService!!.stopPlayer()
-                binding.miniPlayerLayout.visibility = View.GONE
-            }
-            miniPlayerLayout.setOnClickListener {
-                DialogBottomSheet().show(requireActivity().supportFragmentManager, "")
-
-
-            }
+            
+            btFav.setOnClickListener { navigateToPlayListFragment() }
+            btPlaylist.setOnClickListener { navigateToPlayListFragment() }
+            btResent.setOnClickListener { navigateToPlayListFragment() }
         }
 
 
     }
 
-    private fun updateTittle(song: MusicItem) {
-        binding.titleText.text = song.tittle
-        CoreUttiles.loadImageIntoView(song.imageUri, binding.musicImage, null, IMAGE_VIEW)
+    private fun navigateToPlayListFragment(){
+        findNavController().navigate(R.id.action_navigation_music_to_playListFragment)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+//    private fun updateTittle(song: MusicItem) {
+//        binding.titleText.text = song.tittle
+//        CoreUttiles.loadImageIntoView(song.imageUri, binding.musicImage, null, IMAGE_VIEW)
+//    }
 
-        // TODO: Use the ViewModel
-    }
-
-    private fun updateSongProgress(currentPosition: Long, duration: Long) {
-        val p = currentPosition.toFloat()
-        val d = duration.toFloat()
-        val progress = p.div(d) * 100
-        Log.d(TAG, "current progress $progress")
-        binding.exoProgress.progress = progress.toInt()
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//
+//        // TODO: Use the ViewModel
+//    }
+//
+//    private fun updateSongProgress(currentPosition: Long, duration: Long) {
+//        val p = currentPosition.toFloat()
+//        val d = duration.toFloat()
+//        val progress = p.div(d) * 100
+//        Log.d(TAG, "current progress $progress")
+//        binding.exoProgress.progress = progress.toInt()
+//    }
 }

@@ -47,7 +47,11 @@
         android:id="@+id/navigation_music"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.MusicFragment"
         android:label="@string/music"
-        tools:layout="@layout/music_fragment" />
+        tools:layout="@layout/music_fragment" >
+        <action
+            android:id="@+id/action_navigation_music_to_playListFragment"
+            app:destination="@id/playListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/galleryFragment"
         android:name="com.afsal.dev.dxplayer.ui.fragments.video_section.GalleryFragment"
@@ -76,7 +80,12 @@
             app:argType="integer" />
 
     </fragment>
-<!--    <fragment-->
+    <fragment
+        android:id="@+id/playListFragment"
+        android:name="com.afsal.dev.dxplayer.PlayListFragment"
+        android:label="fragment_play_list"
+        tools:layout="@layout/fragment_play_list" />
+    <!--    <fragment-->
 <!--        android:id="@+id/galleryViewFragment"-->
 <!--        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.GalleryViewFragment"-->
 <!--        android:label="fragment_gallery_view"-->

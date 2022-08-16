@@ -14,6 +14,10 @@
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_forward_5.xml" value="0.178" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_keyboard_double_arrow_left_24.xml" value="0.2075" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_keyboard_double_arrow_right_24.xml" value="0.18" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_pause.xml" value="0.1" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_pause_circle_outline_24.xml" value="0.1" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_pause_circle_outline_34.xml" value="0.1" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_pause_circle_outline_48.xml" value="0.1" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_photo_24.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_play.xml" value="0.1295" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_skip_next_34.xml" value="0.173" />
@@ -35,7 +39,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_horizonta.xml" value="0.17" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_vertical.xml" value="0.17" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/vid_selector.xml" value="0.1655" />
-        <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dash_bord.xml" value="0.2" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dash_bord.xml" value="0.15" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dx_player.xml" value="0.22" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_fullscreen.xml" value="0.1859375" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_player_screen.xml" value="0.2" />
@@ -62,7 +66,8 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_video_gallery.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/image_item.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/image_pager_item.xml" value="0.322265625" />
-        <entry key="..\:/DxPlayer/app/src/main/res/layout/music_fragment.xml" value="0.33" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/mini_player_layout.xml" value="0.19895833333333332" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/music_fragment.xml" value="0.1" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/pager_item.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/recent_video_item.xml" value="0.67" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/video_item.xml" value="0.19583333333333333" />
