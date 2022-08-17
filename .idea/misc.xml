@@ -49,6 +49,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.19692307692307692" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/content_main.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/custom_controller_layout.xml" value="0.2" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/custom_dilog_layout.xml" value="0.18" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/exoplayer_drawer_layout.xml" value="0.16324786324786325" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_dash_bod.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_dash_bord.xml" value="0.19583333333333333" />
@@ -59,6 +60,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_images.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.2" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_play_list.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_player_screen_list_dialog.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_player_screen_list_dialog_item.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_vid_detaisl.xml" value="0.2" />
@@ -69,6 +71,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/mini_player_layout.xml" value="0.19895833333333332" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/music_fragment.xml" value="0.1" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/pager_item.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/play_list_item.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/recent_video_item.xml" value="0.67" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/video_item.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/video_item1.xml" value="0.18" />

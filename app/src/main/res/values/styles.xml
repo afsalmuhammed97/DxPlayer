@@ -13,7 +13,10 @@
         <item name="colorControlHighlight">@android:color/darker_gray</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
-
+    <style name="ClickableViewBackground">
+        <item name="colorControlHighlight">@android:color/darker_gray</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
 
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
 
@@ -21,6 +24,26 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
+
+    <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog_Background" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- Background Color-->
+        <item name="android:background">@color/black</item>
+        <!-- Text Color for title and message -->
+<!--        <item name="colorOnSurface"></item>-->
+        <!-- Style for positive button -->
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <!-- Style for negative button -->
+<!--        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>-->
+    </style>
+
+    <style name="PositiveButtonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <!-- text color for the button -->
+        <item name="android:textColor">@color/bg_color2</item>
+        <!-- Background tint for the button -->
+        <item name="backgroundTint">@color/white</item>
     </style>
 
 </resources>

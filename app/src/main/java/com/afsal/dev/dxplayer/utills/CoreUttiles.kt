@@ -48,7 +48,10 @@ object CoreUttiles {
     const val VIDEO_ID = "VideoId"
     const val VIDEO_URI = "VideoUri"
     const val VIDEO_DURATION = "VideoDuration"
-
+    const val SONGS_TABLE="SongsTable"
+    const val PLAYLIST_SONGS_TABLE="PlayListSongs"
+    const val PLAYLIST_TABLE="PlayListTable"
+    const val MUSIC_DATA_BASE="MusicDatabase"
 
     suspend fun loadVideos(
         context: Context,
@@ -209,7 +212,7 @@ object CoreUttiles {
                     cursor.getColumnIndex(MediaStore.Audio.Media.BUCKET_DISPLAY_NAME)
 
                 while (cursor.moveToNext()) {
-                    val id = cursor.getString(idColumn)
+                    val id = cursor.getLong(idColumn)
                     val tittle = cursor.getString(tittleColumn)
                     val album = cursor.getString(albumColumn)
                     val artists = cursor.getString(artistsColumn)
@@ -222,9 +225,9 @@ object CoreUttiles {
 
                     try {
                         val uri1 = Uri.parse("content://media/external/audio/albumart")
-                        val imageUri = Uri.withAppendedPath(uri1, albumId)
+                        val imageUri = Uri.withAppendedPath(uri1, albumId).toString()
                          val file=File(uri)
-                          val artUri=Uri.fromFile(file)
+                          val artUri=Uri.fromFile(file).toString()
 
                         musicList.add(
                             MusicItem(

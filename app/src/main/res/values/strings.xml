@@ -22,4 +22,5 @@
     <string name="play_lists">Play Lists</string>
     <string name="recently_played">Recently Played</string>
     <string name="tittle">tittle</string>
+    <string name="playListName">PlayList name</string>
 </resources>

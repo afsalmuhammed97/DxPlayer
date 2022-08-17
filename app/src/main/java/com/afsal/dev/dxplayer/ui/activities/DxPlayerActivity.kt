@@ -19,14 +19,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
-import androidx.core.view.postDelayed
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDxPlayerBinding
-import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
-import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
+import com.afsal.dev.dxplayer.ui.fragments.music_section.DialogBottomSheet
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector

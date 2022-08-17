@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,17 +25,17 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.afsal.dev.dxplayer.PlayListFragment
+
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDashBordBinding
 import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
-import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
+import com.afsal.dev.dxplayer.ui.fragments.music_section.DialogBottomSheet
 import com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragment
+import com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListFragment
 import com.afsal.dev.dxplayer.ui.services.MusicService
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.view_models.BaseViewModel
-import com.google.android.exoplayer2.Player
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -134,7 +134,7 @@ class DashBordActivity : AppCompatActivity() {
 
         val intent = Intent(this, MusicService::class.java)
         this.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        this.startService(intent)
+       // this.startService(intent)
 
 
         hideAndShowNavigation()
@@ -263,7 +263,7 @@ class DashBordActivity : AppCompatActivity() {
     private fun updateTittle(song: MusicItem) {
         binding.titleText.text = song.tittle
         CoreUttiles.loadImageIntoView(
-            song.imageUri, binding.musicImage, null,
+             Uri.parse( song.imageUri), binding.musicImage, null,
             CoreUttiles.IMAGE_VIEW
         )
     }

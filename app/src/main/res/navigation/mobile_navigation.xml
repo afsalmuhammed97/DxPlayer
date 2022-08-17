@@ -82,7 +82,7 @@
     </fragment>
     <fragment
         android:id="@+id/playListFragment"
-        android:name="com.afsal.dev.dxplayer.PlayListFragment"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListFragment"
         android:label="fragment_play_list"
         tools:layout="@layout/fragment_play_list" />
     <!--    <fragment-->

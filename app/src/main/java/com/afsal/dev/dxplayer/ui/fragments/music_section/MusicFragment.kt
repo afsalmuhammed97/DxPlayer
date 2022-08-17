@@ -16,12 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.SongsAdapter
 import com.afsal.dev.dxplayer.databinding.MusicFragmentBinding
-import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
-import com.afsal.dev.dxplayer.ui.fragments.DialogBottomSheet
 import com.afsal.dev.dxplayer.ui.services.MusicService
-import com.afsal.dev.dxplayer.utills.CoreUttiles
-import com.afsal.dev.dxplayer.utills.CoreUttiles.IMAGE_VIEW
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
 
 

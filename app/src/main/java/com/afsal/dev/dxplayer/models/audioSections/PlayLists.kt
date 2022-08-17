@@ -1,0 +1,1 @@
+package com.afsal.dev.dxplayer.models.audioSectionsimport androidx.room.Entityimport androidx.room.PrimaryKeyimport com.afsal.dev.dxplayer.utills.CoreUttiles.PLAYLIST_TABLE@Entity(tableName = "play_list_table")data class PlayLists(    @PrimaryKey(autoGenerate = false)    val playListName:String)//    val playListId:Int,
