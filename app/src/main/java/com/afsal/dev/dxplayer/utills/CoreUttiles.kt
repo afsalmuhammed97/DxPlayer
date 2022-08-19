@@ -37,7 +37,7 @@ import java.util.*
 
 
 object CoreUttiles {
-
+    const val SELECTION_SCREEN="SelectionScreen"
     const val IMAGE_VIEW = "ImageFragment"
     const val CUSTOM_IMAGE_VIEW = "CustomImageView"
     const val VIDEO_FRAGMENT = "VideoFragment"

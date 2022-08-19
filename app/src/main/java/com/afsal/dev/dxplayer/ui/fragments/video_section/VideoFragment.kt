@@ -36,6 +36,7 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+       
         setRecyclerView()
         videoViewModel = ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
         videoViewModel.loadVideosFromStorage()

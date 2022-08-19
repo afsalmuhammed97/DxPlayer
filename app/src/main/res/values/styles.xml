@@ -46,4 +46,10 @@
         <item name="backgroundTint">@color/white</item>
     </style>
 
+    <style name="CustomCheckbox02" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/check_box_selecter</item>
+
+    </style>
+
+<!--    <item name="android:background">@android:color/transparent</item>-->
 </resources>

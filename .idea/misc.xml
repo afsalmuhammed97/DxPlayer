@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/DxPlayer/app/src/main/res/drawable-v24/photo_selectot.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/check_box_selecter.xml" value="0.194" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selector.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selectot.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_back_arrow.xml" value="0.2035" />
@@ -61,8 +62,10 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_play_list.xml" value="0.2" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_play_list_view.xml" value="0.1859375" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_player_screen_list_dialog.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_player_screen_list_dialog_item.xml" value="0.2" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_songs.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_vid_detaisl.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_video.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_video_gallery.xml" value="0.19583333333333333" />
@@ -70,9 +73,11 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/image_pager_item.xml" value="0.322265625" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/mini_player_layout.xml" value="0.19895833333333332" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/music_fragment.xml" value="0.1" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/option_bottom_sheet_layout.xml" value="0.19895833333333332" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/pager_item.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/play_list_item.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/recent_video_item.xml" value="0.67" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/song_item_layout.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/video_item.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/video_item1.xml" value="0.18" />
         <entry key="..\:/DxPlayer/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1188118811881188" />

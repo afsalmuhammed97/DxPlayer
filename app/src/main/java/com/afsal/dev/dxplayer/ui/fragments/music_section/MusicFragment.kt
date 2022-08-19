@@ -45,10 +45,8 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
 
             musicViewModel.musicList.observe(viewLifecycleOwner, Observer {
-                musicService!!.songsList.value=it
+                musicService!!.songsList.value = it
             })
-
-
 
 
 //            musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying ->
@@ -76,7 +74,6 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 //            })
 
 
-
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -90,13 +87,14 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
         super.onStart()
         val intent = Intent(requireContext(), MusicService::class.java)
         requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
-       // requireActivity().stopService(intent)
+        // requireActivity().stopService(intent)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        musicViewModel = ViewModelProvider(this)[MusicViewModel::class.java]
+
+        musicViewModel = ViewModelProvider(requireActivity())[MusicViewModel::class.java]
 
         musicViewModel.loadAllMusicFiles()
 
@@ -108,12 +106,8 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
 
         }
-        binding.apply {
-            audioRv.layoutManager = GridLayoutManager(context, 3)
-            audioRv.adapter = songsAdapter
 
 
-        }
 
 
 
@@ -125,8 +119,14 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
         })
 
         binding.apply {
+            audioRv.layoutManager = GridLayoutManager(context, 3)
+            audioRv.adapter = songsAdapter
 
-            
+
+        }
+        binding.apply {
+
+
             btFav.setOnClickListener { navigateToPlayListFragment() }
             btPlaylist.setOnClickListener { navigateToPlayListFragment() }
             btResent.setOnClickListener { navigateToPlayListFragment() }
@@ -135,7 +135,8 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
     }
 
-    private fun navigateToPlayListFragment(){
+
+    private fun navigateToPlayListFragment() {
         findNavController().navigate(R.id.action_navigation_music_to_playListFragment)
     }
 

@@ -9,7 +9,7 @@
         android:id="@+id/navigation_video"
         android:name="com.afsal.dev.dxplayer.ui.fragments.video_section.VideoFragment"
         android:label="@string/videos"
-        tools:layout="@layout/fragment_video" >
+        tools:layout="@layout/fragment_video">
         <action
             android:id="@+id/action_navigation_video_to_galleryFragment"
             app:destination="@id/galleryFragment"
@@ -31,7 +31,7 @@
         android:id="@+id/navigation_images"
         android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.ImagesFragment"
         android:label="@string/images"
-        tools:layout="@layout/fragment_images" >
+        tools:layout="@layout/fragment_images">
         <action
             android:id="@+id/action_navigation_images_to_imageViewFragment"
             app:destination="@id/imageViewFragment"
@@ -39,39 +39,40 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
-<!--        <action-->
-<!--            android:id="@+id/action_navigation_images_to_galleryViewFragment"-->
-<!--            app:destination="@id/galleryViewFragment" />-->
+        <!--        <action-->
+        <!--            android:id="@+id/action_navigation_images_to_galleryViewFragment"-->
+        <!--            app:destination="@id/galleryViewFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/navigation_music"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.MusicFragment"
         android:label="@string/music"
-        tools:layout="@layout/music_fragment" >
+        tools:layout="@layout/music_fragment">
         <action
             android:id="@+id/action_navigation_music_to_playListFragment"
             app:destination="@id/playListFragment" />
+
+
     </fragment>
     <fragment
         android:id="@+id/galleryFragment"
         android:name="com.afsal.dev.dxplayer.ui.fragments.video_section.GalleryFragment"
         android:label="Gallery"
 
-        tools:layout="@layout/fragment_video_gallery" >
+        tools:layout="@layout/fragment_video_gallery">
         <action
             android:id="@+id/action_galleryFragment_to_navigation_video"
             app:destination="@id/navigation_video" />
         <argument
             android:name="position"
-            app:argType="integer"
-            />
+            app:argType="integer" />
 
     </fragment>
     <fragment
         android:id="@+id/imageViewFragment"
         android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragment"
         android:label="fragment_image_view"
-        tools:layout="@layout/fragment_image_view" >
+        tools:layout="@layout/fragment_image_view">
         <action
             android:id="@+id/action_imageViewFragment_to_navigation_images"
             app:destination="@id/navigation_images" />
@@ -83,11 +84,44 @@
     <fragment
         android:id="@+id/playListFragment"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListFragment"
-        android:label="fragment_play_list"
-        tools:layout="@layout/fragment_play_list" />
+        android:label="Play Lists"
+        tools:layout="@layout/fragment_play_list" >
+        <action
+            android:id="@+id/action_playListFragment_to_playListViewFragment"
+            app:destination="@id/playListViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playListViewFragment"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListViewFragment"
+        android:label="fragment_play_list_view"
+        tools:layout="@layout/fragment_play_list_view" >
+        <action
+            android:id="@+id/action_playListViewFragment_to_songsFragment"
+            app:destination="@id/songsFragment" />
+        <argument
+            android:name="playListName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_playListViewFragment_to_optionBottomSheet"
+            app:destination="@id/optionBottomSheet" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/songsFragment"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.SongsFragment"
+        android:label="fragment_songs"
+        tools:layout="@layout/fragment_songs" >
+        <argument
+            android:name="playListName"
+            app:argType="string" />
+    </fragment>
+    <dialog
+        android:id="@+id/optionBottomSheet"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.OptionBottomSheet"
+        android:label="OptionBottomSheet" />
     <!--    <fragment-->
-<!--        android:id="@+id/galleryViewFragment"-->
-<!--        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.GalleryViewFragment"-->
-<!--        android:label="fragment_gallery_view"-->
-<!--        tools:layout="@layout/fragment_gallery_view" />-->
+    <!--        android:id="@+id/galleryViewFragment"-->
+    <!--        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.GalleryViewFragment"-->
+    <!--        android:label="fragment_gallery_view"-->
+    <!--        tools:layout="@layout/fragment_gallery_view" />-->
 </navigation>

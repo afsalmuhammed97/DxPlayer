@@ -10,6 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -169,6 +171,7 @@ class DashBordActivity : AppCompatActivity() {
     }
 
 
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_dash_bord)
         return navController.navigateUp() || super.onSupportNavigateUp()
@@ -223,7 +226,6 @@ class DashBordActivity : AppCompatActivity() {
                         binding.navView.visibility = View.GONE
                         binding.miniPlayerLayout.visibility=View.GONE
                         supportActionBar?.hide()
-
                     }
 
                     is PlayListFragment -> {
