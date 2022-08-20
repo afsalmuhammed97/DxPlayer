@@ -118,7 +118,14 @@
     <dialog
         android:id="@+id/optionBottomSheet"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.OptionBottomSheet"
-        android:label="OptionBottomSheet" />
+        android:label="OptionBottomSheet" >
+        <argument
+            android:name="songData"
+            app:argType="com.afsal.dev.dxplayer.models.audioSections.MusicItem" />
+        <argument
+            android:name="playListName"
+            app:argType="string" />
+    </dialog>
     <!--    <fragment-->
     <!--        android:id="@+id/galleryViewFragment"-->
     <!--        android:name="com.afsal.dev.dxplayer.ui.fragments.Images_section.GalleryViewFragment"-->

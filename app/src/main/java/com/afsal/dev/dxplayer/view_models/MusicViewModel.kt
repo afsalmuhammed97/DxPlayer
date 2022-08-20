@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class MusicViewModel(application: Application) : BaseViewModel(application) {
 
     private val TAG = "MusicViewModel"
-
+     var currentPlayListName:String =""
     private var repository: MusicRepository
     var playListNames: LiveData<List<PlayLists>>
     val isPlaying = MutableLiveData<Boolean>()
@@ -92,6 +92,16 @@ class MusicViewModel(application: Application) : BaseViewModel(application) {
             _songsInPlayList.postValue(songList)
 
         }
+    }
+
+
+    fun deleteSongFromPlaylist(song:MusicItem,playlist: String){
+
+        viewModelScope.launch {
+            repository.deleteSongFromPlayList(song.id,playlist)
+        }
+
+        getSongsInPlayList(playlist)
     }
 
 }

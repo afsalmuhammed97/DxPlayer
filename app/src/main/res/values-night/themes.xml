@@ -13,7 +13,7 @@
 
         <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
         <!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
-
+<!--        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>-->
 
         <item name="android:statusBarColor">?attr/colorOnPrimary</item>
         <item name="android:navigationBarColor">@color/bg_color</item>

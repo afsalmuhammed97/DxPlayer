@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/DxPlayer/app/src/main/res/drawable-v24/photo_selectot.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/bottom_sheet_shap.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/check_box_selecter.xml" value="0.194" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selector.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selectot.xml" value="0.1655" />
@@ -39,6 +40,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/player_drawer_bg.xml" value="0.1065" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_horizonta.xml" value="0.17" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_vertical.xml" value="0.17" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/rownd_corner.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/vid_selector.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dash_bord.xml" value="0.15" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dx_player.xml" value="0.22" />
@@ -49,6 +51,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/base_rv_item.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.19692307692307692" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/content_main.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/custom_alert_layout.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/custom_controller_layout.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/custom_dilog_layout.xml" value="0.18" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/exoplayer_drawer_layout.xml" value="0.16324786324786325" />

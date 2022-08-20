@@ -21,8 +21,9 @@ import com.google.android.material.textfield.TextInputEditText
 class PlayListFragment() : BaseFragment<FragmentPlayListBinding>(
     FragmentPlayListBinding::inflate
 ) {
+    private val TAG = "PlayListFragment"
     private lateinit var playListAdapter: PlayListAdapter
-        private lateinit var musicViewModel: MusicViewModel
+    private lateinit var musicViewModel: MusicViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         musicViewModel = ViewModelProvider(this)[MusicViewModel::class.java]
@@ -57,10 +58,11 @@ class PlayListFragment() : BaseFragment<FragmentPlayListBinding>(
         }
     }
 
-    private fun navigateToPlayListView(playListName:String) {
-     //   findNavController().navigate(R.id.action_playListFragment_to_playListViewFragment)
+    private fun navigateToPlayListView(playListName: String) {
+        //   findNavController().navigate(R.id.action_playListFragment_to_playListViewFragment)
 
-        val action=PlayListFragmentDirections.actionPlayListFragmentToPlayListViewFragment(playListName)
+        val action =
+            PlayListFragmentDirections.actionPlayListFragmentToPlayListViewFragment(playListName)
         findNavController().navigate(action)
     }
 
@@ -83,7 +85,7 @@ class PlayListFragment() : BaseFragment<FragmentPlayListBinding>(
             it.setPositiveButton("create") { _: DialogInterface, i: Int ->
 
                 if (!playListName.text.isNullOrEmpty())
-                    Log.d("PPP", "text in dialog ${playListName.text.toString()}")
+                    Log.d(TAG, "text in dialog ${playListName.text.toString()}")
                 musicViewModel.createPlayList(playListName.text.toString())
                 //   CoreUttiles.showSnackBar(playListName.text.toString(),binding.playListRv ,""){}
             }

@@ -24,4 +24,7 @@
     <string name="tittle">tittle</string>
     <string name="playListName">PlayList name</string>
     <string name="add_songs">Add songs</string>
+    <string name="delete">Delete</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="cancel">Cancel</string>
 </resources>
