@@ -1,5 +1,6 @@
 package com.afsal.dev.dxplayer.utills
 
+import android.app.AlertDialog
 import android.app.RecoverableSecurityException
 import android.content.ContentUris
 import android.content.Context
@@ -13,10 +14,12 @@ import android.provider.MediaStore
 import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.models.VideoSections.Folders
 import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
@@ -37,6 +40,7 @@ import java.util.*
 
 
 object CoreUttiles {
+    const val FAVOURITE="Favourites"
     const val SELECTION_SCREEN="SelectionScreen"
     const val IMAGE_VIEW = "ImageFragment"
     const val CUSTOM_IMAGE_VIEW = "CustomImageView"
@@ -531,5 +535,33 @@ object CoreUttiles {
 
         val progress = (current.div(tottel)) * 100
         return progress.toInt()
+    }
+
+     fun showDeleteDialog(positveBtText:String,context: Context,fragment:Fragment,
+     onPositevBtClick:()->Unit) {
+
+
+
+        val dialog = AlertDialog.Builder(context, R.style.CustomAlertDialog).create()
+
+        val customView =fragment.layoutInflater.inflate(R.layout.custom_alert_layout, null)
+        val deleteBt = customView.findViewById<Button>(R.id.remove_bt)
+        val cancelBt = customView.findViewById<Button>(R.id.cancel_bt)
+        deleteBt.text =positveBtText
+        dialog.setView(customView)
+
+        deleteBt.setOnClickListener {
+
+            onPositevBtClick()
+
+            dialog.dismiss()
+        }
+        cancelBt.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+
+        dialog.show()
     }
 }

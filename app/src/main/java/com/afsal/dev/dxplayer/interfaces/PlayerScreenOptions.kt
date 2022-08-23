@@ -1,0 +1,1 @@
+package com.afsal.dev.dxplayer.interfacesinterface PlayerScreenOptions {    fun onPlayListClicked()}

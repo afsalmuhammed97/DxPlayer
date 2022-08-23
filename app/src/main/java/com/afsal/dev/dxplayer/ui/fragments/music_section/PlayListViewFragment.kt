@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,6 +24,7 @@ import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.ui.services.MusicService
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
+import kotlin.concurrent.fixedRateTimer
 
 
 class PlayListViewFragment : BaseFragment<FragmentPlayListViewBinding>(
@@ -30,19 +32,18 @@ class PlayListViewFragment : BaseFragment<FragmentPlayListViewBinding>(
 ) {
     private val TAG = "PlayListViewFragment"
     private var musicService: MusicService? = null
+    private lateinit var playListSongs: List<MusicItem>
     private lateinit var musicViewModel: MusicViewModel
     private lateinit var songSelectionAdapter: SongSelectionAdapter
-    val args: PlayListViewFragmentArgs by navArgs()
+    private val args: PlayListViewFragmentArgs by navArgs()
 
 
-    private val connection=object :ServiceConnection{
+    private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder=service as MusicService.MyBinder
-            musicService=binder.currentService()
+            val binder = service as MusicService.MyBinder
+            musicService = binder.currentService()
 
-            musicViewModel.songsInPlayList.observe(viewLifecycleOwner, Observer {
-                musicService!!.songsList.value = it
-            })
+
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -65,30 +66,63 @@ class PlayListViewFragment : BaseFragment<FragmentPlayListViewBinding>(
 
         val playlistName = args.playListName
 
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = args.playListName.playListName
 
 
         songSelectionAdapter = SongSelectionAdapter("MusicFragment", { selected ->
-            Log.d(TAG, "selected song ${selected.tittle}")//song item clicked
+            Log.d(TAG, "selected song ${selected.tittle}")
+            //song item selected
 
-            musicService!!.setMediaItem(selected)
+            playSongFromPlayList(selected)
 
         }) {
-            Log.d(TAG, "option song ${it.tittle}")//optionButton clicked
+            Log.d(TAG, "option song ${it.tittle}")
+            //optionButton clicked from the song Item
+
             showDialogOption(it)
         }
+
+
         setView()
-        musicViewModel.getSongsInPlayList(playlistName)
+        musicViewModel.getSongsInPlayList(playlistName.playListName)
 
-
+          binding.addButton.setOnClickListener {  navigateToSongsFragment() }
 
         musicViewModel.songsInPlayList.observe(requireActivity(), Observer {
 
             Log.d(TAG, "playlist songs ${it.toString()} ")
+
             songSelectionAdapter.differ.submitList(it)
+
+
+
+            playListSongs = it
         })
+
+     setAddButtonVisibility()
+
+
     }
 
+    private fun setAddButtonVisibility(){
 
+        if (args.playListName.songsCount ==0){
+            binding.noContentLayout.visibility=View.VISIBLE
+        }else{
+            binding.noContentLayout.visibility=View.GONE
+        }
+
+
+    }
+    private fun playSongFromPlayList(song: MusicItem) {
+
+
+        val index = playListSongs.indexOf(song)
+
+        musicService!!.setSongListToPlayer(playListSongs, index)
+
+
+    }
 
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,17 +138,22 @@ class PlayListViewFragment : BaseFragment<FragmentPlayListViewBinding>(
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == R.id.add_item) {
 
-            val action =
-                PlayListViewFragmentDirections.actionPlayListViewFragmentToSongsFragment(args.playListName)
-            findNavController().navigate(action)
+         navigateToSongsFragment()
         }
         return super.onOptionsItemSelected(item)
     }
 
+
+    private fun navigateToSongsFragment(){
+        val action =
+            PlayListViewFragmentDirections.actionPlayListViewFragmentToSongsFragment(args.playListName.playListName)
+        findNavController().navigate(action)
+    }
     private fun setView() {
         binding.playListItemRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -127,7 +166,7 @@ class PlayListViewFragment : BaseFragment<FragmentPlayListViewBinding>(
         //  OptionBottomSheet().show(childFragmentManager,"")
         val action = PlayListViewFragmentDirections.actionPlayListViewFragmentToOptionBottomSheet(
             song,
-            args.playListName
+            args.playListName.playListName
         )
         findNavController().navigate(action)
     }

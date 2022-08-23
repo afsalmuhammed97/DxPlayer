@@ -1,6 +1,7 @@
 package com.afsal.dev.dxplayer.view_models
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import com.afsal.dev.dxplayer.models.audioSections.PlayListWithSongs
 import com.afsal.dev.dxplayer.models.audioSections.PlayLists
 import com.afsal.dev.dxplayer.repository.MusicRepository
 import com.afsal.dev.dxplayer.utills.CoreUttiles
+import com.afsal.dev.dxplayer.utills.CoreUttiles.FAVOURITE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -28,7 +30,9 @@ class MusicViewModel(application: Application) : BaseViewModel(application) {
     val musicList: LiveData<List<MusicItem>>
         get() = _musicList
 
-
+   private val _isFavourite:MutableLiveData<Boolean> = MutableLiveData()
+    val isFavourite:LiveData<Boolean>
+    get() = _isFavourite
     init {
 
         val musicDao = SongsDatabase.getDatabase(application).musicDao()
@@ -67,8 +71,33 @@ class MusicViewModel(application: Application) : BaseViewModel(application) {
             song.imageUri, song.artUri, song.folderName, playListName
         )
 
+
+
         viewModelScope.launch(Dispatchers.IO) {
+
+
+            //add song to playlist
             repository.addSongToPlayList(songWithPlayListName)
+
+            //getting the playlistSongCount
+            val playListsData=repository.getPlayListData(playListName)
+
+            if (playListsData.playListImage ==null){
+
+
+                val playLists=PlayLists(playListName,playListsData.songsCount+1,song.imageUri)
+                repository.updatePlayListWithSongCount(playLists)
+
+
+            }else{
+                //updating songCount
+
+                val playLists=PlayLists(playListName,playListsData.songsCount+1)
+                repository.updatePlayListWithSongCount(playLists)
+            }
+
+
+
         }
 
     }
@@ -94,14 +123,33 @@ class MusicViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
+    fun checkTheCurrentSongIsFavOrNot(currentSong:MusicItem){
+
+       //
+        viewModelScope.launch (Dispatchers.IO){
+            val isFav=repository.checkSongExistence(currentSong.id,FAVOURITE)
+
+            _isFavourite.postValue(isFav)
+        }
+
+
+    }
 
     fun deleteSongFromPlaylist(song:MusicItem,playlist: String){
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteSongFromPlayList(song.id,playlist)
         }
 
         getSongsInPlayList(playlist)
+    }
+
+    fun deletePlayList(playlist: String){
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            repository.deletePlayList(playlist)
+        }
     }
 
 }

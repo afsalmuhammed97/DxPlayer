@@ -50,7 +50,17 @@
         tools:layout="@layout/music_fragment">
         <action
             android:id="@+id/action_navigation_music_to_playListFragment"
-            app:destination="@id/playListFragment" />
+            app:destination="@id/playListFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_navigation_music_to_playListViewFragment"
+            app:destination="@id/playListViewFragment" />
+        <action
+            android:id="@+id/action_navigation_music_to_dialogBottomSheet2"
+            app:destination="@id/dialogBottomSheet2" />
 
 
     </fragment>
@@ -85,32 +95,42 @@
         android:id="@+id/playListFragment"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListFragment"
         android:label="Play Lists"
-        tools:layout="@layout/fragment_play_list" >
+        tools:layout="@layout/fragment_play_list">
         <action
             android:id="@+id/action_playListFragment_to_playListViewFragment"
-            app:destination="@id/playListViewFragment" />
+            app:destination="@id/playListViewFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/playListViewFragment"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListViewFragment"
-        android:label="fragment_play_list_view"
-        tools:layout="@layout/fragment_play_list_view" >
+        tools:layout="@layout/fragment_play_list_view">
         <action
             android:id="@+id/action_playListViewFragment_to_songsFragment"
-            app:destination="@id/songsFragment" />
-        <argument
-            android:name="playListName"
-            app:argType="string" />
+            app:destination="@id/songsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+<!--        <argument-->
+<!--            android:name="playListName"-->
+<!--            app:argType="string" />-->
         <action
             android:id="@+id/action_playListViewFragment_to_optionBottomSheet"
             app:destination="@id/optionBottomSheet" />
+        <argument
+            android:name="PlayListName"
+            app:argType="com.afsal.dev.dxplayer.models.audioSections.PlayLists" />
 
     </fragment>
     <fragment
         android:id="@+id/songsFragment"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.SongsFragment"
         android:label="fragment_songs"
-        tools:layout="@layout/fragment_songs" >
+        tools:layout="@layout/fragment_songs">
         <argument
             android:name="playListName"
             app:argType="string" />
@@ -118,13 +138,21 @@
     <dialog
         android:id="@+id/optionBottomSheet"
         android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.OptionBottomSheet"
-        android:label="OptionBottomSheet" >
+        android:label="OptionBottomSheet">
         <argument
             android:name="songData"
             app:argType="com.afsal.dev.dxplayer.models.audioSections.MusicItem" />
         <argument
             android:name="playListName"
             app:argType="string" />
+    </dialog>
+    <dialog
+        android:id="@+id/dialogBottomSheet2"
+        android:name="com.afsal.dev.dxplayer.ui.fragments.music_section.DialogBottomSheet"
+        android:label="DialogBottomSheet">
+        <action
+            android:id="@+id/action_dialogBottomSheet2_to_playListFragment"
+            app:destination="@id/playListFragment" />
     </dialog>
     <!--    <fragment-->
     <!--        android:id="@+id/galleryViewFragment"-->

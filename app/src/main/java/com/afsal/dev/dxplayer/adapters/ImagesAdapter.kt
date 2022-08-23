@@ -12,28 +12,31 @@ import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 
-class ImagesAdapter(val context: Context, private  val listener: OnItemClickListner): RecyclerView.Adapter<ImagesAdapter.ImagesHolder>() {
+class ImagesAdapter(val context: Context, private val listener: OnItemClickListner) :
+    RecyclerView.Adapter<ImagesAdapter.ImagesHolder>() {
 
-          private val diffCallback= object :DiffUtil.ItemCallback<ImageModel>(){
+    private val diffCallback = object : DiffUtil.ItemCallback<ImageModel>() {
         override fun areItemsTheSame(oldItem: ImageModel, newItem: ImageModel): Boolean {
-            return oldItem.id== newItem.id
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: ImageModel, newItem: ImageModel): Boolean {
-            return oldItem==newItem
+            return oldItem == newItem
         }
 
     }
-    val differList= AsyncListDiffer(this,diffCallback)
+    val differList = AsyncListDiffer(this, diffCallback)
 
-  inner  class ImagesHolder(val binding: ImageItemBinding):RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    inner class ImagesHolder(val binding: ImageItemBinding) : RecyclerView.ViewHolder(binding.root),
+        View.OnClickListener {
         init {
             binding.image.setOnClickListener(this)
         }
+
         override fun onClick(p0: View?) {
             val position = absoluteAdapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position,differList.currentList[position])
+                listener.onItemClick(position, differList.currentList[position])
 
             }
         }
@@ -41,18 +44,29 @@ class ImagesAdapter(val context: Context, private  val listener: OnItemClickList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesHolder {
-          return  ImagesHolder(ImageItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ImagesHolder(
+            ImageItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ImagesHolder, position: Int) {
-            val photo=differList.currentList[position]
-       // holder.binding.image.setImageURI(photo.contentUri)
+        val photo = differList.currentList[position]
+        // holder.binding.image.setImageURI(photo.contentUri)
 
-            CoreUttiles.loadImageIntoView(photo.contentUri,holder.binding.image,null,CoreUttiles.IMAGE_VIEW)
+        CoreUttiles.loadImageIntoView(
+            photo.contentUri,
+            holder.binding.image,
+            null,
+            CoreUttiles.IMAGE_VIEW
+        )
 
- /// need to implement more like glide ...
+        /// need to implement more like glide ...
     }
 
-    override fun getItemCount()=differList.currentList.size
+    override fun getItemCount() = differList.currentList.size
 
 }

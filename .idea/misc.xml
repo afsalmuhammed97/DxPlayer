@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable-v24/ic_baseline_favorite_border_red.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable-v24/photo_selectot.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/bottom_sheet_shap.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/check_box_selecter.xml" value="0.194" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/circulalr_shap.xml" value="0.1645" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/circular_layr_list.xml" value="0.1645" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/circular_shap.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selector.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selectot.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_back_arrow.xml" value="0.2035" />
@@ -65,7 +69,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_play_list.xml" value="0.2" />
-        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_play_list_view.xml" value="0.1859375" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_play_list_view.xml" value="0.33" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_player_screen_list_dialog.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_player_screen_list_dialog_item.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/fragment_songs.xml" value="0.2" />
@@ -85,6 +89,8 @@
         <entry key="..\:/DxPlayer/app/src/main/res/layout/video_item1.xml" value="0.18" />
         <entry key="..\:/DxPlayer/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1188118811881188" />
         <entry key="..\:/DxPlayer/app/src/main/res/menu/images_menu.xml" value="0.19583333333333333" />
+        <entry key="..\:/DxPlayer/app/src/main/res/menu/option_menu.xml" value="0.2" />
+        <entry key="..\:/DxPlayer/app/src/main/res/menu/play_list_menu.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_dash_bord.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/base_rv_item.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_dash_bord.xml" value="0.1" />

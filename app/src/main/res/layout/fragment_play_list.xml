@@ -63,6 +63,63 @@
 
 
     </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:id="@id/fav_bt"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="@dimen/_10dp"-->
+<!--        android:theme="@style/ClickableViewBackground">-->
+
+<!--        <androidx.cardview.widget.CardView-->
+
+<!--            android:layout_width="@dimen/_65dp"-->
+<!--            android:layout_height="@dimen/_65dp"-->
+<!--            android:backgroundTint="@color/bg_color2"-->
+<!--            app:cardCornerRadius="@dimen/_8dp"-->
+
+<!--            >-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:padding="@dimen/_5dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/ic_baseline_favorite_border_red"-->
+
+<!--                 />-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="@dimen/_20dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:padding="@dimen/_4dp"-->
+<!--            android:text="Favorites"-->
+<!--            android:textSize="@dimen/text_16sp"-->
+<!--            android:textStyle="bold" />-->
+
+
+<!--        &lt;!&ndash;       <EditText&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:id="@+id/play_list_name"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:layout_marginHorizontal="@dimen/_20dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:layout_width="match_parent"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:layout_height="wrap_content"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:hint="Play list name"/>&ndash;&gt;-->
+
+<!--        &lt;!&ndash;       <Button&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:id="@+id/create_bt"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:layout_width="wrap_content"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:layout_height="wrap_content"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:textColor="@color/white"&ndash;&gt;-->
+<!--        &lt;!&ndash;           android:text="create"/>&ndash;&gt;-->
+
+
+<!--    </LinearLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playListRv"

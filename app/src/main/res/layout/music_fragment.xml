@@ -8,113 +8,119 @@
     tools:context=".ui.fragments.music_section.MusicFragment"
 
     >
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/audio_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_100dp"
-                android:background="@android:color/transparent"
-                android:gravity="center">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/bt_fav"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_baseline_favorite_border_24"
-                    app:layout_constraintBottom_toTopOf="@+id/textView"
-                    app:layout_constraintEnd_toStartOf="@+id/bt_playlist"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/bt_playlist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_baseline_playlist_play_24"
-                    app:layout_constraintBottom_toTopOf="@+id/textView2"
-                    app:layout_constraintEnd_toStartOf="@+id/bt_resent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/bt_fav"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/bt_resent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-
-                    android:clickable="true"
-                    android:src="@drawable/ic_baseline_audiotrack_24"
-                    app:layout_constraintBottom_toTopOf="@+id/textView3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/bt_playlist"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/favorate"
-                    android:textColor="?attr/colorSecondaryVariant"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_fav"
-                    app:layout_constraintStart_toStartOf="@+id/bt_fav"
-                    app:layout_constraintTop_toBottomOf="@+id/bt_fav" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/recently_played"
-                    android:textColor="?attr/colorSecondaryVariant"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_resent"
-                    app:layout_constraintStart_toStartOf="@+id/bt_resent"
-                    app:layout_constraintTop_toBottomOf="@+id/bt_resent" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/play_lists"
-                    android:textColor="?attr/colorSecondaryVariant"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/bt_playlist"
-                    app:layout_constraintStart_toStartOf="@+id/bt_playlist"
-                    app:layout_constraintTop_toBottomOf="@+id/bt_playlist" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/audio_rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/_55dp" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-
-
+        />
 </FrameLayout>
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fillViewport="true">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/_100dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:gravity="center">-->
+
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:id="@+id/bt_fav"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:src="@drawable/ic_baseline_favorite_border_24"-->
+<!--                    app:layout_constraintBottom_toTopOf="@+id/textView"-->
+<!--                    app:layout_constraintEnd_toStartOf="@+id/bt_playlist"-->
+<!--                    app:layout_constraintHorizontal_bias="0.5"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:id="@+id/bt_playlist"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:src="@drawable/ic_baseline_playlist_play_24"-->
+<!--                    app:layout_constraintBottom_toTopOf="@+id/textView2"-->
+<!--                    app:layout_constraintEnd_toStartOf="@+id/bt_resent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.5"-->
+<!--                    app:layout_constraintStart_toEndOf="@+id/bt_fav"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:id="@+id/bt_resent"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+
+
+<!--                    android:clickable="true"-->
+<!--                    android:src="@drawable/ic_baseline_audiotrack_24"-->
+<!--                    app:layout_constraintBottom_toTopOf="@+id/textView3"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.5"-->
+<!--                    app:layout_constraintStart_toEndOf="@+id/bt_playlist"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/textView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/favorate"-->
+<!--                    android:textColor="?attr/colorSecondaryVariant"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="@+id/bt_fav"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/bt_fav"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/bt_fav" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/textView3"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/recently_played"-->
+<!--                    android:textColor="?attr/colorSecondaryVariant"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="@+id/bt_resent"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/bt_resent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/bt_resent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/textView2"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/play_lists"-->
+<!--                    android:textColor="?attr/colorSecondaryVariant"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="@+id/bt_playlist"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/bt_playlist"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/bt_playlist" />-->
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/audio_rv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:paddingBottom="@dimen/_55dp" />-->
+<!--        </LinearLayout>-->
+<!--    </androidx.core.widget.NestedScrollView>-->
+<!--    android:paddingBottom="@dimen/_55dp"-->
+
+
+
+
 
 
 

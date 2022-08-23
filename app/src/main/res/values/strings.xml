@@ -27,4 +27,5 @@
     <string name="delete">Delete</string>
     <string name="remove_from_playlist">Remove from playlist</string>
     <string name="cancel">Cancel</string>
+    <string name="no_items_yet">No items yet  add songs to playList</string>
 </resources>

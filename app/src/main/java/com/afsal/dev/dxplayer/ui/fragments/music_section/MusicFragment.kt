@@ -1,13 +1,13 @@
 package com.afsal.dev.dxplayer.ui.fragments.music_section
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.media.session.PlaybackState
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.SongsAdapter
 import com.afsal.dev.dxplayer.databinding.MusicFragmentBinding
+import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.ui.services.MusicService
+import com.afsal.dev.dxplayer.utills.CoreUttiles.FAVOURITE
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
 
 
@@ -32,6 +34,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
     private lateinit var musicViewModel: MusicViewModel
     private lateinit var songsAdapter: SongsAdapter
 
+    private var musicList = mutableListOf<MusicItem>()
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -44,9 +47,6 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
 
 
-            musicViewModel.musicList.observe(viewLifecycleOwner, Observer {
-                musicService!!.songsList.value = it
-            })
 
 
 //            musicService!!.isPlayingLiveData.observe(viewLifecycleOwner, Observer { isplaying ->
@@ -88,6 +88,8 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
         val intent = Intent(requireContext(), MusicService::class.java)
         requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
         // requireActivity().stopService(intent)
+       this.setHasOptionsMenu(true)
+
     }
 
 
@@ -99,10 +101,12 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
         musicViewModel.loadAllMusicFiles()
 
 
-        songsAdapter = SongsAdapter() { song ->
 
-            Log.d(TAG, "selected song ${song.toString()}")
-            musicService!!.setMediaItem(song)
+
+        songsAdapter = SongsAdapter() { song,idex ->
+
+            Log.d(TAG, "selected song ${song.toString()}${idex}")
+            musicViewModel.musicList.value?.let { musicService!!.setSongListToPlayer(it,idex) }
 
 
         }
@@ -116,6 +120,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
             Log.d(TAG, "musics ${it.toString()}")
             songsAdapter.differ.submitList(it)
+            musicList= it as MutableList<MusicItem>
         })
 
         binding.apply {
@@ -124,20 +129,51 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
 
         }
-        binding.apply {
 
+        val sharedPref= requireActivity().getSharedPreferences( FAVOURITE,Context.MODE_PRIVATE)
+        val isFavCreated=sharedPref.getBoolean("FavCreated",false)
 
-            btFav.setOnClickListener { navigateToPlayListFragment() }
-            btPlaylist.setOnClickListener { navigateToPlayListFragment() }
-            btResent.setOnClickListener { navigateToPlayListFragment() }
+        if (!isFavCreated){
+            createFavorite()
         }
+
+//        binding.apply {
+//
+//
+//            btFav.setOnClickListener { navigateToPlayListFragment() }
+//            btPlaylist.setOnClickListener { navigateToPlayListFragment() }
+//            btResent.setOnClickListener { navigateToPlayListFragment() }
+//        }
 
 
     }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
+        inflater.inflate(R.menu.play_list_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId==R.id.play_list){
+            navigateToPlayListFragment()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 
-    private fun navigateToPlayListFragment() {
+            private fun navigateToPlayListFragment() {
         findNavController().navigate(R.id.action_navigation_music_to_playListFragment)
+    }
+
+    private fun createFavorite(){
+        musicViewModel.createPlayList(FAVOURITE)
+
+        val     sharedPerf=requireActivity().getSharedPreferences( FAVOURITE,Context.MODE_PRIVATE)
+
+       val editor=sharedPerf.edit()
+        editor.putBoolean("FavCreated",true)
+        editor.apply()
     }
 
 //    private fun updateTittle(song: MusicItem) {

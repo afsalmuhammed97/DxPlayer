@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.PlayListAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentPlayListBinding
+import com.afsal.dev.dxplayer.models.audioSections.PlayLists
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
+import com.afsal.dev.dxplayer.utills.CoreUttiles
+import com.afsal.dev.dxplayer.utills.CoreUttiles.FAVOURITE
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -28,9 +31,19 @@ class PlayListFragment() : BaseFragment<FragmentPlayListBinding>(
         super.onViewCreated(view, savedInstanceState)
         musicViewModel = ViewModelProvider(this)[MusicViewModel::class.java]
 
-        playListAdapter = PlayListAdapter() {
 
-            navigateToPlayListView(it.playListName)
+        playListAdapter = PlayListAdapter({
+
+            //selected item
+            navigateToPlayListView(it)
+        }) {
+
+
+            //long Click  selectedItem
+            Log.d(TAG, "Long click ${it.playListName}")
+
+            deletePlayList(it.playListName)
+           // musicViewModel.deletePlayList(it.playListName)
         }
 
         setView()
@@ -38,9 +51,13 @@ class PlayListFragment() : BaseFragment<FragmentPlayListBinding>(
 
 
         binding.newBt.setOnClickListener {
-            //  CoreUttiles.showSnackBar("clicked",binding.playListRv,""){}
+
             newPlayListDialog()
         }
+//        binding.favBt.setOnClickListener {
+//            val playLists=PlayLists(FAVOURITE)
+//            navigateToPlayListView(playLists)
+//        }
 
         musicViewModel.playListNames.observe(viewLifecycleOwner, Observer {
             Log.d("PPP", "Playlist name  ${it.toString()}")
@@ -51,6 +68,14 @@ class PlayListFragment() : BaseFragment<FragmentPlayListBinding>(
 
     }
 
+    private fun deletePlayList(playListName: String){
+
+        val text="Delete PlayList"
+        CoreUttiles.showDeleteDialog(text,requireContext(),this){
+            musicViewModel.deletePlayList(playListName)
+        }
+    }
+
     private fun setView() {
         binding.playListRv.apply {
             layoutManager = LinearLayoutManager(context)
@@ -58,11 +83,13 @@ class PlayListFragment() : BaseFragment<FragmentPlayListBinding>(
         }
     }
 
-    private fun navigateToPlayListView(playListName: String) {
+
+
+    private fun navigateToPlayListView(playLists: PlayLists) {
         //   findNavController().navigate(R.id.action_playListFragment_to_playListViewFragment)
 
         val action =
-            PlayListFragmentDirections.actionPlayListFragmentToPlayListViewFragment(playListName)
+            PlayListFragmentDirections.actionPlayListFragmentToPlayListViewFragment(playLists)
         findNavController().navigate(action)
     }
 

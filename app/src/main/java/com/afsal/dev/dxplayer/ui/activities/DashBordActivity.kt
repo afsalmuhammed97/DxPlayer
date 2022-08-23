@@ -10,13 +10,10 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -27,18 +24,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-
 import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.databinding.ActivityDashBordBinding
 import com.afsal.dev.dxplayer.models.audioSections.MusicItem
-import com.afsal.dev.dxplayer.models.photosSections.ImageModel
-import com.afsal.dev.dxplayer.ui.fragments.music_section.DialogBottomSheet
 import com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragment
+import com.afsal.dev.dxplayer.ui.fragments.music_section.DialogBottomSheet
 import com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListFragment
 import com.afsal.dev.dxplayer.ui.services.MusicService
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.view_models.BaseViewModel
-
+import com.google.android.exoplayer2.Player
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class DashBordActivity : AppCompatActivity() {
@@ -57,18 +52,32 @@ class DashBordActivity : AppCompatActivity() {
 
 
     private val connection = object : ServiceConnection {
+
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as MusicService.MyBinder
             musicService = binder.currentService()
 
             Log.d(TAG, "MusicService connected $name")
+
             musicService!!.playbackState.observe(this@DashBordActivity, Observer { playBackState ->
+
+                 if(playBackState==Player.STATE_IDLE){
+                     binding.miniPlayerLayout.visibility=View.GONE
+                 }else{
+                     binding.miniPlayerLayout.visibility=View.VISIBLE
+                 }
+
+                Log.d(TAG,"playbackState ${playBackState.toString()}")
+
+
             })
 
             musicService!!.isPlayingLiveData.observe(this@DashBordActivity, Observer { isplaying ->
+
                 binding.miniPlayerLayout.visibility = View.VISIBLE
 
                 binding.playerPlay.setImageResource(
+
                     if (isplaying == true)
                         R.drawable.ic_baseline_pause_circle_outline_34 else R.drawable.ic_baseline_play
                 )
@@ -84,8 +93,10 @@ class DashBordActivity : AppCompatActivity() {
 
 
                 musicService!!.currentSong.value?.let { it1 ->
-                    updateSongProgress(it,
-                        it1.duration)
+                    updateSongProgress(
+                        it,
+                        it1.duration
+                    )
                 }
             })
 
@@ -136,7 +147,7 @@ class DashBordActivity : AppCompatActivity() {
 
         val intent = Intent(this, MusicService::class.java)
         this.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-       // this.startService(intent)
+        // this.startService(intent)
 
 
         hideAndShowNavigation()
@@ -160,9 +171,11 @@ class DashBordActivity : AppCompatActivity() {
                 musicService!!.stopPlayer()
                 binding.miniPlayerLayout.visibility = View.GONE
             }
+
             miniPlayerLayout.setOnClickListener {
                 DialogBottomSheet().show(supportFragmentManager, "")
 
+                // navigateToPlayerScreen()
             }
 
 
@@ -171,11 +184,11 @@ class DashBordActivity : AppCompatActivity() {
     }
 
 
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_dash_bord)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
 
     private fun updateOrRequestPermission() {
         val hasReadPermission = ContextCompat.checkSelfPermission(
@@ -224,14 +237,14 @@ class DashBordActivity : AppCompatActivity() {
                 when (f) {
                     is ImageViewFragment -> {
                         binding.navView.visibility = View.GONE
-                        binding.miniPlayerLayout.visibility=View.GONE
+                        binding.miniPlayerLayout.visibility = View.GONE
                         supportActionBar?.hide()
                     }
 
-                    is PlayListFragment -> {
-                        binding.navView.visibility = View.GONE
-                        binding.miniPlayerLayout.visibility=View.VISIBLE
-                    }
+//                    is PlayListFragment -> {
+//                       // binding.navView.visibility = View.GONE
+//
+//                    }
                     else -> {
                         binding.navView.visibility = View.VISIBLE
                         supportActionBar?.show()
@@ -244,28 +257,22 @@ class DashBordActivity : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
-    fun loadImages() {
+//    @RequiresApi(Build.VERSION_CODES.R)
+//    fun loadImages() {
+//
+//        baseViewModel.loadSystemImages()
+//        baseViewModel.photoList.observe(this, Observer<List<ImageModel>> {
+//            Log.d(TAG, "data ${it.toString()}")
+//        })
+//
+//
+//    }
 
-        baseViewModel.loadSystemImages()
-        baseViewModel.photoList.observe(this, Observer<List<ImageModel>> {
-            Log.d(TAG, "data ${it.toString()}")
-        })
-
-
-    }
-
-
-
-    fun setBottomNavigationVisibility(visibility: Int) {
-
-        binding.navView.visibility = visibility
-    }
 
     private fun updateTittle(song: MusicItem) {
         binding.titleText.text = song.tittle
         CoreUttiles.loadImageIntoView(
-             Uri.parse( song.imageUri), binding.musicImage, null,
+            Uri.parse(song.imageUri), binding.musicImage, null,
             CoreUttiles.IMAGE_VIEW
         )
     }
