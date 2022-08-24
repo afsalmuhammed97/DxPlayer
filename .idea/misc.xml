@@ -5,13 +5,16 @@
       <map>
         <entry key="..\:/DxPlayer/app/src/main/res/drawable-v24/ic_baseline_favorite_border_red.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable-v24/photo_selectot.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/_3_pro___1.xml" value="0.155" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/bottom_sheet_shap.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/check_box_selecter.xml" value="0.194" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/circulalr_shap.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/circular_layr_list.xml" value="0.1645" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/circular_shap.xml" value="0.1645" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/dx_bg_svg__1.xml" value="0.1265" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selector.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/folder_selectot.xml" value="0.1655" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/frame_1.xml" value="0.155" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_back_arrow.xml" value="0.2035" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.2035" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_baseline_audio_file_24.xml" value="0.1525" />
@@ -39,16 +42,19 @@
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_play.xml" value="0.173" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_play_circle.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/ic_play_circle_filled_24.xml" value="0.1165" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/iphone_13_pro_max___1.xml" value="0.1" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/music_selector.xml" value="0.1165" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/music_selectot.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/player_drawer_bg.xml" value="0.1065" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_horizonta.xml" value="0.17" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/progress_vertical.xml" value="0.17" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/rownd_corner.xml" value="0.1645" />
+        <entry key="..\:/DxPlayer/app/src/main/res/drawable/splash_bg.xml" value="0.155" />
         <entry key="..\:/DxPlayer/app/src/main/res/drawable/vid_selector.xml" value="0.1655" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dash_bord.xml" value="0.15" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_dx_player.xml" value="0.22" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_fullscreen.xml" value="0.1859375" />
+        <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/activity_player_screen.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/app_bar_main.xml" value="0.22" />
         <entry key="..\:/DxPlayer/app/src/main/res/layout/audio_main_item.xml" value="0.25" />

@@ -40,6 +40,9 @@ import java.util.*
 
 
 object CoreUttiles {
+
+    const val NOTIFICATION_CHANNEL_ID="Music_channel"
+    const val NOTIFICATION_ID=1234
     const val FAVOURITE="Favourites"
     const val SELECTION_SCREEN="SelectionScreen"
     const val IMAGE_VIEW = "ImageFragment"
