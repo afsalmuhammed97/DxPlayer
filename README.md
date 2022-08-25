@@ -65,7 +65,7 @@ DxPlayer is a local video&music player with a fast, reliable UI/UX without the m
  
 #### Folder
  
-    Foler management  currentlly under progress
+  Foler management  currentlly under progress
 
 
 
@@ -73,8 +73,9 @@ DxPlayer is a local video&music player with a fast, reliable UI/UX without the m
 
 - [Exoplayer](https://exoplayer.dev/)
 - [Lifecycle & Livedata](https://developer.android.com/jetpack/androidx/releases/lifecycle)
-- Corouties
--
+- [kotlin -coroutines](https://developer.android.com/kotlin/coroutines)
+- [Glide](https://github.com/bumptech/glide)
+
 
 
 
