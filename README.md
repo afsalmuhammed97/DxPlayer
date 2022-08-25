@@ -33,3 +33,48 @@ DxPlayer is a local video&music player with a fast, reliable UI/UX without the m
 </p>
 
 
+ ## Features
+ 
+ 
+ - Snappy UI derived from the latest Material Design guidelines
+ - Opinionated UX that prioritizes ease of use over edge cases
+ - Customizable behavior
+ - SD Card/System storage aware folder management
+ - Ablity to reach Video,audio,Imags and folders in a single UI
+ 
+ ### VideoPlayer
+ 
+- Smooth video play in Exoplayer based playback
+- Screen drag to seeking froward ,backward and volium controle
+- Support portrait and landscape mode
+- Support subtittles and audio tracks
+- Resume video using last watched position
+- Keeping the recently watched history
+
+ ### Gallery
+ 
+ - show all images and individually
+ - Zoomable ,swipable View
+ 
+ ### Music
+ 
+ - Playlists
+ - Favourites
+ - Adapteive UI
+ - Other things, probably
+ 
+#### Folder
+ 
+    Foler management  currentlly under progress
+
+
+
+## Dependencies :
+
+- [Exoplayer](https://exoplayer.dev/)
+- [Lifecycle & Livedata](https://developer.android.com/jetpack/androidx/releases/lifecycle)
+- Corouties
+-
+
+
+
