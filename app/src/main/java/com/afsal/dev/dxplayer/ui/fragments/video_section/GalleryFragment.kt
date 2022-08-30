@@ -14,7 +14,7 @@ import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.view_models.VidViewModel
 
 
-class GalleryFragment : BaseFragment<FragmentVideoGalleryBinding>(
+class  GalleryFragment : BaseFragment<FragmentVideoGalleryBinding>(
     FragmentVideoGalleryBinding::inflate
 ) {
 

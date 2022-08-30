@@ -34,26 +34,33 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(
 
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("NotifyDataSetChanged")
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       
-        setRecyclerView()
-        videoViewModel = ViewModelProvider(requireActivity()).get(VidViewModel::class.java)
+
+        videoViewModel = ViewModelProvider(requireActivity())[VidViewModel::class.java]
         videoViewModel.loadVideosFromStorage()
 
-        videoViewModel.recentVideoLiveData.observe(viewLifecycleOwner, Observer {
+        setRecyclerView()
+
+
+        videoViewModel.recentVideoLiveData.observe(requireActivity(), Observer {
             Log.d("recentVideos", it.toString())
 
             recentVideoAdapter.differ.submitList(it)
-            recentVideoAdapter.notifyDataSetChanged()
+//            recentVideoAdapter.notifyDataSetChanged()
 
+        })
+        videoViewModel.videoList.observe(requireActivity(), Observer {
+            Log.d("VVV","all local videos ${it.toString()}")
         })
 
 
         videoViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer {
-            Log.d("Videos", "Live data ${it.toString()}")
+            Log.d("VVV", "Live data ${it.toString()}")
             categoryAdapter.differ.submitList(it)
-            categoryAdapter.notifyDataSetChanged()
+           // categoryAdapter.notifyDataSetChanged()
         })
 
 

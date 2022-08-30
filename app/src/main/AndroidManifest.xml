@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".ui.services.MusicService"
+        <service android:name="com.afsal.dev.dxplayer.services.MusicService"
             android:enabled="true"/>
     </application>
 

@@ -22,9 +22,8 @@ import com.afsal.dev.dxplayer.adapters.SongSelectionAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentPlayListViewBinding
 import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
-import com.afsal.dev.dxplayer.ui.services.MusicService
+import com.afsal.dev.dxplayer.services.MusicService
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
-import kotlin.concurrent.fixedRateTimer
 
 
 class PlayListViewFragment : BaseFragment<FragmentPlayListViewBinding>(

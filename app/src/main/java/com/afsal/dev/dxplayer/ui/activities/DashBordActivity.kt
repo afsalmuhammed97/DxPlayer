@@ -29,8 +29,7 @@ import com.afsal.dev.dxplayer.databinding.ActivityDashBordBinding
 import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.fragments.Images_section.ImageViewFragment
 import com.afsal.dev.dxplayer.ui.fragments.music_section.DialogBottomSheet
-import com.afsal.dev.dxplayer.ui.fragments.music_section.PlayListFragment
-import com.afsal.dev.dxplayer.ui.services.MusicService
+import com.afsal.dev.dxplayer.services.MusicService
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.view_models.BaseViewModel
 import com.google.android.exoplayer2.Player
@@ -40,7 +39,7 @@ class DashBordActivity : AppCompatActivity() {
     private var musicService: MusicService? = null
     private var readPermissionGrated = false
     private var writePermissionGranted = false
-    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+//    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var navController: NavController
     private lateinit var binding: ActivityDashBordBinding
     private val TAG = "DashBordActivity"
@@ -119,19 +118,19 @@ class DashBordActivity : AppCompatActivity() {
         //  binding.navView.setItemIconTintList(null);
 
 
-        permissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
+//        permissionLauncher =
+//            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
+//
+//                readPermissionGrated = permission[android.Manifest.permission.READ_EXTERNAL_STORAGE]
+//                    ?: readPermissionGrated
+//                writePermissionGranted =
+//                    permission[android.Manifest.permission.WRITE_EXTERNAL_STORAGE]
+//                        ?: writePermissionGranted
+//            }
 
-                readPermissionGrated = permission[android.Manifest.permission.READ_EXTERNAL_STORAGE]
-                    ?: readPermissionGrated
-                writePermissionGranted =
-                    permission[android.Manifest.permission.WRITE_EXTERNAL_STORAGE]
-                        ?: writePermissionGranted
-            }
 
 
-
-        updateOrRequestPermission()
+        //updateOrRequestPermission()
 
 
         navController = findNavController(R.id.nav_host_fragment_activity_dash_bord)
@@ -190,37 +189,37 @@ class DashBordActivity : AppCompatActivity() {
     }
 
 
-    private fun updateOrRequestPermission() {
-        val hasReadPermission = ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-
-        val hasWritePermission = ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-
-        val minSdk = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-        readPermissionGrated = hasReadPermission
-        writePermissionGranted = hasWritePermission || minSdk
-
-        val permissionRequest = mutableListOf<String>()
-
-        if (!writePermissionGranted) {
-
-            permissionRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-        if (!readPermissionGrated) {
-            permissionRequest.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        if (permissionRequest.isNotEmpty()) {
-
-            permissionLauncher.launch(permissionRequest.toTypedArray())
-        }
-
-    }
+//    private fun updateOrRequestPermission() {
+//        val hasReadPermission = ContextCompat.checkSelfPermission(
+//            this,
+//            android.Manifest.permission.READ_EXTERNAL_STORAGE
+//        ) == PackageManager.PERMISSION_GRANTED
+//
+//        val hasWritePermission = ContextCompat.checkSelfPermission(
+//            this,
+//            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        ) == PackageManager.PERMISSION_GRANTED
+//
+//        val minSdk = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+//        readPermissionGrated = hasReadPermission
+//        writePermissionGranted = hasWritePermission || minSdk
+//
+//        val permissionRequest = mutableListOf<String>()
+//
+//        if (!writePermissionGranted) {
+//
+//            permissionRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//        }
+//        if (!readPermissionGrated) {
+//            permissionRequest.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//        }
+//
+//        if (permissionRequest.isNotEmpty()) {
+//
+//            permissionLauncher.launch(permissionRequest.toTypedArray())
+//        }
+//
+//    }
 
     private fun hideAndShowNavigation() {
         supportFragmentManager.registerFragmentLifecycleCallbacks(object :

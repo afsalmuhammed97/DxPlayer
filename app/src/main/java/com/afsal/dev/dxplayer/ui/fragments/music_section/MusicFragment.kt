@@ -18,7 +18,7 @@ import com.afsal.dev.dxplayer.adapters.SongsAdapter
 import com.afsal.dev.dxplayer.databinding.MusicFragmentBinding
 import com.afsal.dev.dxplayer.models.audioSections.MusicItem
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
-import com.afsal.dev.dxplayer.ui.services.MusicService
+import com.afsal.dev.dxplayer.services.MusicService
 import com.afsal.dev.dxplayer.utills.CoreUttiles.FAVOURITE
 import com.afsal.dev.dxplayer.view_models.MusicViewModel
 
