@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.afsal.dev.dxplayer.dataBase.RecentVideoDatabase
 import com.afsal.dev.dxplayer.models.VideoSections.Folders
 import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 import com.afsal.dev.dxplayer.models.VideoSections.VideoItemModel
+import com.afsal.dev.dxplayer.repository.VideoRepository
 import com.afsal.dev.dxplayer.ui.activities.DxPlayerActivity
 import com.afsal.dev.dxplayer.utills.CoreUttiles
 import com.afsal.dev.dxplayer.utills.CoreUttiles.VIDEO
@@ -20,13 +22,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class VidViewModel(application: Application) : BaseViewModel(application) {
+    private val TAG="VidViewModel"
+    private val videoRepository: VideoRepository
 
-    val recentVideosList = mutableListOf<PlayedVideoItem>()
-    val recentVideoLiveData = MutableLiveData<List<PlayedVideoItem>>()
-
+    private val _watchedHistory: MutableLiveData<List<PlayedVideoItem>> = MutableLiveData()
+    val watchedHistory: LiveData<List<PlayedVideoItem>> get() = _watchedHistory
 
     init {
+        val videoDao = RecentVideoDatabase.getVideoHistoryDatabase(application).videoHistoryDao()
+
+        videoRepository = VideoRepository(videoDao)
+
         //loadVideosFromStorage()
+        loadWatchHistory()
+
+
     }
 
     val foldersNameSet = mutableSetOf<String>()
@@ -46,13 +56,13 @@ class VidViewModel(application: Application) : BaseViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             val videos = CoreUttiles.loadVideos(context) { foldersNameSet.addAll(it) }
             _videoList.postValue(videos)
-            Log.d("VVV", "Videos from local ${videos.toString()}")
+            Log.d(TAG, "Videos from local ${videos.toString()}")
 
 
             launch {
 
                 _categoryVideoList.postValue(CoreUttiles.creatingCustomList(videos, foldersNameSet))
-                Log.d("VVV", "categoryLsit  ${categoryVideoList.toString()}")
+                Log.d(TAG, "categoryLsit  ${categoryVideoList.toString()}")
             }
 
 
@@ -62,22 +72,51 @@ class VidViewModel(application: Application) : BaseViewModel(application) {
 
 
     fun launchPlayerScreen(context: Context, video: VideoItemModel, fragment: Fragment): Intent {
-        var videoPostion = 0L
-        if (recentVideosList.isNotEmpty())
-            for (item in recentVideosList) {
+        var videoPosition = 0L
+
+
+        if (watchedHistory.value!!.isNotEmpty()) {
+
+            for (item in watchedHistory.value!!) {
                 if (item.videoId == video.id) {
-                    videoPostion = item.lastPlayedPosition
+                    videoPosition = item.lastPlayedPosition
                     break
                 }
             }
+        }
+
 
         val intent = Intent(context, DxPlayerActivity::class.java)
         // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra(VIDEO, video as Parcelable)
-        intent.putExtra(VIDEO_POSITION, videoPostion)
+        intent.putExtra(VIDEO_POSITION, videoPosition)
         fragment.startActivity(intent)
         return intent
     }
 
 
+    private fun loadWatchHistory() {
+
+        viewModelScope.launch {
+            val videos = videoRepository.getLastWatchedVideos()
+
+            Log.d("JJJ", "loaded History ${videos.toString()}")
+            Log.d("JJJ", "loaded HistorySize ${videos.size}")
+            _watchedHistory.postValue(videos)
+        }
+    }
+
+    fun addVideoIntoHistory(video: PlayedVideoItem) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+
+            viewModelScope.launch {
+                videoRepository.addVideoToHistory(video)
+
+            }
+
+            loadWatchHistory()
+        }
+    }
 }

@@ -14,7 +14,6 @@ import com.afsal.dev.dxplayer.adapters.BaseCategoryAdapter
 import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
 import com.afsal.dev.dxplayer.interfacess.OnItemClickListner
-import com.afsal.dev.dxplayer.models.VideoSections.PlayedVideoItem
 import com.afsal.dev.dxplayer.models.photosSections.ImageModel
 import com.afsal.dev.dxplayer.ui.fragments.BaseFragment
 import com.afsal.dev.dxplayer.utills.CoreUttiles
@@ -45,24 +44,31 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(
         setRecyclerView()
 
 
-        videoViewModel.recentVideoLiveData.observe(requireActivity(), Observer {
-            Log.d("recentVideos", it.toString())
-
-            recentVideoAdapter.differ.submitList(it)
-//            recentVideoAdapter.notifyDataSetChanged()
-
-        })
-        videoViewModel.videoList.observe(requireActivity(), Observer {
-            Log.d("VVV","all local videos ${it.toString()}")
-        })
+//        videoViewModel.videoList.observe(requireActivity(), Observer {
+//            Log.d("VVV", "all local videos ${it.toString()}")
+//        })
 
 
         videoViewModel.categoryVideoList.observe(viewLifecycleOwner, Observer {
             Log.d("VVV", "Live data ${it.toString()}")
             categoryAdapter.differ.submitList(it)
-           // categoryAdapter.notifyDataSetChanged()
+            // categoryAdapter.notifyDataSetChanged()
         })
 
+
+        videoViewModel.watchedHistory.observe(requireActivity(), Observer {
+
+            if (it.isEmpty()) {
+                binding.recntWatchedText.visibility = View.GONE
+            } else {
+                binding.recntWatchedText.visibility = View.VISIBLE
+            }
+
+            recentVideoAdapter.differ.submitList(it)
+
+            Log.d("TTT", "videoHistory ${it.toString()}")
+            Log.d("JJJ", "videoHistorySize  ${it.size}")
+        })
 
     }
 
@@ -107,37 +113,24 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(
     override fun onResume() {
         super.onResume()
 
+        Log.i("TTT", "onResume called")
 
         val lastPlayed = CoreUttiles.retrievingPlayedVideoId(requireContext())
 
+        if (lastPlayed!!.videoId != 0L || lastPlayed.videoUri.isNotEmpty()) {
+
+
+            videoViewModel.addVideoIntoHistory(lastPlayed) //add to historyDb
+
+
+        }
+
+        //  videoViewModel.loadWatchHistory()
         Log.d("TTT", "last played video ${lastPlayed.toString()}")
-        addingCurrentVideoToRecentList(lastPlayed)
-        videoViewModel.apply {
-            recentVideoLiveData.value = recentVideosList.asReversed()
-        }
+
 
     }
 
-    private fun addingCurrentVideoToRecentList(lastVideo: PlayedVideoItem) {
-
-        //val a= videoViewModel.recentVideosList.forEachIndexed()
-        if (videoViewModel.recentVideosList.size > 1) {
-
-            for (item in videoViewModel.recentVideosList) {
-                if (item.videoId == lastVideo.videoId) {
-
-                    videoViewModel.recentVideosList.remove(item)
-                    break
-                }
-            }
-        }
-
-        videoViewModel.recentVideosList.add(lastVideo)
-
-        Log.d("TTT", "recentList new ${videoViewModel.recentVideosList.toString()}")
-        Log.d("TTT", "recentList size ${videoViewModel.recentVideosList.size}")
-
-    }
 
     private fun setPlayerScreenWithRecentItem(lastPlayedId: Long) {
 

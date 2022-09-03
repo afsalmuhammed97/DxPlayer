@@ -31,10 +31,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/category"
+            android:id="@+id/recnt_watched_text"
+            android:visibility="gone"
             android:background="@android:color/transparent"
             android:paddingVertical="@dimen/_10dp"
-            android:text="@string/recent_videos"
+            android:text="@string/recently_watched"
             android:textSize="@dimen/item_head_text" />
 
         <androidx.recyclerview.widget.RecyclerView

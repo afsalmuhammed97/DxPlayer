@@ -59,6 +59,7 @@ object CoreUttiles {
     const val PLAYLIST_SONGS_TABLE="PlayListSongs"
     const val PLAYLIST_TABLE="PlayListTable"
     const val MUSIC_DATA_BASE="MusicDatabase"
+    const val WATCHED_VIDEO_DATA_BASE="WatchedVideoDatabase"
 
     suspend fun loadVideos(
         context: Context,
@@ -503,20 +504,24 @@ object CoreUttiles {
 
     }
 
-    fun retrievingPlayedVideoId(context: Context): PlayedVideoItem {
-        val editor = context.getSharedPreferences(LASTPLAYED_VIDEO, Context.MODE_PRIVATE)
+    fun retrievingPlayedVideoId(context: Context): PlayedVideoItem? {
+        val sharedPreff = context.getSharedPreferences(LASTPLAYED_VIDEO, Context.MODE_PRIVATE)
+        val editor = sharedPreff.edit()
 
-
-        val lastPosition = editor.getLong(VIDEO_POSITION, 0L)
-        val videoId = editor.getLong(VIDEO_ID, 0L)
-        val videoDuration = editor.getLong(VIDEO_DURATION, 0L)
-        val videoUriString = editor.getString(VIDEO_URI, "")
-        val videoUri = Uri.parse(videoUriString)
+        val lastPosition = sharedPreff.getLong(VIDEO_POSITION, 0L)
+        val videoId = sharedPreff.getLong(VIDEO_ID, 0L)
+        val videoDuration = sharedPreff.getLong(VIDEO_DURATION, 0L)
+        val videoUriString = sharedPreff.getString(VIDEO_URI, "")
+        //    val videoUri = Uri.parse(videoUriString)
 
         Log.d("TTT", "video position $lastPosition")
         Log.d("TTT", "video id $videoId")
         //need to clear the list after reading
-        return PlayedVideoItem(videoId, videoUri, videoDuration, lastPosition)
+
+        editor.clear()
+        editor.apply()
+
+        return videoUriString?.let { PlayedVideoItem(videoId, it, videoDuration, lastPosition) }
 
     }
 
