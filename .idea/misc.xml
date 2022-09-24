@@ -97,6 +97,7 @@
         <entry key="..\:/DxPlayer/app/src/main/res/menu/images_menu.xml" value="0.19583333333333333" />
         <entry key="..\:/DxPlayer/app/src/main/res/menu/option_menu.xml" value="0.2" />
         <entry key="..\:/DxPlayer/app/src/main/res/menu/play_list_menu.xml" value="0.2" />
+        <entry key="..\:/DxPlayer/app/src/main/res/menu/video_screen_menu.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_dash_bord.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/base_rv_item.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_dash_bord.xml" value="0.1" />

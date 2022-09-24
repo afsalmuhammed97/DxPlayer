@@ -4,12 +4,16 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afsal.dev.dxplayer.R
 import com.afsal.dev.dxplayer.adapters.BaseCategoryAdapter
 import com.afsal.dev.dxplayer.adapters.RecentVideoAdapter
 import com.afsal.dev.dxplayer.databinding.FragmentVideoBinding
@@ -37,7 +41,7 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        this.setHasOptionsMenu(true)
         videoViewModel = ViewModelProvider(requireActivity())[VidViewModel::class.java]
         videoViewModel.loadVideosFromStorage()
 
@@ -72,7 +76,19 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
+          inflater.inflate(R.menu.video_screen_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+           if (item.itemId==R.id.clare){
+               clearWatchHistory()
+           }
+        return super.onOptionsItemSelected(item)
+    }
     private fun setRecyclerView() {
         recentVideoAdapter = RecentVideoAdapter { lastPlayedId ->
 
@@ -147,4 +163,9 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(
     override fun onItemClick(Position: Int, photo: ImageModel) {
 
     }
+
+    private fun clearWatchHistory(){
+            videoViewModel.clearWatchHistory()
+    }
+
 }

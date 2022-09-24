@@ -119,4 +119,14 @@ class VidViewModel(application: Application) : BaseViewModel(application) {
             loadWatchHistory()
         }
     }
+
+
+
+    fun clearWatchHistory(){
+        viewModelScope.launch (Dispatchers.IO){
+            videoRepository.clearVideoHistory()
+
+            loadWatchHistory()
+        }
+    }
 }

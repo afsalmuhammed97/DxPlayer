@@ -147,6 +147,7 @@ class MusicFragment : BaseFragment<MusicFragmentBinding>(
 
 
     }
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         inflater.inflate(R.menu.play_list_menu, menu)
